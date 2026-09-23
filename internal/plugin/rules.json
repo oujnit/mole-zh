@@ -8508,6 +8508,16 @@
     },
     {
       "file": "lib/manage/remove.sh",
+      "before": "                [[ -f \"$alias\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would remove: ${alias}${NC}\"",
+      "after": "                [[ -f \"$alias\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移除：${alias}${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "                [[ -f \"$install\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would remove: ${install}${NC}\"",
+      "after": "                [[ -f \"$install\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移除：${install}${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
       "before": "                echo \"  ${ICON_LIST} $remove_config_dir (kept for manual review)\"",
       "after": "                echo \"  ${ICON_LIST} ${remove_config_dir}（保留供手动检查）\""
     },
@@ -8550,6 +8560,21 @@
       "file": "lib/manage/remove.sh",
       "before": "            log_warning \"Manual step: brew uninstall --force mole\"",
       "after": "            log_warning \"手动步骤：brew uninstall --force mole\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        [[ -d \"$HOME/.cache/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would remove: $HOME/.cache/mole${NC}\"",
+      "after": "        [[ -d \"$HOME/.cache/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移除：$HOME/.cache/mole${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        [[ -d \"$HOME/.config/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would move to Trash: $HOME/.config/mole${NC}\"",
+      "after": "        [[ -d \"$HOME/.config/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移至废纸篓：$HOME/.config/mole${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would remove: $HOME/Library/Logs/mole${NC}\"",
+      "after": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移除：$HOME/Library/Logs/mole${NC}\""
     },
     {
       "file": "lib/manage/remove.sh",

@@ -67,7 +67,7 @@ func apply(home string, s *state, promptSudo bool) error {
 		if err != nil {
 			return err
 		}
-		if current.Version == s.Version && current.Root == s.Root && samePatched(*s) {
+		if current.Version == s.Version && current.Root == s.Root && s.CatalogHash == digest(rulesData) && samePatched(*s) {
 			return nil
 		}
 		catalog, err := loadCatalog()
@@ -240,7 +240,7 @@ func apply(home string, s *state, promptSudo bool) error {
 				retired[path] = rec
 			}
 		}
-		next := state{OfficialMole: s.OfficialMole, Root: current.Root, Version: current.Version,
+		next := state{OfficialMole: s.OfficialMole, Root: current.Root, Version: current.Version, CatalogHash: digest(rulesData),
 			Files: newRecords, Retired: retired, Applied: applied, Skipped: skipped}
 		if err := saveState(home, next); err != nil {
 			for i := len(targets) - 1; i >= 0; i-- {

@@ -20,6 +20,7 @@ type state struct {
 	OfficialMole string                `json:"official_mole"`
 	Root         string                `json:"root"`
 	Version      string                `json:"version"`
+	CatalogHash  string                `json:"catalog_hash"`
 	Files        map[string]fileRecord `json:"files"`
 	Retired      map[string]fileRecord `json:"retired_files,omitempty"`
 	Applied      int                   `json:"applied"`

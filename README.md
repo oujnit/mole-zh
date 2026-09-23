@@ -22,6 +22,8 @@ cd mole-zh
 
 继续使用 `mo update` 更新官方 Mole。直接运行 `brew upgrade mole` 或官方安装脚本也可以：下次通过插件入口启动 `mo` 时，会检测官方文件变化并尝试恢复汉化。安装结构、源码或编译检查失败时，插件不使用有问题的补丁，并让官方版本继续运行。
 
+更新插件本身时，在克隆的 `mole-zh` 目录运行 `git pull && ./install.sh`。安装脚本会替换管理程序并应用新翻译规则；失败时恢复旧版管理程序。重复运行 `./install.sh` 也是安全的。
+
 ```bash
 mole-zh status          # 版本、已应用翻译及未匹配的旧规则
 mole-zh status --all    # 查看全部未匹配规则

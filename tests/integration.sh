@@ -54,6 +54,18 @@ original_hash="$(shasum -a 256 "$test_root/script/bin/mole")"
 grep -q '清理磁盘空间' "$test_root/help.txt"
 "$MOLE_ZH_HOME/bin/mole-zh" status > "$test_root/status.txt"
 grep -q 'V1.55.0' "$test_root/status.txt"
+# Reinstalling a newer plugin must notice changed catalog rules and reapply.
+python3 - "$MOLE_ZH_HOME/state.json" <<'PY'
+import json, sys
+path = sys.argv[1]
+state = json.load(open(path))
+state['catalog_hash'] = 'previous-catalog'
+with open(path, 'w') as output:
+    json.dump(state, output)
+PY
+GOFLAGS=-tags=testsource "$repo_root/install.sh" > "$test_root/reinstall.log" 2>&1
+grep -q '已应用' "$test_root/reinstall.log"
+grep -q '汉化插件已更新' "$test_root/reinstall.log"
 "$MOLE_ZH_HOME/bin/mo" status --json > "$test_root/status.json"
 python3 - "$test_root/status-before.json" "$test_root/status.json" <<'PY'
 import json, sys
@@ -63,6 +75,8 @@ assert before.keys() == after.keys(), (before.keys(), after.keys())
 PY
 MOLE_TEST_NO_AUTH=1 "$MOLE_ZH_HOME/bin/mo" clean --dry-run > "$test_root/clean-preview.txt"
 grep -q '预览' "$test_root/clean-preview.txt"
+MOLE_TEST_NO_AUTH=1 "$MOLE_ZH_HOME/bin/mo" remove --dry-run > "$test_root/remove-preview.txt"
+grep -q '将移除' "$test_root/remove-preview.txt"
 
 # A direct official reinstall replaces one translated file. The shim restores it.
 cp "$test_root/pristine/lib/core/help.sh" "$test_root/script/config/lib/core/help.sh"

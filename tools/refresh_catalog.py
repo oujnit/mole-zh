@@ -15,6 +15,16 @@ SOURCE = Path(__file__).resolve().parents[2] / "Mole"
 BASE = "2415b030"
 LOCALIZED = "upgrade-origin-main"
 
+# Short-circuit display lines were excluded by the conservative diff filter.
+# These five V1.55.0 remove previews were checked against the official tag.
+MANUAL_RULES = [
+    ("lib/manage/remove.sh", '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${install}${NC}"', '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${install}${NC}"'),
+    ("lib/manage/remove.sh", '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${alias}${NC}"', '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${alias}${NC}"'),
+    ("lib/manage/remove.sh", '        [[ -d "$HOME/.cache/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: $HOME/.cache/mole${NC}"', '        [[ -d "$HOME/.cache/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：$HOME/.cache/mole${NC}"'),
+    ("lib/manage/remove.sh", '        [[ -d "$HOME/.config/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would move to Trash: $HOME/.config/mole${NC}"', '        [[ -d "$HOME/.config/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移至废纸篓：$HOME/.config/mole${NC}"'),
+    ("lib/manage/remove.sh", '        [[ -d "$HOME/Library/Logs/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: $HOME/Library/Logs/mole${NC}"', '        [[ -d "$HOME/Library/Logs/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：$HOME/Library/Logs/mole${NC}"'),
+]
+
 
 def pairs():
     patch = subprocess.check_output(
@@ -78,6 +88,8 @@ def main():
             seen[key] = after
     for key in conflicts:
         seen.pop(key, None)
+    for path, before, after in MANUAL_RULES:
+        seen[(path, before)] = after
     rules = [
         {"file": path, "before": before, "after": after}
         for (path, before), after in sorted(seen.items())
