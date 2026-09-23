@@ -48,6 +48,9 @@ def pairs():
 def is_display_rule(path, before, after):
     if not path or path.endswith("_test.go") or path.startswith("lib/i18n/"):
         return False
+    # These files populate JSON/NDJSON values as well as the terminal UI.
+    if path.startswith("cmd/status/metrics") or path in ("cmd/analyze/insights.go", "cmd/analyze/main.go"):
+        return False
     if not re.search(r"[\u3400-\u9fff]", after) or re.search(r"[\u3400-\u9fff]", before):
         return False
     stripped = before.lstrip()

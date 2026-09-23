@@ -33,7 +33,7 @@ type installation struct {
 }
 
 var versionRE = regexp.MustCompile(`(?m)^VERSION="([0-9]+\.[0-9]+(?:\.[0-9]+)?)"$`)
-var scriptDirRE = regexp.MustCompile(`(?m)^SCRIPT_DIR="([^"]+)"$`)
+var scriptDirRE = regexp.MustCompile(`(?m)^SCRIPT_DIR=['"]([^'"]+)['"]$`)
 var scriptDirLineRE = regexp.MustCompile(`(?m)^SCRIPT_DIR=.*$`)
 
 func homeDir() (string, error) {

@@ -17,6 +17,9 @@ func TestCatalogAndExactTranslation(t *testing.T) {
 		if strings.Contains(rule.Before, "EXPORT_LIST_FILE") || strings.Contains(rule.Before, "log_operation ") {
 			t.Fatalf("machine-readable or operation log content must not be translated: %s", rule.File)
 		}
+		if strings.HasPrefix(rule.File, "cmd/status/metrics") || rule.File == "cmd/analyze/insights.go" || rule.File == "cmd/analyze/main.go" {
+			t.Fatalf("JSON-producing source must not be translated: %s", rule.File)
+		}
 	}
 	rules := []Rule{{File: "mole", Before: `echo "Update Mole"`, After: `echo "更新 Mole"`}}
 	input := []byte("echo \"Update Mole\"\necho \"New upstream text\"\necho \"Update Mole\"\n")
@@ -60,6 +63,9 @@ func TestOfficialEntrypointLayouts(t *testing.T) {
 			scriptDir := `SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"`
 			if mode == "script" {
 				scriptDir = `SCRIPT_DIR="` + codeDir + `"`
+			} else {
+				// The Homebrew V1.53.0 formula pins libexec with single quotes.
+				scriptDir = `SCRIPT_DIR='` + codeDir + `'`
 			}
 			content := []byte("#!/bin/bash\n" + scriptDir + "\nVERSION=\"1.55.0\"\n")
 			if err := os.WriteFile(mole, content, 0755); err != nil {
@@ -74,9 +80,6 @@ func TestOfficialEntrypointLayouts(t *testing.T) {
 			}
 			got, err := inspect(entry)
 			expectedRoot := codeDir
-			if mode == "homebrew" {
-				expectedRoot, _ = filepath.EvalSymlinks(codeDir)
-			}
 			if err != nil || got.Root != expectedRoot || got.Version != "1.55.0" {
 				t.Fatalf("inspect: %+v, %v", got, err)
 			}
