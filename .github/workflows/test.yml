@@ -1,0 +1,26 @@
+name: Test
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+      - run: go test ./...
+      - run: bash -n install.sh tests/integration.sh
+      - run: bash tests/integration.sh
+  homebrew:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+      - run: brew install mole
+      - run: ./install.sh --target "$(brew --prefix)/bin/mole"
+      - run: "$HOME/.local/share/mole-zh/bin/mo" --help | grep '清理磁盘空间'
+      - run: "$HOME/.local/share/mole-zh/bin/mole-zh" uninstall
