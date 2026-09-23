@@ -36,8 +36,10 @@ func Main(args []string) int {
 		}
 		s := state{OfficialMole: stablePath, Files: make(map[string]fileRecord)}
 		if err := apply(home, &s, true); err != nil {
+			noteApply(home, err)
 			return fail(err)
 		}
+		noteApply(home, nil)
 		if err := installShims(home); err != nil {
 			_ = restore(home, &s, true)
 			_ = removeShims(home)
@@ -52,8 +54,10 @@ func Main(args []string) int {
 			return fail(err)
 		}
 		if err := apply(home, &s, true); err != nil {
+			noteApply(home, err)
 			return fail(err)
 		}
+		noteApply(home, nil)
 		return 0
 	case "status":
 		s, err := loadState(home)
@@ -68,10 +72,13 @@ func Main(args []string) int {
 		} else {
 			fmt.Printf("当前官方入口不可用：%v\n", inspectErr)
 		}
-		if inspectErr != nil || in.Root != s.Root || in.Version != s.Version || !samePatched(s) {
+		if inspectErr != nil || in.Root != s.Root || in.Version != s.Version || s.CatalogHash != digest(rulesData) || !samePatched(s) {
 			fmt.Println("状态：官方文件已变化，下次 mo 启动会尝试重新应用汉化。")
 		} else {
 			fmt.Println("状态：汉化文件完整。")
+		}
+		if lastError, err := os.ReadFile(filepath.Join(home, "last_error")); err == nil {
+			fmt.Printf("最近一次适配失败：%s\n", strings.TrimSpace(string(lastError)))
 		}
 		limit := 20
 		if len(args) > 1 && args[1] == "--all" {
@@ -97,6 +104,7 @@ func Main(args []string) int {
 			return fail(err)
 		}
 		_ = os.Remove(statePath(home))
+		_ = os.Remove(filepath.Join(home, "last_error"))
 		fmt.Println("汉化插件已卸载；Mole 用户设置保持不变。")
 		return 0
 	case "run":
@@ -106,7 +114,10 @@ func Main(args []string) int {
 		}
 		if os.Getenv("MOLE_ZH_BYPASS") != "1" {
 			if err := apply(home, &s, false); err != nil {
+				noteApply(home, err)
 				fmt.Fprintf(os.Stderr, "mole-zh: 汉化适配失败，继续运行官方 Mole：%v\n", err)
+			} else {
+				noteApply(home, nil)
 			}
 		}
 		cmd := exec.Command(s.OfficialMole, args[1:]...)
@@ -125,8 +136,12 @@ func Main(args []string) int {
 			if _, err := os.Stat(s.OfficialMole); os.IsNotExist(err) && len(args) > 1 && args[1] == "remove" && code == 0 {
 				_ = removeShims(home)
 				_ = os.Remove(statePath(home))
+				_ = os.Remove(filepath.Join(home, "last_error"))
 			} else if err := apply(home, &s, false); err != nil {
+				noteApply(home, err)
 				fmt.Fprintf(os.Stderr, "mole-zh: 官方命令已结束，汉化恢复失败：%v\n", err)
+			} else {
+				noteApply(home, nil)
 			}
 		}
 		return code
@@ -143,6 +158,16 @@ func usage() {
 func fail(err error) int {
 	fmt.Fprintln(os.Stderr, "mole-zh:", err)
 	return 1
+}
+
+func noteApply(home string, err error) {
+	path := filepath.Join(home, "last_error")
+	if err == nil {
+		_ = os.Remove(path)
+		return
+	}
+	_ = os.MkdirAll(home, 0700)
+	_ = os.WriteFile(path, []byte(err.Error()+"\n"), 0600)
 }
 
 func restore(home string, s *state, promptSudo bool) error {

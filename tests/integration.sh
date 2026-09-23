@@ -63,6 +63,7 @@ state['catalog_hash'] = 'previous-catalog'
 with open(path, 'w') as output:
     json.dump(state, output)
 PY
+new_source source-script-update
 GOFLAGS=-tags=testsource "$repo_root/install.sh" > "$test_root/reinstall.log" 2>&1
 grep -q '已应用' "$test_root/reinstall.log"
 grep -q '汉化插件已更新' "$test_root/reinstall.log"
@@ -75,7 +76,9 @@ assert before.keys() == after.keys(), (before.keys(), after.keys())
 PY
 MOLE_TEST_NO_AUTH=1 "$MOLE_ZH_HOME/bin/mo" clean --dry-run > "$test_root/clean-preview.txt"
 grep -q '预览' "$test_root/clean-preview.txt"
-MOLE_TEST_NO_AUTH=1 "$MOLE_ZH_HOME/bin/mo" remove --dry-run > "$test_root/remove-preview.txt"
+mkdir -p "$HOME/.local/bin"
+ln -s "$test_root/script/bin/mole" "$HOME/.local/bin/mole"
+MOLE_TEST_MODE=1 MOLE_TEST_NO_AUTH=1 "$MOLE_ZH_HOME/bin/mo" remove --dry-run > "$test_root/remove-preview.txt"
 grep -q '将移除' "$test_root/remove-preview.txt"
 
 # A direct official reinstall replaces one translated file. The shim restores it.
@@ -105,6 +108,8 @@ changed_hash="$(shasum -a 256 "$test_root/script/config/lib/core/help.sh")"
 "$MOLE_ZH_HOME/bin/mo" --help > /dev/null 2> "$test_root/conflict.log"
 grep -q '继续运行官方 Mole' "$test_root/conflict.log"
 [[ "$(shasum -a 256 "$test_root/script/config/lib/core/help.sh")" == "$changed_hash" ]]
+"$MOLE_ZH_HOME/bin/mole-zh" status > "$test_root/conflict-status.txt"
+grep -q '最近一次适配失败' "$test_root/conflict-status.txt"
 
 # Plugin removal restores only files still bearing the plugin's hash.
 "$MOLE_ZH_HOME/bin/mole-zh" uninstall > /dev/null
