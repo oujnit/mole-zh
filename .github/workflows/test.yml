@@ -22,5 +22,7 @@ jobs:
           go-version: '1.27'
       - run: brew install mole
       - run: ./install.sh --target "$(brew --prefix)/bin/mole"
-      - run: "$HOME/.local/share/mole-zh/bin/mo" --help | grep '清理磁盘空间'
-      - run: "$HOME/.local/share/mole-zh/bin/mole-zh" uninstall
+      - run: |
+          "$HOME/.local/share/mole-zh/bin/mo" --help | grep '清理磁盘空间'
+      - run: |
+          "$HOME/.local/share/mole-zh/bin/mole-zh" uninstall
