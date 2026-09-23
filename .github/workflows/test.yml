@@ -21,6 +21,12 @@ jobs:
         with:
           go-version: '1.27'
       - run: brew install mole
+      - run: |
+          ls -l "$(brew --prefix)/bin/mole"
+          target="$(realpath "$(brew --prefix)/bin/mole")"
+          echo "Resolved Mole: $target"
+          grep '^SCRIPT_DIR=' "$target" || true
+          find "$(brew --prefix)/Cellar/mole" -maxdepth 4 -name common.sh -o -name mole
       - run: ./install.sh --target "$(brew --prefix)/bin/mole"
       - run: |
           "$HOME/.local/share/mole-zh/bin/mo" --help | grep '清理磁盘空间'
