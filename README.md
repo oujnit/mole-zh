@@ -1,12 +1,23 @@
 # Mole 中文插件
 
-这是一个**独立于 Mole 的汉化插件**。先安装 [官方 Mole](https://github.com/tw93/Mole)，再安装本插件。Mole 目前没有原生插件接口；本项目会备份并修改已安装程序中的界面文案，不维护或分发另一份 Mole 源码。
+给本机已安装的 [官方 Mole](https://github.com/tw93/Mole) 加上中文界面。**这是汉化插件，需要先有官方 Mole**；它会备份并汉化现有安装中的文件。
 
-支持官方脚本安装和 Homebrew 安装，适配 Mole V1 系列稳定版。已有翻译能在小版本更新后继续匹配；官方新增或改写的文字可能暂时显示英文。V2、非稳定版和无法识别的安装会保持官方原样并给出原因。
+## 一键汉化本机 Mole
 
-## 安装
+**已经安装官方 Mole？复制这一条命令，即可汉化现有安装，无需手动克隆仓库或进入目录：**
 
-需要 macOS、Git 和 Go。插件不会自行安装 Go。请先确认 `mole --version` 能运行，再执行：
+```bash
+curl -fsSL https://raw.githubusercontent.com/oujnit/mole-zh/main/bootstrap.sh | bash
+```
+
+需要 **macOS、Git 和 Go 1.23+**，并确保 `mole --version` 能正常运行。缺少 Go 且已安装 Homebrew 时，先运行 `brew install go`。本命令不会安装 Mole 或自动安装这些依赖。
+
+完成后，**重新打开终端**，继续使用 `mo` 或 `mole`，界面即为中文。已有终端也可按安装输出中的 `export PATH=...` 命令立即启用。运行 `mole-zh status` 可检查汉化状态。
+
+一键入口会临时下载插件并自动清理下载目录；重复执行同一条命令即可更新插件与翻译规则。原版文件备份在 `~/.local/share/mole-zh/backups/`。需要写入受保护的安装目录时，安装过程会请求管理员权限。
+
+<details>
+<summary>手动安装／指定 Mole 路径</summary>
 
 ```bash
 git clone https://github.com/oujnit/mole-zh.git
@@ -14,15 +25,17 @@ cd mole-zh
 ./install.sh
 ```
 
-安装脚本会显示一条 `export PATH=...` 命令。运行该命令可在当前终端立即启用；新终端会自动启用。`mo`、`mole` 保持原有用法。若电脑有多个 Mole 安装，可用 `./install.sh --target /完整路径/mole` 指定当前要汉化的官方安装。
+若电脑有多个 Mole 安装，可用 `./install.sh --target /完整路径/mole` 指定要汉化的安装。已有插件需要切换目标时，先运行 `mole-zh uninstall`。
 
-插件只获取与已安装版本相同的官方源码，用于核对原文和构建中文 `analyze`、`status` 程序。原版文件备份在 `~/.local/share/mole-zh/backups/`。需要写入受保护安装目录时，安装命令会请求管理员权限；日常启动不会弹出提权提示。
+插件会获取与已安装版本相同的官方源码，核对原文并构建中文 `analyze`、`status` 程序。
+
+</details>
 
 ## 更新和状态
 
 继续使用 `mo update` 更新官方 Mole。直接运行 `brew upgrade mole` 或官方安装脚本也可以：下次通过插件入口启动 `mo` 时，会检测官方文件变化并尝试恢复汉化。安装结构、源码或编译检查失败时，插件不使用有问题的补丁，并让官方版本继续运行。
 
-更新插件本身时，在克隆的 `mole-zh` 目录运行 `git pull && ./install.sh`。安装脚本会替换管理程序并应用新翻译规则；失败时恢复旧版管理程序。重复运行 `./install.sh` 也是安全的。
+更新汉化插件：**重新执行上面的一键命令即可**。手动安装的用户也可在仓库目录运行 `git pull && ./install.sh`。更新失败时会恢复旧版管理程序。
 
 ```bash
 mole-zh status          # 版本、已应用翻译及未匹配的旧规则
@@ -35,6 +48,8 @@ mole-zh uninstall       # 仅卸载汉化插件，恢复对应官方文件
 
 ## 限制与来源
 
+支持官方脚本安装和 Homebrew 安装，适配 Mole V1 系列稳定版。V2、非稳定版和无法识别的安装不会应用汉化。Mole 目前没有原生插件接口，本插件通过修改已安装文件实现汉化。
+
 - V1.62.0 是当前翻译规则的基线（首版基线为 V1.55.0）。状态中的“未匹配旧规则”能指出原文变化；新增英文文案仍需要人工补译，不能保证未来版本百分之百中文。
 - Homebrew 或官方安装脚本会覆盖已汉化文件。插件入口会在下次启动时重新应用；若目录不可写且没有已缓存的管理员授权，请运行 `mole-zh apply`。
-- 翻译基于 [tw93/Mole](https://github.com/tw93/Mole) 的界面文本。本项目遵循 GPL-3.0-or-later，详见 [LICENSE](LICENSE)。
+- 翻译基于 [tw93/Mole](https://github.com/tw93/Mole) 的界面文本。本项目遵循 MIT 许可证，详见 [LICENSE](LICENSE)。

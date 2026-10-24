@@ -8,7 +8,7 @@ fi
 
 for tool in go git; do
     if ! command -v "$tool" >/dev/null 2>&1; then
-        echo "缺少 $tool。请先安装，再重新运行插件安装脚本。" >&2
+        echo "缺少 ${tool}。请先安装，再重新运行插件安装脚本。" >&2
         exit 1
     fi
 done
