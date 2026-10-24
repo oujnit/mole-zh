@@ -48,6 +48,13 @@ MANUAL_RULES += [('lib/uninstall/batch.sh', '        [[ ${#_review_selected_path
 
 
 
+# Short-circuit summary fields are UI text and are excluded by the filter.
+MANUAL_RULES += [
+    ("bin/clean.sh", '            [[ $files_cleaned -gt 0 ]] && stats+=" | Items: $files_cleaned"', '            [[ $files_cleaned -gt 0 ]] && stats+=" | 项目数：$files_cleaned"'),
+    ("bin/clean.sh", '            [[ $total_items -gt 0 ]] && stats+=" | Categories: $total_items"', '            [[ $total_items -gt 0 ]] && stats+=" | 分类：$total_items"'),
+]
+
+
 def pairs():
     patch = subprocess.check_output(
         ["git", "diff", "--unified=0", f"{BASE}..{LOCALIZED}", "--", "mole", "bin", "lib", "cmd"],

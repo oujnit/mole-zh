@@ -77,12 +77,12 @@ printf 'REASON=%s\n' "$_MOLE_CLEAN_GUARD_REASON"
 
 func TestOfficialEntrypointLayouts(t *testing.T) {
 	root := t.TempDir()
-	for _, mode := range []string{"script", "homebrew"} {
+	for _, mode := range []string{"script", "homebrew", "script-unquoted"} {
 		t.Run(mode, func(t *testing.T) {
 			install := filepath.Join(root, mode)
 			binaryDir := filepath.Join(install, "bin")
 			codeDir := install
-			if mode == "script" {
+			if strings.HasPrefix(mode, "script") {
 				codeDir = filepath.Join(install, "config")
 			}
 			for _, rel := range []string{"lib/core/common.sh", "bin/clean.sh", "bin/analyze.sh", "bin/status.sh"} {
@@ -102,11 +102,14 @@ func TestOfficialEntrypointLayouts(t *testing.T) {
 				mole = filepath.Join(install, "mole")
 			}
 			scriptDir := `SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"`
-			if mode == "script" {
+			if strings.HasPrefix(mode, "script") {
 				scriptDir = `SCRIPT_DIR="` + codeDir + `"`
 			} else {
 				// The Homebrew V1.53.0 formula pins libexec with single quotes.
 				scriptDir = `SCRIPT_DIR='` + codeDir + `'`
+			}
+			if mode == "script-unquoted" {
+				scriptDir = "SCRIPT_DIR=" + codeDir
 			}
 			content := []byte("#!/bin/bash\n" + scriptDir + "\nVERSION=\"1.55.0\"\n")
 			if err := os.WriteFile(mole, content, 0755); err != nil {

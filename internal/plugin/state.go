@@ -34,7 +34,10 @@ type installation struct {
 }
 
 var versionRE = regexp.MustCompile(`(?m)^VERSION="([0-9]+\.[0-9]+(?:\.[0-9]+)?)"$`)
-var scriptDirRE = regexp.MustCompile(`(?m)^SCRIPT_DIR=['"]([^'"]+)['"]$`)
+
+// Official installers pin ordinary paths without quotes; Homebrew and older
+// installs use quoted literals. Match literals only, never evaluate shell code.
+var scriptDirRE = regexp.MustCompile(`(?m)^SCRIPT_DIR=(?:'([^']+)'|"([^"]+)"|(/[A-Za-z0-9_./+\-]+))$`)
 var scriptDirLineRE = regexp.MustCompile(`(?m)^SCRIPT_DIR=.*$`)
 
 func homeDir() (string, error) {
@@ -110,8 +113,13 @@ func inspect(path string) (installation, error) {
 		return in, fmt.Errorf("%s is not a supported Mole entrypoint", real)
 	}
 	root := filepath.Dir(real)
-	if pinned := scriptDirRE.FindSubmatch(data); len(pinned) == 2 {
-		root = string(pinned[1])
+	if pinned := scriptDirRE.FindSubmatch(data); len(pinned) > 1 {
+		for _, literal := range pinned[1:] {
+			if len(literal) > 0 {
+				root = string(literal)
+				break
+			}
+		}
 	}
 	if !filepath.IsAbs(root) {
 		return in, fmt.Errorf("Mole module directory is not absolute: %s", root)

@@ -153,6 +153,16 @@
     },
     {
       "file": "bin/clean.sh",
+      "before": "            [[ $files_cleaned -gt 0 ]] && stats+=\" | Items: $files_cleaned\"",
+      "after": "            [[ $files_cleaned -gt 0 ]] && stats+=\" | 项目数：$files_cleaned\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "            [[ $total_items -gt 0 ]] && stats+=\" | Categories: $total_items\"",
+      "after": "            [[ $total_items -gt 0 ]] && stats+=\" | 分类：$total_items\""
+    },
+    {
+      "file": "bin/clean.sh",
       "before": "            cancel_reason=\"A required cleanup step failed (exit $cleanup_cancel_rc).\"",
       "after": "            cancel_reason=\"必需的清理步骤失败（退出码 ${cleanup_cancel_rc}）。\""
     },
@@ -250,6 +260,11 @@
       "file": "bin/clean.sh",
       "before": "            local stats=\"Potential space: $(colorize_human_size \"$potential_label\")\"",
       "after": "            local stats=\"可释放空间：$(colorize_human_size \"$potential_label\")\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "            local summary_line=\"Tracked cleanup: $(colorize_human_size \"$freed_size_human\")\"",
+      "after": "            local summary_line=\"已统计清理量：$(colorize_human_size \"$freed_size_human\")\""
     },
     {
       "file": "bin/clean.sh",
@@ -3320,6 +3335,11 @@
       "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Application\\ Support/Code/CachedData/* \"VS Code data cache\"",
       "after": "    safe_clean ~/Library/Application\\ Support/Code/CachedData/* \"VS Code 数据缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code extension cache\"",
+      "after": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code 扩展缓存\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -7315,6 +7335,11 @@
       "file": "lib/clean/user.sh",
       "before": "        ~/Library/Caches/com.getdropbox.dropbox \"Dropbox cache\" || return 1",
       "after": "        ~/Library/Caches/com.getdropbox.dropbox \"Dropbox 缓存\" || return 1"
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "    _clean_user_log_directory \"$HOME/Library/Logs\" \"User app logs\" || return $?",
+      "after": "    _clean_user_log_directory \"$HOME/Library/Logs\" \"用户应用日志\" || return $?"
     },
     {
       "file": "lib/clean/user.sh",
