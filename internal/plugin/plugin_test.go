@@ -3,6 +3,7 @@ package plugin
 import (
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -31,6 +32,46 @@ func TestCatalogAndExactTranslation(t *testing.T) {
 	_, count, skipped = translateLines(input, []Rule{{File: "mole", Before: `echo "Changed"`, After: `echo "变化"`}})
 	if count != 0 || len(skipped) != 1 {
 		t.Fatalf("changed English text must remain untranslated: count=%d skipped=%v", count, skipped)
+	}
+}
+
+func TestCatalogLocalizesGuardDisplayWithoutChangingReason(t *testing.T) {
+	catalog, err := loadCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rules []Rule
+	for _, rule := range catalog.Rules {
+		if rule.File == "lib/core/base.sh" {
+			rules = append(rules, rule)
+		}
+	}
+	original := []byte(`mole_report_guard_stop() {
+    local display_name="$1"
+    shift
+    if [[ "$_MOLE_CLEAN_GUARD_REASON" == "process state unknown" ]]; then
+        echo -e "  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})"
+        note_activity
+    else
+        "$@"
+    fi
+}
+note_activity() { :; }
+_MOLE_CLEAN_GUARD_REASON="process state unknown"
+mole_report_guard_stop Fixture true
+printf 'REASON=%s\n' "$_MOLE_CLEAN_GUARD_REASON"
+`)
+	translated, count, _ := translateLines(original, rules)
+	if count < 2 {
+		t.Fatalf("guard helper or display rule missing: matched %d", count)
+	}
+	output, err := exec.Command("/bin/bash", "-c", string(translated)).CombinedOutput()
+	if err != nil {
+		t.Fatalf("translated guard failed: %v: %s", err, output)
+	}
+	if !strings.Contains(string(output), "Fixture · 已停止（进程状态未知）") ||
+		!strings.Contains(string(output), "REASON=process state unknown") {
+		t.Fatalf("guard display/key contract changed: %s", output)
 	}
 }
 

@@ -1,5 +1,5 @@
 {
-  "base": "V1.55.0",
+  "base": "V1.62.0",
   "rules": [
     {
       "file": "bin/analyze.sh",
@@ -15,11 +15,6 @@
       "file": "bin/clean.sh",
       "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Whitelist: $warning\"",
       "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} 白名单：$warning\""
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "                    freed_size_human=\"At least $freed_size_human\"",
-      "after": "                    freed_size_human=\"至少 $freed_size_human\""
     },
     {
       "file": "bin/clean.sh",
@@ -40,6 +35,26 @@
       "file": "bin/clean.sh",
       "before": "                    summary_details+=(\"No additional space freed.\")",
       "after": "                    summary_details+=(\"未释放更多空间。\")"
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "                cancel_reason=\"Cancelled: $cancel_source timed out (exit $cleanup_cancel_rc).\"",
+      "after": "                cancel_reason=\"已取消：$cancel_source 超时（退出码 ${cleanup_cancel_rc}）。\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "                cancel_reason=\"Cancelled: $cancel_source was interrupted (exit $cleanup_cancel_rc).\"",
+      "after": "                cancel_reason=\"已取消：$cancel_source 被中断（退出码 ${cleanup_cancel_rc}）。\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "                cancel_reason=\"Cancelled: a cleanup step was interrupted (exit $cleanup_cancel_rc).\"",
+      "after": "                cancel_reason=\"已取消：某个清理步骤被中断（退出码 ${cleanup_cancel_rc}）。\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "                cancel_reason=\"Cancelled: a scan or size check timed out (exit $cleanup_cancel_rc).\"",
+      "after": "                cancel_reason=\"已取消：扫描或大小检查超时（退出码 ${cleanup_cancel_rc}）。\""
     },
     {
       "file": "bin/clean.sh",
@@ -103,11 +118,6 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "                potential_label=\"At least $freed_size_human\"",
-      "after": "                potential_label=\"至少 $freed_size_human\""
-    },
-    {
-      "file": "bin/clean.sh",
       "before": "                removal_timeout_list+=\", +$((${#removal_timeout_paths[@]} - removal_timeout_show)) more\"",
       "after": "                removal_timeout_list+=\", 另有 $((${#removal_timeout_paths[@]} - removal_timeout_show)) 项\""
     },
@@ -140,6 +150,11 @@
       "file": "bin/clean.sh",
       "before": "            \"$identity\" \"$size_kb\" \"$item_count\" \"$size_known\" \"${CURRENT_SECTION:-Uncategorized}\" \"$path\" \\",
       "after": "            \"$identity\" \"$size_kb\" \"$item_count\" \"$size_known\" \"${CURRENT_SECTION:-未分类}\" \"$path\" \\"
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "            cancel_reason=\"A required cleanup step failed (exit $cleanup_cancel_rc).\"",
+      "after": "            cancel_reason=\"必需的清理步骤失败（退出码 ${cleanup_cancel_rc}）。\""
     },
     {
       "file": "bin/clean.sh",
@@ -238,13 +253,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "            local summary_line=\"Tracked cleanup: ${GREEN}${freed_size_human}${NC}\"",
-      "after": "            local summary_line=\"已统计清理：${GREEN}${freed_size_human}${NC}\""
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            printf 'Free space: %s\\n' \"$(get_free_space)\"",
-      "after": "            printf '可用空间：%s\\n' \"$(get_free_space)\""
+      "before": "            printf 'Free space: Unknown\\n'",
+      "after": "            printf '可用空间：未知\\n'"
     },
     {
       "file": "bin/clean.sh",
@@ -320,21 +330,6 @@
       "file": "bin/clean.sh",
       "before": "            summary+=\" patterns active\"",
       "after": "            summary+=\" 保护规则已生效\""
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} A required cleanup step failed (exit $cleanup_cancel_rc). Remaining cleanup was skipped.\")",
-      "after": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} 必需的清理步骤失败（退出码 ${cleanup_cancel_rc}），已跳过剩余清理。\")"
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} Cancelled: a cleanup step was interrupted (exit $cleanup_cancel_rc). Remaining cleanup was skipped.\")",
-      "after": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} 已取消：某个清理步骤被中断（退出码 ${cleanup_cancel_rc}）。剩余清理已跳过。\")"
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} Cancelled: a scan or size check timed out (exit 124). Remaining cleanup was skipped.\")",
-      "after": "            summary_details+=(\"${GRAY}${ICON_WARNING}${NC} 已取消：扫描或大小检查超时（退出码 124）。剩余清理已跳过。\")"
     },
     {
       "file": "bin/clean.sh",
@@ -450,6 +445,11 @@
       "file": "bin/clean.sh",
       "before": "        start_section_spinner \"Scanning ${#targets[@]} items...\"",
       "after": "        start_section_spinner \"正在扫描 ${#targets[@]} 个项目...\""
+    },
+    {
+      "file": "bin/clean.sh",
+      "before": "        summary_details+=(\"${GRAY}${ICON_WARNING}${NC} $cancel_reason Remaining cleanup was skipped.\")",
+      "after": "        summary_details+=(\"${GRAY}${ICON_WARNING}${NC} $cancel_reason 剩余清理已跳过。\")"
     },
     {
       "file": "bin/clean.sh",
@@ -673,6 +673,11 @@
     },
     {
       "file": "bin/completion.sh",
+      "before": "    log_error \"Could not follow the shell config link $1, so it was left unchanged. Fix or remove that link, then rerun mo completion\"",
+      "after": "    log_error \"无法解析 shell 配置链接 $1，已保持不变。请修复或删除该链接，然后重新运行 mo completion\""
+    },
+    {
+      "file": "bin/completion.sh",
       "before": "    printf '%s\\n' 'Run Mole without sudo; it requests administrator access when needed.' >&2",
       "after": "    printf '%s\\n' '请不要使用 sudo 运行 Mole；需要管理员权限时程序会自行请求。' >&2"
     },
@@ -883,8 +888,23 @@
     },
     {
       "file": "bin/installer.sh",
+      "before": "                    echo -e \"${YELLOW}${ICON_WARNING}${NC} A file check timed out, so later selections were left in place. Retry mo installer.\"",
+      "after": "                    echo -e \"${YELLOW}${ICON_WARNING}${NC} 文件检查超时，后续选择项保持原样。请重试 mo installer。\""
+    },
+    {
+      "file": "bin/installer.sh",
       "before": "                echo \"Unknown option: $arg\" >&2",
       "after": "                echo \"未知的选项：$arg\" >&2"
+    },
+    {
+      "file": "bin/installer.sh",
+      "before": "                scan_reason=\"interrupted\"",
+      "after": "                scan_reason=\"被中断\""
+    },
+    {
+      "file": "bin/installer.sh",
+      "before": "                scan_reason=\"timed out\"",
+      "after": "                scan_reason=\"超时\""
     },
     {
       "file": "bin/installer.sh",
@@ -895,6 +915,21 @@
       "file": "bin/installer.sh",
       "before": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} Great! No installer files to clean\"",
       "after": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} 太棒了！没有需要清理的安装包\""
+    },
+    {
+      "file": "bin/installer.sh",
+      "before": "            local scan_reason=\"incomplete\"",
+      "after": "            local scan_reason=\"不完整\""
+    },
+    {
+      "file": "bin/installer.sh",
+      "before": "            printf '%sInstaller scan %s%s; no files selected' \"$YELLOW\" \"$scan_reason\" \"$NC\" >&2",
+      "after": "            printf '%s安装包扫描%s%s；未选择任何文件' \"$YELLOW\" \"$scan_reason\" \"$NC\" >&2"
+    },
+    {
+      "file": "bin/installer.sh",
+      "before": "            printf '\\nCheck that the scan locations are readable and responsive, then retry mo installer.\\n' >&2",
+      "after": "            printf '\\n请确认扫描位置可读且响应正常，然后重试 mo installer。\\n' >&2"
     },
     {
       "file": "bin/installer.sh",
@@ -1198,11 +1233,6 @@
     },
     {
       "file": "bin/purge.sh",
-      "before": "    echo \"  --help          Show this help message\"",
-      "after": "    echo \"  --help          显示此帮助信息\""
-    },
-    {
-      "file": "bin/purge.sh",
       "before": "    echo \"  --include-empty Show zero-size project artifact directories\"",
       "after": "    echo \"  --include-empty 显示空的项目构建产物目录\""
     },
@@ -1215,6 +1245,11 @@
       "file": "bin/purge.sh",
       "before": "    echo \"  --yes           Confirm unattended cleanup of eligible artifacts\"",
       "after": "    echo \"  --yes           确认无人值守清理符合条件的构建产物\""
+    },
+    {
+      "file": "bin/purge.sh",
+      "before": "    echo \"  -h, --help      Show this help message\"",
+      "after": "    echo \"  -h, --help      显示本帮助信息\""
     },
     {
       "file": "bin/purge.sh",
@@ -1245,6 +1280,146 @@
       "file": "bin/purge.sh",
       "before": "    printf '%s\\n' 'Run Mole without sudo; it requests administrator access when needed.' >&2",
       "after": "    printf '%s\\n' '请不要使用 sudo 运行 Mole；需要管理员权限时程序会自行请求。' >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "                echo \"Unknown option: $arg\" >&2",
+      "after": "                echo \"未知选项：$arg\" >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "                echo \"Use 'mo slim --help' for supported options.\" >&2",
+      "after": "                echo \"查看支持的选项请运行 'mo slim --help'。\" >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "            details+=(\"Slimmed ${GREEN}$total_slimmed${NC} apps, freed ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC} once the Trash is emptied\")",
+      "after": "            details+=(\"已精简 ${GREEN}$total_slimmed${NC} 个应用，清空废纸篓后释放 ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "            details+=(\"Would slim ${GREEN}$total_slimmed${NC} apps, free ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")",
+      "after": "            details+=(\"将精简 ${GREEN}$total_slimmed${NC} 个应用，释放 ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "            printf 'Run mo slim in a terminal to choose apps.\\n'",
+      "after": "            printf '请在终端中运行 mo slim 以选择应用。\\n'"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        details+=(\"${ICON_WARNING} Kept ${failure//\\\\/\\\\\\\\}\")",
+      "after": "        details+=(\"${ICON_WARNING} 保留 ${failure//\\\\/\\\\\\\\}\")"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        details+=(\"No apps were slimmed\")",
+      "after": "        details+=(\"未精简任何应用\")"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        echo -e \"${GREEN}${ICON_SUCCESS}${NC} No apps with Intel code to remove\"",
+      "after": "        echo -e \"${GREEN}${ICON_SUCCESS}${NC} 没有含 Intel 代码的应用可精简\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        echo -e \"${YELLOW}${ICON_DRY_RUN} DRY RUN MODE${NC}, No apps will be changed\"",
+      "after": "        echo -e \"${YELLOW}${ICON_DRY_RUN} 预览模式${NC}，不会更改任何应用\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        heading=\"Dry run complete - no changes made\"",
+      "after": "        heading=\"预览完成 — 未做任何更改\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        heading=\"Slimming incomplete\"",
+      "after": "        heading=\"部分应用未能精简\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "        printf 'mo slim needs an Apple Silicon Mac; on an Intel Mac the Intel code is the code that runs.\\n' >&2",
+      "after": "        printf 'mo slim 需要 Apple Silicon Mac；在 Intel Mac 上 Intel 代码正是实际运行的代码。\\n' >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"  --debug           Show why apps were skipped\"",
+      "after": "    echo \"  --debug           显示应用被跳过的原因\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"  --dry-run, -n     List apps and reclaimable space without changes\"",
+      "after": "    echo \"  --dry-run, -n     仅列出应用和可释放空间，不做更改\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"  -h, --help        Show this help message\"",
+      "after": "    echo \"  -h, --help        显示本帮助\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"App updates bring the Intel code back.\"",
+      "after": "    echo \"应用更新后 Intel 代码会恢复。\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"Each app is slimmed on a copy that must pass code signing and Gatekeeper\"",
+      "after": "    echo \"每个应用都会先在副本上精简，副本必须通过代码签名和 Gatekeeper\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"Options:\"",
+      "after": "    echo \"选项：\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"Remove the Intel code from universal apps on Apple Silicon.\"",
+      "after": "    echo \"移除通用应用中的 Intel 代码（Apple Silicon）。\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"Usage: mo slim [OPTIONS]\"",
+      "after": "    echo \"用法：mo slim [选项]\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo \"checks before it replaces the original, which moves to the Trash.\"",
+      "after": "    echo \"检查，才会替换原应用；原应用会移入废纸篓。\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo -e \"${GRAY}Originals move to the Trash. App updates bring the Intel code back.${NC}\"",
+      "after": "    echo -e \"${GRAY}原应用将移入废纸篓。应用更新后 Intel 代码会恢复。${NC}\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo -e \"${PURPLE_BOLD}Apps to slim:${NC}\"",
+      "after": "    echo -e \"${PURPLE_BOLD}待精简应用：${NC}\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} Slim ${#indices[@]} apps, $(bytes_to_human \"$total\")  ${GREEN}Enter${NC} confirm, ${GRAY}ESC${NC} cancel: \"",
+      "after": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} 精简 ${#indices[@]} 个应用，共 $(bytes_to_human \"$total\")  ${GREEN}回车${NC}确认，${GRAY}ESC${NC} 取消： \""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    local heading=\"Apps slimmed\"",
+      "after": "    local heading=\"精简完成\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    paginated_multi_select \"Select apps to slim\" \"${rows[@]}\" || rc=$?",
+      "after": "    paginated_multi_select \"选择要精简的应用\" \"${rows[@]}\" || rc=$?"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    printf '%s\\n' 'Run Mole without sudo; mo slim only changes apps you own.' >&2",
+      "after": "    printf '%s\\n' '请不要使用 sudo 运行 Mole；mo slim 只处理你拥有的应用。' >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    printf '\\n%s apps, %s of Intel code\\n' \"${#SLIM_APP_PATHS[@]}\" \"$(bytes_to_human \"$total\")\"",
+      "after": "    printf '\\n%s 个应用，共 %s Intel 代码\\n' \"${#SLIM_APP_PATHS[@]}\" \"$(bytes_to_human \"$total\")\""
     },
     {
       "file": "bin/status.sh",
@@ -1443,11 +1618,6 @@
     },
     {
       "file": "bin/uninstall.sh",
-      "before": "            echo \"Aborted.\"",
-      "after": "            echo \"已取消。\""
-    },
-    {
-      "file": "bin/uninstall.sh",
       "before": "            echo \"No apps selected\"",
       "after": "            echo \"未选择任何应用\""
     },
@@ -1470,11 +1640,6 @@
       "file": "bin/uninstall.sh",
       "before": "            printf \"%d. %-*s  %*s  |  Last: %s\\n\" \"$index\" \"$printf_name_width\" \"$name_cell\" \"$max_size_width\" \"$size_cell\" \"$last_cell\"",
       "after": "            printf \"%d. %-*s  %*s  |  最近使用: %s\\n\" \"$index\" \"$printf_name_width\" \"$name_cell\" \"$max_size_width\" \"$size_cell\" \"$last_cell\""
-    },
-    {
-      "file": "bin/uninstall.sh",
-      "before": "            printf \"%d. %s  %s  |  Last: %s\\n\" \"$index\" \"$app_name\" \"$size_display\" \"$last_display\"",
-      "after": "            printf \"%d. %s  %s  |  最近使用: %s\\n\" \"$index\" \"$app_name\" \"$size_display\" \"$last_display\""
     },
     {
       "file": "bin/uninstall.sh",
@@ -1525,11 +1690,6 @@
       "file": "bin/uninstall.sh",
       "before": "        log_warning \"No applications found for uninstallation\"",
       "after": "        log_warning \"未找到可卸载的应用\""
-    },
-    {
-      "file": "bin/uninstall.sh",
-      "before": "        printf \"Proceed with uninstallation? [y/N] \"",
-      "after": "        printf \"是否继续卸载？[y/N] \""
     },
     {
       "file": "bin/uninstall.sh",
@@ -1732,11 +1892,6 @@
       "after": "\t\treturn 0, fmt.Errorf(\"路径必须是绝对路径：%s\", path)"
     },
     {
-      "file": "cmd/analyze/scanner.go",
-      "before": "\treturn 0, fmt.Errorf(\"unable to measure directory size with fast methods\")",
-      "after": "\treturn 0, fmt.Errorf(\"无法使用快速方法计算目录大小\")"
-    },
-    {
       "file": "cmd/analyze/update.go",
       "before": "\t\t\t\t\t\tm.status = fmt.Sprintf(\"Too many items to open, max %d, selected %d\", maxBatchOpen, count)",
       "after": "\t\t\t\t\t\tm.status = fmt.Sprintf(\"要打开的项目过多，最多 %d 个，已选 %d 个\", maxBatchOpen, count)"
@@ -1750,6 +1905,11 @@
       "file": "cmd/analyze/update.go",
       "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"%d selected, %s\", count, humanizeBytes(totalSize))",
       "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"已选择 %d 项，%s\", count, humanizeBytes(totalSize))"
+    },
+    {
+      "file": "cmd/analyze/update.go",
+      "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Cannot delete %s, size unknown\", selected.Name)",
+      "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"无法删除 %s，大小未知\", selected.Name)"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -1775,11 +1935,6 @@
       "file": "cmd/analyze/update.go",
       "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Opening %s...\", selected.Name)",
       "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"正在打开 %s…\", selected.Name)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Scanned %s\", humanizeBytes(m.totalSize))",
-      "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"已扫描 %s\", humanizeBytes(m.totalSize))"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -1813,8 +1968,13 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"%d selected, %s\", count, humanizeBytes(totalSize))",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"已选择 %d 项，%s\", count, humanizeBytes(totalSize))"
+      "before": "\t\t\t\tm.status = fmt.Sprintf(\"%d selected, %s\", count, measuredSizeLabel(size, state))",
+      "after": "\t\t\t\tm.status = fmt.Sprintf(\"已选择 %d 项，%s\", count, measuredSizeLabel(size, state))"
+    },
+    {
+      "file": "cmd/analyze/update.go",
+      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Cannot select %s, size unknown\", m.entries[m.selected].Name)",
+      "after": "\t\t\t\tm.status = fmt.Sprintf(\"无法选择 %s，大小未知\", m.entries[m.selected].Name)"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -1853,11 +2013,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Scanned %s\", humanizeBytes(m.totalSize))",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"已扫描 %s\", humanizeBytes(m.totalSize))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\t\t\tm.status = fmt.Sprintf(\"Showing %d items in Finder...\", count)",
       "after": "\t\t\t\tm.status = fmt.Sprintf(\"正在访达中显示 %d 个项目…\", count)"
     },
@@ -1865,11 +2020,6 @@
       "file": "cmd/analyze/update.go",
       "before": "\t\t\t\tm.status = fmt.Sprintf(\"Showing %s in Finder...\", selected.Name)",
       "after": "\t\t\t\tm.status = fmt.Sprintf(\"正在访达中显示 %s…\", selected.Name)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Unable to measure %s: %v\", displayPath(msg.Path), msg.Err)",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"无法计算 %s 的大小：%v\", displayPath(msg.Path), msg.Err)"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -1943,11 +2093,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\tm.status = fmt.Sprintf(\"Scanned %s\", humanizeBytes(m.totalSize))",
-      "after": "\t\t\tm.status = fmt.Sprintf(\"已扫描 %s\", humanizeBytes(m.totalSize))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\t\tm.status = fmt.Sprintf(\"Scanning %d directories..., %d left\", len(pendingIndices), remaining)",
       "after": "\t\t\tm.status = fmt.Sprintf(\"正在扫描 %d 个目录…，剩余 %d 项\", len(pendingIndices), remaining)"
     },
@@ -1978,11 +2123,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\tm.status = fmt.Sprintf(\"Scanned %s\", humanizeBytes(m.totalSize))",
-      "after": "\t\tm.status = fmt.Sprintf(\"已扫描 %s\", humanizeBytes(m.totalSize))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\tm.status = fmt.Sprintf(\"Scanning %s...\", displayPath(m.path))",
       "after": "\t\tm.status = fmt.Sprintf(\"正在扫描 %s…\", displayPath(m.path))"
     },
@@ -1990,11 +2130,6 @@
       "file": "cmd/analyze/update.go",
       "before": "\tm.status = fmt.Sprintf(\"File: %s, %s\", selected.Name, humanizeBytes(selected.Size))",
       "after": "\tm.status = fmt.Sprintf(\"文件：%s，%s\", selected.Name, humanizeBytes(selected.Size))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\tm.status = fmt.Sprintf(\"Scanned %s\", humanizeBytes(m.totalSize))",
-      "after": "\tm.status = fmt.Sprintf(\"已扫描 %s\", humanizeBytes(m.totalSize))"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -2090,11 +2225,6 @@
       "file": "cmd/analyze/view.go",
       "before": "\t\t\tfmt.Fprintf(&b, \"  %sFilter:%s %s%s  %s(%d matches)%s\\n\\n\",",
       "after": "\t\t\tfmt.Fprintf(&b, \"  %s筛选：%s %s%s  %s(%d 个匹配)%s\\n\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"  |  Total: %s\", humanizeBytes(m.totalSize))",
-      "after": "\t\t\tfmt.Fprintf(&b, \"  |  总计：%s\", humanizeBytes(m.totalSize))"
     },
     {
       "file": "cmd/analyze/view.go",
@@ -2255,16 +2385,6 @@
       "file": "cmd/status/main.go",
       "before": "\t\t_, _ = fmt.Fprintln(stderr, \"Use 'mo status --help' for usage information\")",
       "after": "\t\t_, _ = fmt.Fprintln(stderr, \"使用 'mo status --help' 查看用法信息\")"
-    },
-    {
-      "file": "cmd/status/main.go",
-      "before": "\t\tfmt.Fprintf(os.Stderr, \"error collecting metrics: %v\\n\", err)",
-      "after": "\t\tfmt.Fprintf(os.Stderr, \"采集指标出错：%v\\n\", err)"
-    },
-    {
-      "file": "cmd/status/main.go",
-      "before": "\t\tfmt.Fprintf(os.Stderr, \"error encoding JSON: %v\\n\", err)",
-      "after": "\t\tfmt.Fprintf(os.Stderr, \"编码 JSON 出错：%v\\n\", err)"
     },
     {
       "file": "cmd/status/main.go",
@@ -2584,7 +2704,7 @@
     {
       "file": "cmd/status/view.go",
       "before": "\tbase := \"STALE\"",
-      "after": "\tbase := \"已过期\""
+      "after": "\tbase := \"过期\""
     },
     {
       "file": "cmd/status/view.go",
@@ -2692,11 +2812,6 @@
       "after": "\ttitle := titleStyle.Render(\"状态\")"
     },
     {
-      "file": "cmd/status/watch.go",
-      "before": "\t\t\tfmt.Fprintf(os.Stderr, \"status: collect failed: %v\\n\", err)",
-      "after": "\t\t\tfmt.Fprintf(os.Stderr, \"状态：采集失败：%v\\n\", err)"
-    },
-    {
       "file": "lib/clean/app_caches.sh",
       "before": "                    \"Xcode cache\" \\",
       "after": "                    \"Xcode 缓存\" \\"
@@ -2788,11 +2903,6 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Final Cut Pro generated caches · skipped (process state unknown)\"",
-      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Final Cut Pro 生成缓存 · 已跳过（进程状态未知）\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode DerivedData · skipped (process state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode DerivedData · 已跳过（进程状态未知）\""
     },
@@ -2813,13 +2923,13 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion old versions${NC} · ${line_color}${cleaned_count} dirs, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion 旧版本${NC} · ${line_color}${cleaned_count} 个目录，${size_human}${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion 旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM stale downloads · ${stale_count} items, ${line_color}${size_human}${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM 过期下载 · ${stale_count} 个项目，${line_color}${size_human}${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM stale downloads · ${stale_count} items, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM 失效下载 · ${stale_count} 个项目，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2835,16 +2945,6 @@
       "file": "lib/clean/app_caches.sh",
       "before": "            start_section_spinner \"Measuring Xcode DerivedData, ${dry_run_seen}/${project_count}...\"",
       "after": "            start_section_spinner \"正在测量 Xcode DerivedData，${dry_run_seen}/${project_count}...\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        \"Final Cut Pro generated cache\" || true",
-      "after": "        \"Final Cut Pro 生成缓存\" || true"
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        \"Final Cut Pro generated caches\" \\",
-      "after": "        \"Final Cut Pro 生成缓存\" \\"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2878,8 +2978,18 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Spotify cache protected · offline music detected\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Spotify 缓存受保护 · 检测到离线音乐\""
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autodesk Fusion old versions · stopped (${stopped_reason})\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autodesk Fusion 旧版本 · 已停止（$(mole_localize_guard_reason \"$stopped_reason\")）\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} JianyingPro generated caches · skipped ($skip_reason)\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 剪映专业版生成缓存 · 已跳过（$(mole_localize_guard_reason \"$skip_reason\")）\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode DerivedData · ${removed} ${project_label}, $(colorize_human_size \"${size_human}\")\"",
+      "after": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode DerivedData · 已清理 ${removed} ${project_label}，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3133,11 +3243,6 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Caches/com.spotify.client/* \"Spotify cache\"",
-      "after": "        safe_clean ~/Library/Caches/com.spotify.client/* \"Spotify 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "        safe_clean ~/Library/Caches/net.rpcs3.rpcs3/* \"RPCS3 cache\"",
       "after": "        safe_clean ~/Library/Caches/net.rpcs3.rpcs3/* \"RPCS3 缓存\""
     },
@@ -3218,11 +3323,6 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensions/* \"VS Code extension cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensions/* \"VS Code 扩展缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code webview cache\"",
       "after": "    safe_clean ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code WebView 缓存\""
     },
@@ -3285,11 +3385,6 @@
       "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Caches/Adobe/* \"Adobe cache\"",
       "after": "    safe_clean ~/Library/Caches/Adobe/* \"Adobe 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Caches/CCTClearcutLogger \"Google Clearcut logs\"",
-      "after": "    safe_clean ~/Library/Caches/CCTClearcutLogger \"Google Clearcut 日志\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3898,8 +3993,8 @@
     },
     {
       "file": "lib/clean/apps.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $label${NC} · ${line_color}$file_count files, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $label${NC} · ${line_color}$file_count 个文件，$size_human${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $label${NC} · ${line_color}$file_count files, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $label${NC} · ${line_color}$file_count 个文件，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/apps.sh",
@@ -3968,8 +4063,18 @@
     },
     {
       "file": "lib/clean/brew.sh",
-      "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autoremove preview timed out · run ${GRAY}brew autoremove --dry-run${NC} manually\"",
-      "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} 自动移除预览超时 · 请手动运行 ${GRAY}brew autoremove --dry-run${NC}\""
+      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autoremove preview timed out · run ${GRAY}brew autoremove --dry-run${NC} manually\"",
+      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} autoremove 预览超时 · 请手动运行 ${GRAY}brew autoremove --dry-run${NC}\""
+    },
+    {
+      "file": "lib/clean/brew.sh",
+      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew cleanup preview timed out · run ${GRAY}brew cleanup --dry-run${NC} manually\"",
+      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew 清理预览超时 · 请手动运行 ${GRAY}brew cleanup --dry-run${NC}\""
+    },
+    {
+      "file": "lib/clean/brew.sh",
+      "before": "                    echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew · would cleanup\"",
+      "after": "                    echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew · 待清理\""
     },
     {
       "file": "lib/clean/brew.sh",
@@ -3988,11 +4093,6 @@
     },
     {
       "file": "lib/clean/brew.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew · would cleanup\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew · 将清理\""
-    },
-    {
-      "file": "lib/clean/brew.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autoremove preview failed · run ${GRAY}brew autoremove --dry-run${NC} manually\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 自动移除预览失败 · 请手动运行 ${GRAY}brew autoremove --dry-run${NC}\""
     },
@@ -4000,11 +4100,6 @@
       "file": "lib/clean/brew.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Autoremove preview timed out · run ${GRAY}brew autoremove --dry-run${NC} manually\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 自动移除预览超时 · 请手动运行 ${GRAY}brew autoremove --dry-run${NC}\""
-    },
-    {
-      "file": "lib/clean/brew.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew autoremove · skipped (run ${GRAY}brew autoremove${NC} manually)\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew 自动移除 · 已跳过（请手动运行 ${GRAY}brew autoremove${NC}）\""
     },
     {
       "file": "lib/clean/brew.sh",
@@ -4028,13 +4123,18 @@
     },
     {
       "file": "lib/clean/brew.sh",
-      "before": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew autoremove would remove:\"",
-      "after": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Homebrew autoremove 将移除：\""
+      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew cleanup · ${#rows[@]} items\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew 清理 · ${#rows[@]} 个项目\""
     },
     {
-      "file": "lib/clean/caches.sh",
-      "before": "                        clean_project_cache_target \"$build_dir\" \"Flutter build cache (build/)\" || return $?",
-      "after": "                        clean_project_cache_target \"$build_dir\" \"Flutter 构建缓存（build/）\" || return $?"
+      "file": "lib/clean/brew.sh",
+      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew cleanup · would free ${freed}\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew 清理 · 预计释放 ${freed}\""
+    },
+    {
+      "file": "lib/clean/brew.sh",
+      "before": "    echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Homebrew unused dependencies · ${subject} · remove with ${GRAY}brew autoremove${NC}\"",
+      "after": "    echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Homebrew 未使用的依赖 · ${subject} · 用 ${GRAY}brew autoremove${NC} 移除\""
     },
     {
       "file": "lib/clean/caches.sh",
@@ -4048,8 +4148,8 @@
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $browser_name Service Worker${NC} · ${line_color}${cleaned_human}${NC}, ${protected_count} protected\"",
-      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $browser_name Service Worker${NC} · ${line_color}${cleaned_human}${NC}，${protected_count} 个受保护\""
+      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $browser_name Service Worker${NC} · $(colorize_human_size \"${cleaned_human}\"), ${protected_count} protected\"",
+      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $browser_name Service Worker${NC} · $(colorize_human_size \"${cleaned_human}\")，受保护 ${protected_count} 个\""
     },
     {
       "file": "lib/clean/caches.sh",
@@ -4073,13 +4173,13 @@
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, ${size_human}${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}${removed_count} 个目录，${size_human}${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}已清理 ${removed_count} 个目录，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, ${size_human}${NC}, ${skipped_count} skipped\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}${removed_count} 个目录，${size_human}${NC}，${skipped_count} 个已跳过\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, $(colorize_human_size \"${size_human}\"), ${skipped_count} skipped\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}已清理 ${removed_count} 个目录，$(colorize_human_size \"${size_human}\")，跳过 ${skipped_count} 个\""
     },
     {
       "file": "lib/clean/caches.sh",
@@ -4128,13 +4228,13 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode unavailable simulators · cleanup completed, ${line_color}${unavailable_size_human}${NC}\"",
-      "after": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 不可用的模拟器 · 清理已完成，${line_color}${unavailable_size_human}${NC}\""
+      "before": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode unavailable simulators · cleanup completed, $(colorize_human_size \"${unavailable_size_human}\")\"",
+      "after": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 不可用模拟器 · 清理完成，$(colorize_human_size \"${unavailable_size_human}\")\""
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode unavailable simulators · removed ${removed_unavailable}, ${line_color}${unavailable_size_human}${NC}\"",
-      "after": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 不可用的模拟器 · 已移除 ${removed_unavailable} 个，${line_color}${unavailable_size_human}${NC}\""
+      "before": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode unavailable simulators · removed ${removed_unavailable}, $(colorize_human_size \"${unavailable_size_human}\")\"",
+      "after": "                                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 不可用模拟器 · 已清理 ${removed_unavailable} 个，$(colorize_human_size \"${unavailable_size_human}\")\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4173,13 +4273,18 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · skipped (active symlink broken)\"",
-      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · 已跳过（active symlink broken）\""
+      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · skipped (active version unknown)\"",
-      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · 已跳过（当前版本未知）\""
+      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex Desktop update staging · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex Desktop 更新暂存 · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex marketplace staging · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "                    echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex 市场暂存 · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4198,38 +4303,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${display_name} · removed ${removed_count} old versions, ${line_color}${stale_size_human}${NC}\"",
-      "after": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${display_name} · 已移除 ${removed_count} 个旧版本，${line_color}${stale_size_human}${NC}\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle build cache\" \\",
-      "after": "                \"Gradle 构建缓存\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle build cache\" || return 0",
-      "after": "                \"Gradle 构建缓存\" || return 0"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle daemon/workers\" \\",
-      "after": "                \"Gradle 守护进程/worker\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle daemon/workers\" || return 0",
-      "after": "                \"Gradle 守护进程/worker\" || return 0"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle notifications cache\" \\",
-      "after": "                \"Gradle 通知缓存\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                \"Gradle notifications cache\" || return 0",
-      "after": "                \"Gradle 通知缓存\" || return 0"
+      "before": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${display_name} · removed ${removed_count} old versions, $(colorize_human_size \"${stale_size_human}\")\"",
+      "after": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${display_name} · 已清理 ${removed_count} 个旧版本，$(colorize_human_size \"${stale_size_human}\")\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4238,18 +4313,23 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · skipped (active symlink broken)\"",
-      "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · 已跳过（active symlink broken）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · skipped (metadata unavailable)\"",
       "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已跳过（元数据不可用）\""
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${stop_reason})\"",
       "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（进程状态未知）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "                echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · 已停止（$(mole_localize_guard_reason \"${_MOLE_CLEAN_GUARD_REASON}\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4348,21 +4428,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "            clean_tool_cache \"Nix garbage collection\" \"/nix/store\" nix-collect-garbage --delete-older-than 30d",
-      "after": "            clean_tool_cache \"Nix 垃圾回收\" \"/nix/store\" nix-collect-garbage --delete-older-than 30d"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            clean_tool_cache \"mise cache\" \"$mise_cache_path\" bash -c 'mise cache clear > /dev/null 2>&1 || true'",
-      "after": "            clean_tool_cache \"mise 缓存\" \"$mise_cache_path\" bash -c 'mise cache clear > /dev/null 2>&1 || true'"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · skipped (active version unknown)\"",
-      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} $label · 已跳过（当前版本未知）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · skipped (crash handler state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已跳过（崩溃处理程序状态未知）\""
     },
@@ -4370,6 +4435,11 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · skipped (process state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已跳过（进程状态未知）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4415,6 +4485,16 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex runtimes · skipped (process state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex 运行时 · 已跳过（进程状态未知）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex runtimes · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex 运行时 · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} GitHub CLI cache · stopped (${_MOLE_GITHUB_CLI_CLEAR_REASON})\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} GitHub CLI 缓存 · 已停止（$(mole_localize_guard_reason \"$_MOLE_GITHUB_CLI_CLEAR_REASON\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4513,6 +4593,11 @@
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Codex daemon old releases · skipped (whitelist)\"",
+      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Codex 守护进程旧版本 · 已跳过（白名单）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Codex marketplace staging · skipped (whitelist)\"",
       "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Codex marketplace 暂存 · 已跳过（白名单）\""
     },
@@ -4548,6 +4633,11 @@
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex daemon old releases · would skip (whitelist)\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex 守护进程旧版本 · 预览跳过（白名单）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex marketplace staging · would skip (whitelist)\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex marketplace 暂存 · 将跳过（白名单）\""
     },
@@ -4560,16 +4650,6 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Leaked automation browsers · would stop ${#leaked_processes[@]} processes ${YELLOW}dry${NC}\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 残留的自动化浏览器 · 将停止 ${#leaked_processes[@]} 个进程 ${YELLOW}预览${NC}\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Nix garbage collection · would clean\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Nix garbage collection · 将清理\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Nix garbage collection · would skip (whitelist)\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Nix garbage collection · 将跳过（白名单）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4618,13 +4698,13 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode Simulator system cache · removed ${removed_count} (${line_color}${removed_human}${NC})\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 模拟器系统缓存 · 已移除 ${removed_count} 个（${line_color}${removed_human}${NC}）\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode Simulator system cache · removed ${removed_count} ($(colorize_human_size \"${removed_human}\"))\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 模拟器系统缓存 · 已清理 ${removed_count} 个（$(colorize_human_size \"${removed_human}\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode Simulator system cache · removed ${removed_count} (${line_color}${removed_human}${NC}), skipped ${skipped_count} protected\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 模拟器系统缓存 · 已移除 ${removed_count} 个（${line_color}${removed_human}${NC}），已跳过 ${skipped_count} 个受保护\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode Simulator system cache · removed ${removed_count} ($(colorize_human_size \"${removed_human}\")), skipped ${skipped_count} protected\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 模拟器系统缓存 · 已清理 ${removed_count} 个（$(colorize_human_size \"${removed_human}\")），跳过受保护的 ${skipped_count} 个\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4798,38 +4878,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        COREPACK_ENABLE_DOWNLOAD_PROMPT=0 clean_tool_cache \"Corepack cache\" \"$corepack_home\" run_with_timeout \"$MOLE_TIMEOUT_PKG_CLEANUP_SEC\" corepack cache clean",
-      "after": "        COREPACK_ENABLE_DOWNLOAD_PROMPT=0 clean_tool_cache \"Corepack 缓存\" \"$corepack_home\" run_with_timeout \"$MOLE_TIMEOUT_PKG_CLEANUP_SEC\" corepack cache clean"
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "        COREPACK_ENABLE_DOWNLOAD_PROMPT=0 clean_tool_cache \"pnpm cache\" \"$store_path\" \\",
       "after": "        COREPACK_ENABLE_DOWNLOAD_PROMPT=0 clean_tool_cache \"pnpm 缓存\" \"$store_path\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        clean_tool_cache \"GitHub CLI cache\" \"$whitelist_path\" :",
-      "after": "        clean_tool_cache \"GitHub CLI 缓存\" \"$whitelist_path\" :"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        clean_tool_cache \"conda index/tarball/log caches\" \"$conda_cache_hint\" \\",
-      "after": "        clean_tool_cache \"conda 索引/压缩包/日志缓存\" \"$conda_cache_hint\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        clean_tool_cache \"npm cache\" \"$npm_cache_path\" npm cache clean --force",
-      "after": "        clean_tool_cache \"npm 缓存\" \"$npm_cache_path\" npm cache clean --force"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        clean_tool_cache \"pip cache\" \"$pip_cache_path\" bash -c 'pip3 cache purge > /dev/null 2>&1 || true'",
-      "after": "        clean_tool_cache \"pip 缓存\" \"$pip_cache_path\" bash -c 'pip3 cache purge > /dev/null 2>&1 || true'"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        clean_tool_cache \"uv cache\" \"$uv_cache_path\" run_with_timeout \"$MOLE_TIMEOUT_PKG_CLEANUP_SEC\" uv cache prune",
-      "after": "        clean_tool_cache \"uv 缓存\" \"$uv_cache_path\" run_with_timeout \"$MOLE_TIMEOUT_PKG_CLEANUP_SEC\" uv cache prune"
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4838,8 +4888,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · $(bytes_to_human $((orb_size * 1024))) · review with docker system df\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · $(bytes_to_human $((orb_size * 1024))) · 请使用 docker system df 查看\""
+      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · ${orb_size_label}review with docker system df\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · ${orb_size_label}请用 docker system df 查看\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4860,6 +4910,16 @@
       "file": "lib/clean/dev.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · skipped (scan unavailable)\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已跳过（scan unavailable）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_GO_CACHE_BOUND_REASON})\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_GO_CACHE_BOUND_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${reason})\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$reason\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4888,13 +4948,18 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Claude Desktop bundled Claude Code · skipped (active version unknown)\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Claude Desktop 内置 Claude Code · 已跳过（当前版本未知）\""
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (timed out)\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（超时）\""
     },
     {
       "file": "lib/clean/dev.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex Desktop update staging · skipped (open-file check unavailable)\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex Desktop 更新暂存 · 已跳过（无法检查打开的文件）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex daemon old releases · skipped (open-file check unavailable)\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Codex 守护进程旧版本 · 已跳过（无法检查打开的文件）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5188,6 +5253,11 @@
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "    local -a npm_descriptions=(\"npm cache directory\" \"npm npx cache\" \"npm logs\" \"npm prebuilds\")",
       "after": "    local -a npm_descriptions=(\"npm 缓存目录\" \"npm npx 缓存\" \"npm 日志\" \"npm prebuilds\")"
     },
@@ -5225,11 +5295,6 @@
       "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.azure/logs/* \"Azure CLI logs\"",
       "after": "    safe_clean ~/.azure/logs/* \"Azure CLI 日志\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.bash_history.bak* \"Bash history backup\"",
-      "after": "    safe_clean ~/.bash_history.bak* \"Bash 历史备份\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5348,11 +5413,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.config/fish/fish_history.bak* \"Fish shell backup\"",
-      "after": "    safe_clean ~/.config/fish/fish_history.bak* \"Fish shell 备份\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.config/gcloud/logs/* \"Google Cloud logs\"",
       "after": "    safe_clean ~/.config/gcloud/logs/* \"Google Cloud 日志\""
     },
@@ -5413,16 +5473,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.gitconfig.bak* \"Git config backup\"",
-      "after": "    safe_clean ~/.gitconfig.bak* \"Git 配置备份\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.gitconfig.lock \"Git config lock\"",
-      "after": "    safe_clean ~/.gitconfig.lock \"Git 配置锁文件\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.github/cache/* \"GitHub Actions cache\"",
       "after": "    safe_clean ~/.github/cache/* \"GitHub Actions 缓存\""
     },
@@ -5478,11 +5528,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.prometheus/data/wal/* \"Prometheus WAL cache\"",
-      "after": "    safe_clean ~/.prometheus/data/wal/* \"Prometheus WAL 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.pyenv/cache/* \"pyenv cache\"",
       "after": "    safe_clean ~/.pyenv/cache/* \"pyenv 缓存\""
     },
@@ -5525,11 +5570,6 @@
       "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.yarn/cache/* \"Yarn cache\"",
       "after": "    safe_clean ~/.yarn/cache/* \"Yarn 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.zsh_history.bak* \"Zsh history backup\"",
-      "after": "    safe_clean ~/.zsh_history.bak* \"Zsh 历史备份\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5788,6 +5828,11 @@
     },
     {
       "file": "lib/clean/project.sh",
+      "before": "            echo -e \"  ${GRAY}and $((${#failed_scan_roots[@]} - failed_shown_limit)) more${NC}\"",
+      "after": "            echo -e \"  ${GRAY}以及另外 $((${#failed_scan_roots[@]} - failed_shown_limit)) 处${NC}\""
+    },
+    {
+      "file": "lib/clean/project.sh",
       "before": "            echo -e \"${GRAY}First run: discovering project directories...${NC}\" >&2",
       "after": "            echo -e \"${GRAY}首次运行：正在发现项目目录…${NC}\" >&2"
     },
@@ -5958,6 +6003,11 @@
     },
     {
       "file": "lib/clean/project.sh",
+      "before": "        local _nav=\"${GRAY}${ICON_NAV_UP}${ICON_NAV_DOWN} [] Projects / Find${NC}\"",
+      "after": "        local _nav=\"${GRAY}${ICON_NAV_UP}${ICON_NAV_DOWN} [] 项目 / 查找${NC}\""
+    },
+    {
+      "file": "lib/clean/project.sh",
       "before": "        local _quit=\"${GRAY}Q Quit${NC}\"",
       "after": "        local _quit=\"${GRAY}Q 退出${NC}\""
     },
@@ -6033,8 +6083,8 @@
     },
     {
       "file": "lib/clean/system.sh",
-      "before": "                        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Incomplete APFS backup in $bundle_name: $backup_name${NC} · ${line_color}$size_human${NC}\"",
-      "after": "                        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 未完成的 APFS 备份（位于 ${bundle_name}）：$backup_name${NC} · ${line_color}$size_human${NC}\""
+      "before": "                        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Incomplete APFS backup in $bundle_name: $backup_name${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "                        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} $bundle_name 中的不完整 APFS 备份：$backup_name${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/system.sh",
@@ -6053,8 +6103,8 @@
     },
     {
       "file": "lib/clean/system.sh",
-      "before": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Incomplete backup: $backup_name${NC} · ${line_color}$size_human${NC}\"",
-      "after": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 未完成的备份：$backup_name${NC} · ${line_color}$size_human${NC}\""
+      "before": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Incomplete backup: $backup_name${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "                    echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 不完整备份：$backup_name${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/system.sh",
@@ -6378,11 +6428,6 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                docker_detail+=\"${docker_detail:+ · }${dtype} ${dsize} (${dreclaim} reclaimable)\"",
-      "after": "                docker_detail+=\"${docker_detail:+ · }${dtype} ${dsize} （${dreclaim} 可回收）\""
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "                echo \"Refusing to clean network volume protocol $protocol: $resolved\" >&2",
       "after": "                echo \"拒绝清理网络卷协议 ${protocol}：$resolved\" >&2"
     },
@@ -6468,23 +6513,23 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support logs/caches${NC} · ${line_color}$size_human${NC}\"",
-      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support 日志/缓存${NC} · ${line_color}$size_human${NC}\""
+      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support logs/caches${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support 日志/缓存${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support logs/caches${NC} · ${line_color}at least $size_human${NC}\"",
-      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support 日志/缓存${NC} · ${line_color}至少 $size_human${NC}\""
+      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support logs/caches${NC} · ${line_color}at least $(colorize_human_size \"${size_human}\")\"",
+      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Application Support 日志/缓存${NC} · ${line_color}至少 $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Group Containers logs/caches${NC} · ${line_color}$size_human${NC}\"",
-      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Group Containers 日志/缓存${NC} · ${line_color}$size_human${NC}\""
+      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Group Containers logs/caches${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Group Containers 日志/缓存${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Sandboxed app caches${NC} · ${line_color}$size_human${NC}\"",
-      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 沙盒应用缓存${NC} · ${line_color}$size_human${NC}\""
+      "before": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Sandboxed app caches${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "                echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 沙盒应用缓存${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6603,11 +6648,6 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI agent worktrees · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI 代理工作树 · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\""
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} External volume cleanup · ${GRAY}scan failed, no changes${NC}\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 外置卷清理 · ${GRAY}扫描失败，未做更改${NC}\""
     },
@@ -6628,23 +6668,23 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} old versions${NC} · ${line_color}${cleaned_count} dirs, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} 旧版本${NC} · ${line_color}${cleaned_count} 个目录，$size_human${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} 旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Cached device firmware${NC} · ${line_color}${cleaned_count} files, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 缓存的设备固件${NC} · ${line_color}${cleaned_count} 个文件，$size_human${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Cached device firmware${NC} · ${line_color}${cleaned_count} files, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 设备固件缓存${NC} · ${line_color}已清理 ${cleaned_count} 个文件，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge updater old versions${NC} · ${line_color}${cleaned_count} dirs, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge 更新器旧版本${NC} · ${line_color}${cleaned_count} 个目录，$size_human${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge updater old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge 更新器旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} External volume cleanup${NC} · ${line_color}${volume_name}, $size_human${NC}\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 外置硬盘清理${NC} · ${line_color}${volume_name}, $size_human${NC}\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} External volume cleanup${NC} · ${line_color}${volume_name}, $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 外置卷清理${NC} · ${line_color}${volume_name}，$(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6958,11 +6998,6 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "        clean_ds_store_tree \"$volume\" \"${volume_name} volume, .DS_Store\" || finder_rc=$?",
-      "after": "        clean_ds_store_tree \"$volume\" \"${volume_name} 卷，.DS_Store\" || finder_rc=$?"
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "        echo \"External cleanup only supports mounted paths directly under $resolved_root: $resolved\" >&2",
       "after": "        echo \"外置硬盘清理仅支持直接挂载在 ${resolved_root} 下的路径：$resolved\" >&2"
     },
@@ -7058,6 +7093,11 @@
     },
     {
       "file": "lib/clean/user.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Trash · skipped, grant Full Disk Access to your terminal\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 废纸篓 · 已跳过，请为终端授予完全磁盘访问权限\""
+    },
+    {
+      "file": "lib/clean/user.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} User app cache · stopped (DENO_DIR unresolved)\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 用户应用缓存 · 已停止（DENO_DIR 未解析）\""
     },
@@ -7073,6 +7113,11 @@
     },
     {
       "file": "lib/clean/user.sh",
+      "before": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI agent worktrees · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI 代理工作树 · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\""
+    },
+    {
+      "file": "lib/clean/user.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} External volume cleanup · ${GRAY}could not bind mounted volume, no changes${NC}\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 外置卷清理 · ${GRAY}无法绑定已挂载卷，未做更改${NC}\""
     },
@@ -7083,8 +7128,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Handoff clipboard cache${NC} · ${line_color}$size_human${NC}\"",
-      "after": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Handoff 剪贴板缓存${NC} · ${line_color}$size_human${NC}\""
+      "before": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Handoff clipboard cache${NC} · $(colorize_human_size \"${size_human}\")\"",
+      "after": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} 隔空剪贴板缓存${NC} · $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7428,11 +7473,6 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    local labels=(\"Safari incomplete downloads\" \"Chrome incomplete downloads\" \"Partial incomplete downloads\")",
-      "after": "    local labels=(\"Safari 未完成的下载\" \"Chrome 未完成的下载\" \"部分未完成的下载\")"
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 cache\"",
       "after": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 缓存\""
     },
@@ -7708,11 +7748,6 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    safe_clean ~/Library/Containers/com.apple.wallpaper.agent/Data/Library/Caches/* \"Wallpaper agent cache\"",
-      "after": "    safe_clean ~/Library/Containers/com.apple.wallpaper.agent/Data/Library/Caches/* \"壁纸代理缓存\""
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "    safe_clean ~/Library/Containers/com.apple.wallpaper.extension.aerials/Data/tmp/* \"Wallpaper aerials temp files\"",
       "after": "    safe_clean ~/Library/Containers/com.apple.wallpaper.extension.aerials/Data/tmp/* \"壁纸航拍临时文件\""
     },
@@ -7758,18 +7793,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    safe_clean ~/Library/DiagnosticReports/* \"Diagnostic reports\" || true",
-      "after": "    safe_clean ~/Library/DiagnosticReports/* \"诊断报告\" || true"
-    },
-    {
-      "file": "lib/clean/user.sh",
       "before": "    safe_clean ~/Library/IdentityCaches/* \"Identity caches\" || true",
       "after": "    safe_clean ~/Library/IdentityCaches/* \"身份缓存\" || true"
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "    safe_clean ~/Library/Logs/* \"User app logs\"",
-      "after": "    safe_clean ~/Library/Logs/* \"用户应用日志\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7853,6 +7878,11 @@
     },
     {
       "file": "lib/core/base.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/core/base.sh",
       "before": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Nothing to tidy\"",
       "after": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 无需整理\""
     },
@@ -7860,6 +7890,11 @@
       "file": "lib/core/base.sh",
       "before": "    local message=\"${1:-Scanning...}\"",
       "after": "    local message=\"${1:-正在扫描…}\""
+    },
+    {
+      "file": "lib/core/base.sh",
+      "before": "mole_report_guard_stop() {",
+      "after": "mole_localize_guard_reason() { case \"$1\" in \"process state unknown\") printf '%s\\n' \"进程状态未知\" ;; \"process or cache path state unknown\") printf '%s\\n' \"进程或缓存路径状态未知\" ;; \"cache path unsafe\") printf '%s\\n' \"缓存路径不安全\" ;; \"symlinked module root\") printf '%s\\n' \"模块根目录是符号链接\" ;; \"updater state unknown\") printf '%s\\n' \"更新程序状态未知\" ;; \"open-file check unavailable\") printf '%s\\n' \"无法检查打开的文件\" ;; \"verification timed out\") printf '%s\\n' \"验证超时\" ;; \"size probe timed out\") printf '%s\\n' \"大小检测超时\" ;; \"removal timed out\") printf '%s\\n' \"移除操作超时\" ;; \"candidate replaced\") printf '%s\\n' \"候选项已被替换\" ;; \"candidate changed\") printf '%s\\n' \"候选项已变化\" ;; \"candidate identity changed\") printf '%s\\n' \"候选项标识已变化\" ;; \"current version changed\") printf '%s\\n' \"当前版本已变化\" ;; \"current version unknown\") printf '%s\\n' \"当前版本未知\" ;; \"production root changed\") printf '%s\\n' \"产品根目录已变化\" ;; \"policy changed\") printf '%s\\n' \"保护策略已变化\" ;; \"inventory interrupted\") printf '%s\\n' \"清单扫描被中断\" ;; \"inventory unknown\") printf '%s\\n' \"清单状态未知\" ;; \"active version changed\") printf '%s\\n' \"当前版本已变化\" ;; \"active version unknown\") printf '%s\\n' \"当前版本未知\" ;; \"retention changed\") printf '%s\\n' \"保留策略已变化\" ;; \"process state changed\") printf '%s\\n' \"进程状态已变化\" ;; \"staging entry changed\") printf '%s\\n' \"暂存项已变化\" ;; \"staging files opened\") printf '%s\\n' \"暂存文件正被占用\" ;; \"runtime state changed\") printf '%s\\n' \"运行时状态已变化\" ;; \"open files\") printf '%s\\n' \"文件正被占用\" ;; \"JianyingPro running\") printf '%s\\n' \"剪映专业版正在运行\" ;; \"Autodesk started\") printf '%s\\n' \"Autodesk 已启动\" ;; \"metadata unavailable\") printf '%s\\n' \"元数据不可用\" ;; \"owner cleanup failed\") printf '%s\\n' \"工具自身清理失败\" ;; \"cache path changed\") printf '%s\\n' \"缓存路径已变化\" ;; \"cache path state unknown\") printf '%s\\n' \"缓存路径状态未知\" ;; \"cache path leaves CARGO_HOME\") printf '%s\\n' \"缓存路径超出 CARGO_HOME\" ;; *) printf '%s\\n' \"$1\" ;; esac; }; mole_report_guard_stop() {"
     },
     {
       "file": "lib/core/commands.sh",
@@ -7905,6 +7940,11 @@
       "file": "lib/core/commands.sh",
       "before": "    \"remove:Remove Mole from system\"",
       "after": "    \"remove:移除 Mole\""
+    },
+    {
+      "file": "lib/core/commands.sh",
+      "before": "    \"slim:Remove Intel code from universal apps\"",
+      "after": "    \"slim:精简通用应用（移除 Intel 代码）\""
     },
     {
       "file": "lib/core/commands.sh",
@@ -7993,8 +8033,18 @@
     },
     {
       "file": "lib/core/file_ops.sh",
+      "before": "                    log_error \"Trash move interrupted; item preserved for recovery at: $stage_path\"",
+      "after": "                    log_error \"废纸篓移动被中断；项目已保留以便恢复，位置：$stage_path\""
+    },
+    {
+      "file": "lib/core/file_ops.sh",
       "before": "                    log_warning \"Path validation: resolves into a protected path: $path -> $resolved_path\"",
       "after": "                    log_warning \"路径校验：解析到受保护路径：$path -> $resolved_path\""
+    },
+    {
+      "file": "lib/core/file_ops.sh",
+      "before": "                log_error \"Trash move interrupted; item preserved for recovery at: $stage_path\"",
+      "after": "                log_error \"废纸篓移动被中断；项目已保留以便恢复，位置：$stage_path\""
     },
     {
       "file": "lib/core/file_ops.sh",
@@ -8008,8 +8058,8 @@
     },
     {
       "file": "lib/core/file_ops.sh",
-      "before": "                printf 'Error: macOS could not authorize Trash access. Review App Management, App Data, or Full Disk Access for your terminal in System Settings, then retry.\\n' >&2",
-      "after": "                printf '错误：macOS 无法授权访问废纸篓。请在系统设置中为终端授予“App 管理”“App 数据”或“完全磁盘访问”权限，然后重试。\\n' >&2"
+      "before": "                printf 'Error: macOS denied Trash access. Try moving the item to Trash in Finder. Run with --debug for details.\\n' >&2",
+      "after": "                printf '错误：macOS 拒绝了废纸篓访问。请尝试在 Finder 中将该项目移入废纸篓。使用 --debug 运行以查看详情。\\n' >&2"
     },
     {
       "file": "lib/core/file_ops.sh",
@@ -8053,6 +8103,11 @@
     },
     {
       "file": "lib/core/file_ops.sh",
+      "before": "            log_error \"Trash move failed; item preserved for recovery at: $stage_path\"",
+      "after": "            log_error \"废纸篓移动失败；项目已保留以便恢复，位置：$stage_path\""
+    },
+    {
+      "file": "lib/core/file_ops.sh",
       "before": "            log_info \"[DRY-RUN] Would sudo remove: $file_type $path\"",
       "after": "            log_info \"[预览] 将执行 sudo 删除：$file_type $path\""
     },
@@ -8073,6 +8128,11 @@
     },
     {
       "file": "lib/core/file_ops.sh",
+      "before": "            printf 'Error: macOS blocked Finder automation. Allow your terminal app to control Finder in System Settings > Privacy & Security > Automation, then retry.\\n' >&2",
+      "after": "            printf '错误：macOS 阻止了 Finder 自动化。请在 系统设置 > 隐私与安全性 > 自动化 中允许您的终端应用控制 Finder，然后重试。\\n' >&2"
+    },
+    {
+      "file": "lib/core/file_ops.sh",
       "before": "            reason=\"Mole cannot safely use elevated deletion below a user-writable parent\"",
       "after": "            reason=\"Mole 无法在用户可写父目录下安全使用提权删除\""
     },
@@ -8088,8 +8148,8 @@
     },
     {
       "file": "lib/core/file_ops.sh",
-      "before": "            reason=\"macOS could not authorize Trash access\"",
-      "after": "            reason=\"macOS 无法授权访问废纸篓\""
+      "before": "            reason=\"macOS denied Trash access\"",
+      "after": "            reason=\"macOS 拒绝了废纸篓访问\""
     },
     {
       "file": "lib/core/file_ops.sh",
@@ -8118,8 +8178,8 @@
     },
     {
       "file": "lib/core/file_ops.sh",
-      "before": "            suggestion=\"Review App Management, App Data, or Full Disk Access for your terminal in System Settings\"",
-      "after": "            suggestion=\"请在系统设置中检查终端的【App 管理】【App 数据】或【完全磁盘访问】权限\""
+      "before": "            suggestion=\"Try moving the item to Trash in Finder. Run with --debug for details\"",
+      "after": "            suggestion=\"请尝试在 Finder 中将该项目移入废纸篓。使用 --debug 运行以查看详情\""
     },
     {
       "file": "lib/core/file_ops.sh",
@@ -8197,11 +8257,6 @@
       "after": "    local app_name=\"${2:-应用}\""
     },
     {
-      "file": "lib/core/file_ops.sh",
-      "before": "    printf 'Warning: deletions audit log unavailable (%s). Forensic trail incomplete this session.\\n' \"$1\" >&2",
-      "after": "    printf '警告：删除审计日志不可用（%s），本次会话的审计记录不完整。\\n' \"$1\" >&2"
-    },
-    {
       "file": "lib/core/help.sh",
       "before": "    echo \"  --debug           Show detailed operation logs\"",
       "after": "    echo \"  --debug           显示详细操作日志\""
@@ -8263,6 +8318,11 @@
     },
     {
       "file": "lib/core/help.sh",
+      "before": "    echo \"  --with-data       Start with personal data selected; press D to keep any\"",
+      "after": "    echo \"  --with-data       开始时预选个人数据；按 D 可选择保留\""
+    },
+    {
+      "file": "lib/core/help.sh",
       "before": "    echo \"  -h, --help        Show this help message\"",
       "after": "    echo \"  -h, --help        显示本帮助信息\""
     },
@@ -8290,6 +8350,11 @@
       "file": "lib/core/help.sh",
       "before": "    echo \"  mo uninstall --list            Show installed apps and the names mo uninstall accepts\"",
       "after": "    echo \"  mo uninstall --list            显示已安装应用及 mo uninstall 可接受的名称\""
+    },
+    {
+      "file": "lib/core/help.sh",
+      "before": "    echo \"  mo uninstall --with-data slack Uninstall Slack with its data selected\"",
+      "after": "    echo \"  mo uninstall --with-data slack 卸载 Slack 并预选其数据\""
     },
     {
       "file": "lib/core/help.sh",
@@ -8395,6 +8460,41 @@
       "file": "lib/core/help.sh",
       "before": "    echo \"recovered. Use --permanent to skip the Trash step.\"",
       "after": "    echo \"恢复。使用 --permanent 可跳过废纸篓步骤。\""
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "        printf '  No deletion audit entries yet.\\n'",
+      "after": "        printf '  尚无删除审计记录。\\n'"
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "        printf '  No operation history yet.\\n'",
+      "after": "        printf '  尚无操作历史。\\n'"
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "        printf 'Recent sessions\\n'",
+      "after": "        printf '最近会话\\n'"
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "        printf 'no file actions'",
+      "after": "        printf '无文件操作'"
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "    printf '\\n%sMole History%s\\n\\n' \"$BLUE\" \"$NC\"",
+      "after": "    printf '\\n%sMole 历史%s\\n\\n' \"$BLUE\" \"$NC\""
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "    printf '\\nDeletion audit\\n'",
+      "after": "    printf '\\n删除审计\\n'"
+    },
+    {
+      "file": "lib/core/history.sh",
+      "before": "    printf '\\nLogs\\n'",
+      "after": "    printf '\\n日志\\n'"
     },
     {
       "file": "lib/core/log.sh",
@@ -8524,12 +8624,27 @@
     {
       "file": "lib/manage/remove.sh",
       "before": "                echo -e \"  ${GRAY}${ICON_LIST} Would move to Trash: $remove_config_dir${NC}\"",
-      "after": "                echo -e \"  ${GRAY}${ICON_LIST} 将移到废纸篓：$remove_config_dir${NC}\""
+      "after": "                echo -e \"  ${GRAY}${ICON_LIST} 将移至废纸篓：$remove_config_dir${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_LIST} Would remove: $completion_fish${NC}\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_LIST} 将移除：$completion_fish${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_LIST} Would remove: Mole shell completion from $completion_rc${NC}\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_LIST} 将移除：$completion_rc 中的 Mole shell 补全${NC}\""
     },
     {
       "file": "lib/manage/remove.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_LIST} Would run: brew uninstall --force mole${NC}\"",
       "after": "            echo -e \"  ${GRAY}${ICON_LIST} 将执行：brew uninstall --force mole${NC}\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_error \"Could not read the removal confirmation; Mole was not removed.\"",
+      "after": "            log_error \"无法读取卸载确认；Mole 未被卸载。\""
     },
     {
       "file": "lib/manage/remove.sh",
@@ -8543,13 +8658,48 @@
     },
     {
       "file": "lib/manage/remove.sh",
+      "before": "            log_info \"Run mo remove from an interactive terminal; nothing was changed\"",
+      "after": "            log_info \"请在交互式终端中运行 mo remove；未做任何更改\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
       "before": "            log_success \"Mole uninstalled via Homebrew.\"",
       "after": "            log_success \"已通过 Homebrew 卸载 Mole。\""
     },
     {
       "file": "lib/manage/remove.sh",
+      "before": "            log_success \"Removed Fish completions: $fish_file\"",
+      "after": "            log_success \"已移除 Fish 补全：$fish_file\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
       "before": "            log_warning \"Could not move $remove_config_dir to Trash; left in place\"",
       "after": "            log_warning \"无法将 $remove_config_dir 移到废纸篓；已保留原处\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_warning \"Could not prepare a temporary file to clean shell completion in $rc_file\"",
+      "after": "            log_warning \"无法准备临时文件以清理 $rc_file 中的 shell 补全\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_warning \"Could not read shell completion entries from $target\"",
+      "after": "            log_warning \"无法从 $target 读取 shell 补全条目\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_warning \"Could not remove Fish completions: $fish_file\"",
+      "after": "            log_warning \"无法移除 Fish 补全：$fish_file\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_warning \"Could not remove shell completion from $rc_file\"",
+      "after": "            log_warning \"无法从 $rc_file 移除 shell 补全\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "            log_warning \"Could not resolve shell completion file: $rc_file\"",
+      "after": "            log_warning \"无法解析 shell 补全文件：$rc_file\""
     },
     {
       "file": "lib/manage/remove.sh",
@@ -8568,18 +8718,18 @@
     },
     {
       "file": "lib/manage/remove.sh",
-      "before": "        [[ -d \"$HOME/.config/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would move to Trash: $HOME/.config/mole${NC}\"",
-      "after": "        [[ -d \"$HOME/.config/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移至废纸篓：$HOME/.config/mole${NC}\""
-    },
-    {
-      "file": "lib/manage/remove.sh",
-      "before": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} Would remove: $HOME/Library/Logs/mole${NC}\"",
-      "after": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo -e \"  ${GRAY}${ICON_LIST} 将移除：$HOME/Library/Logs/mole${NC}\""
+      "before": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo \"  ${ICON_LIST} $HOME/Library/Logs/mole (kept, operation history)\"",
+      "after": "        [[ -d \"$HOME/Library/Logs/mole\" ]] && echo \"  ${ICON_LIST} $HOME/Library/Logs/mole（保留，操作历史）\""
     },
     {
       "file": "lib/manage/remove.sh",
       "before": "        echo \"  ${ICON_LIST} $remove_config_dir (kept for manual review)\"",
       "after": "        echo \"  ${ICON_LIST} ${remove_config_dir}（保留供手动检查）\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        echo \"  ${ICON_LIST} Mole shell completion in $completion_rc\"",
+      "after": "        echo \"  ${ICON_LIST} $completion_rc 中的 Mole shell 补全\""
     },
     {
       "file": "lib/manage/remove.sh",
@@ -8618,8 +8768,33 @@
     },
     {
       "file": "lib/manage/remove.sh",
+      "before": "        log_error \"Mole was installed via Nix. Self-removal is disabled.\"",
+      "after": "        log_error \"Mole 是通过 Nix 安装的，已禁用自我卸载。\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        log_error \"Removal confirmation needs an interactive terminal; Mole was not removed.\"",
+      "after": "        log_error \"卸载确认需要交互式终端；Mole 未被卸载。\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
       "before": "        log_info \"Attempting to uninstall Mole via Homebrew...\"",
       "after": "        log_info \"正在尝试通过 Homebrew 卸载 Mole…\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        log_info \"Run mo remove from an interactive terminal, or use mo remove --dry-run to preview\"",
+      "after": "        log_info \"请在交互式终端中运行 mo remove，或使用 mo remove --dry-run 进行预览\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        log_success \"Removed shell completion from $rc_file\"",
+      "after": "        log_success \"已从 $rc_file 移除 shell 补全\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
+      "before": "        printf '%s To remove Mole: nix profile remove mole or remove from your Nix configuration\\n' \"$review_icon\"",
+      "after": "        printf '%s 如需移除 Mole：nix profile remove mole，或从你的 Nix 配置中移除\\n' \"$review_icon\""
     },
     {
       "file": "lib/manage/remove.sh",
@@ -8638,6 +8813,11 @@
     },
     {
       "file": "lib/manage/remove.sh",
+      "before": "    [[ -d \"$HOME/Library/Logs/mole\" ]] && echo \"  ${ICON_LIST} ~/Library/Logs/mole (kept, operation history)\"",
+      "after": "    [[ -d \"$HOME/Library/Logs/mole\" ]] && echo \"  ${ICON_LIST} ~/Library/Logs/mole（保留，操作历史）\""
+    },
+    {
+      "file": "lib/manage/remove.sh",
       "before": "    echo -e \"${YELLOW}Remove Mole${NC}, will delete the following:\"",
       "after": "    echo -e \"${YELLOW}移除 Mole${NC}，将删除以下内容：\""
     },
@@ -8648,16 +8828,6 @@
     },
     {
       "file": "lib/manage/update.sh",
-      "before": "                            printf \"\\nUpdate %s available, run %smo update%s\\n\\n\" \"$brew_latest\" \"$GREEN\" \"$NC\" > \"$msg_cache\"",
-      "after": "                            printf \"\\n更新 %s 可用，运行 %smo update%s\\n\\n\" \"$brew_latest\" \"$GREEN\" \"$NC\" > \"$msg_cache\""
-    },
-    {
-      "file": "lib/manage/update.sh",
-      "before": "                        printf \"\\nUpdate %s available, run %smo update%s\\n\\n\" \"$latest\" \"$GREEN\" \"$NC\" > \"$msg_cache\"",
-      "after": "                        printf \"\\n更新 %s 可用，运行 %smo update%s\\n\\n\" \"$latest\" \"$GREEN\" \"$NC\" > \"$msg_cache\""
-    },
-    {
-      "file": "lib/manage/update.sh",
       "before": "                    echo -e \"${GREEN}${ICON_SUCCESS}${NC} Already on latest nightly, ${latest_commit:0:7}\"",
       "after": "                    echo -e \"${GREEN}${ICON_SUCCESS}${NC} 已是最新 nightly，${latest_commit:0:7}\""
     },
@@ -8665,11 +8835,6 @@
       "file": "lib/manage/update.sh",
       "before": "                    log_error \"Update failed\"",
       "after": "                    log_error \"更新失败\""
-    },
-    {
-      "file": "lib/manage/update.sh",
-      "before": "                    printf \"\\nNew nightly commit %s available, run %smo update --nightly%s\\n\\n\" \"${latest_commit:0:7}\" \"$GREEN\" \"$NC\" > \"$msg_cache\"",
-      "after": "                    printf \"\\n新的 nightly 提交 %s 可用，运行 %smo update --nightly%s\\n\\n\" \"${latest_commit:0:7}\" \"$GREEN\" \"$NC\" > \"$msg_cache\""
     },
     {
       "file": "lib/manage/update.sh",
@@ -8790,11 +8955,6 @@
       "file": "lib/manage/update.sh",
       "before": "            log_error \"Update failed, wget error\"",
       "after": "            log_error \"更新失败，wget 错误\""
-    },
-    {
-      "file": "lib/manage/update.sh",
-      "before": "            printf '%s Reinstall via script to use: mo update --nightly\\n' \"$review_icon\"",
-      "after": "            printf '%s 通过脚本重装以使用：mo update --nightly\\n' \"$review_icon\""
     },
     {
       "file": "lib/manage/update.sh",
@@ -8963,6 +9123,11 @@
     },
     {
       "file": "lib/manage/update.sh",
+      "before": "    printf \"  %s%-28s%s %s\\n\" \"$GREEN\" \"mo slim --dry-run\" \"$NC\" \"Preview Intel code removal\"",
+      "after": "    printf \"  %s%-28s%s %s\\n\" \"$GREEN\" \"mo slim --dry-run\" \"$NC\" \"预览 Intel 代码移除\""
+    },
+    {
+      "file": "lib/manage/update.sh",
       "before": "    printf \"  %s%-28s%s %s\\n\" \"$GREEN\" \"mo touchid enable --dry-run\" \"$NC\" \"Preview Touch ID setup\"",
       "after": "    printf \"  %s%-28s%s %s\\n\" \"$GREEN\" \"mo touchid enable --dry-run\" \"$NC\" \"预览 Touch ID 配置\""
     },
@@ -9013,11 +9178,6 @@
     },
     {
       "file": "lib/manage/whitelist.sh",
-      "before": "        header_text=\"# Mole Whitelist - Protected paths won't be deleted\\n# Default protections: Playwright browsers, Ollama models, Surge Mac, R renv, Finder metadata\\n# Add one pattern per line to keep items safe.\"",
-      "after": "        header_text=\"# Mole 白名单 - 受保护路径不会被删除\\n# 默认保护：Playwright 浏览器、Ollama 模型、Surge Mac、R renv、Finder 元数据\\n# 每行添加一个模式以保护相应项目。\""
-    },
-    {
-      "file": "lib/manage/whitelist.sh",
       "before": "        menu_title=\"Whitelist Manager, Select caches to protect",
       "after": "        menu_title=\"白名单管理，选择要保护的缓存"
     },
@@ -9028,6 +9188,26 @@
     },
     {
       "file": "lib/manage/whitelist.sh",
+      "before": "        printf 'Clang module cache|%s/clang/*|compiler_cache\\n' \"$darwin_user_cache\"",
+      "after": "        printf 'Clang 模块缓存|%s/clang/*|compiler_cache\\n' \"$darwin_user_cache\""
+    },
+    {
+      "file": "lib/manage/whitelist.sh",
+      "before": "        printf 'GitHub CLI cache|%s/gh|network_tools\\n' \"$github_cache_root\"",
+      "after": "        printf 'GitHub CLI 缓存|%s/gh|network_tools\\n' \"$github_cache_root\""
+    },
+    {
+      "file": "lib/manage/whitelist.sh",
+      "before": "        printf 'Go build cache|%s/*|compiler_cache\\n' \"$go_cache_root\"",
+      "after": "        printf 'Go 构建缓存|%s/*|compiler_cache\\n' \"$go_cache_root\""
+    },
+    {
+      "file": "lib/manage/whitelist.sh",
+      "before": "        printf 'Go module cache|%s/*|compiler_cache\\n' \"$go_cache_root\"",
+      "after": "        printf 'Go 模块缓存|%s/*|compiler_cache\\n' \"$go_cache_root\""
+    },
+    {
+      "file": "lib/manage/whitelist.sh",
       "before": "        summary_lines+=(\"Protected ${#selected_patterns[@]} predefined + ${#custom_patterns[@]} custom patterns\")",
       "after": "        summary_lines+=(\"已保护 ${#selected_patterns[@]} 个预定义 + ${#custom_patterns[@]} 个自定义模式\")"
     },
@@ -9035,6 +9215,11 @@
       "file": "lib/manage/whitelist.sh",
       "before": "        summary_lines+=(\"Protected ${total_protected} caches\")",
       "after": "        summary_lines+=(\"已保护 ${total_protected} 个缓存\")"
+    },
+    {
+      "file": "lib/manage/whitelist.sh",
+      "before": "    echo \"Finder metadata, .DS_Store|$FINDER_METADATA_SENTINEL|system_cache\"",
+      "after": "    echo \"Finder 元数据、.DS_Store|$FINDER_METADATA_SENTINEL|system_cache\""
     },
     {
       "file": "lib/manage/whitelist.sh",
@@ -9238,6 +9423,11 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "                \"Launch Agent $(mole_terminal_safe_text \"$label\"): program missing at $(mole_terminal_safe_text \"${binary/#$HOME/~}\")\"",
+      "after": "                \"Launch Agent $(mole_terminal_safe_text \"$label\")：程序缺失：$(mole_terminal_safe_text \"${binary/#$HOME/~}\")\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "                debug_file_action \"  Will remove\" \"${removable_targets[$index]}\" \"$size_human\" \"\"",
       "after": "                debug_file_action \"  将移除\" \"${removable_targets[$index]}\" \"$size_human\" \"\""
     },
@@ -9308,6 +9498,16 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "            echo -e \"  ${GRAY}-${NC} Login items unavailable (snapshot timed out)\"",
+      "after": "            echo -e \"  ${GRAY}-${NC} 登录项不可用（快照超时）\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
+      "before": "            echo -e \"  ${GRAY}-${NC} Shared file lists not readable (check directory permissions and Full Disk Access)\"",
+      "after": "            echo -e \"  ${GRAY}-${NC} 共享文件列表不可读（请检查目录权限与完全磁盘访问权限）\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Would remove override: ${found_labels[$idx]}\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 将移除覆盖设置：${found_labels[$idx]}\""
     },
@@ -9338,6 +9538,11 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect Spotlight search rules\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查 Spotlight 搜索规则\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect active VPN state\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查活动 VPN 状态\""
     },
@@ -9345,11 +9550,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect login items (snapshot interrupted)\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查登录项（快照被中断）\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect login items (snapshot timed out)\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查登录项（快照超时）\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9363,8 +9563,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to rebuild LaunchServices\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法重建 LaunchServices\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to refresh DNS cache\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法刷新 DNS 缓存\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9380,11 +9580,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to scan old saved states\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法扫描旧的已保存状态\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Knowledge database cleanup incomplete\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Knowledge 数据库清理未完成\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9438,23 +9633,23 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "            opt_msg \"DNS cache refresh skipped, active VPN detected\"",
+      "after": "            opt_msg \"已跳过 DNS 缓存刷新，检测到活动的 VPN\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
+      "before": "            opt_msg \"DNS cache refreshed\"",
+      "after": "            opt_msg \"DNS 缓存已刷新\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "            opt_msg \"File access issues resolved\"",
       "after": "            opt_msg \"文件访问问题已解决\""
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "            opt_msg \"File associations refreshed\"",
-      "after": "            opt_msg \"文件关联已刷新\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "            opt_msg \"Knowledge database cleaned (was $(bytes_to_human $((total_size * 1024))))\"",
       "after": "            opt_msg \"Knowledge 数据库已清理（原为 $(bytes_to_human $((total_size * 1024))))\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "            opt_msg \"LaunchServices repaired\"",
-      "after": "            opt_msg \"LaunchServices 已修复\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9523,11 +9718,6 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"Repairing LaunchServices...\"",
-      "after": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"正在修复 LaunchServices…\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"Verifying disk filesystem...\"",
       "after": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"正在验证磁盘文件系统…\""
     },
@@ -9540,11 +9730,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "        debug_operation_detail \"Expected outcome\" \"Apps reload with fresh preferences instead of failing on a corrupt plist\"",
       "after": "        debug_operation_detail \"预期结果\" \"应用以全新偏好设置重新加载，而非因损坏的 plist 失败\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_detail \"Expected outcome\" \"Correct app associations, fixed duplicate entries, fewer stale app listings\"",
-      "after": "        debug_operation_detail \"预期结果\" \"修正应用关联，修复重复条目，减少陈旧的应用列表\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9603,11 +9788,6 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_detail \"Method\" \"Flush DNS cache via dscacheutil and killall mDNSResponder\"",
-      "after": "        debug_operation_detail \"方法\" \"通过 dscacheutil 刷新 DNS 缓存并 killall mDNSResponder\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        debug_operation_detail \"Method\" \"Lint third-party plists in ~/Library/Preferences via plutil and remove corrupted ones\"",
       "after": "        debug_operation_detail \"方法\" \"通过 plutil 检查 ~/Library/Preferences 中的第三方 plist 并移除损坏项\""
     },
@@ -9628,18 +9808,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_detail \"Method\" \"Run lsregister -gc then force rescan with -r -f on local, user, and system domains\"",
-      "after": "        debug_operation_detail \"方法\" \"运行 lsregister -gc，然后对本地、用户和系统域执行 -r -f 强制重新扫描\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        debug_operation_detail \"Method\" \"defaults read -g NSAppSleepDisabled; defaults read com.apple.frameworks.diskimages skip-verify*\"",
       "after": "        debug_operation_detail \"方法\" \"defaults read -g NSAppSleepDisabled; defaults read com.apple.frameworks.diskimages skip-verify*\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_detail \"Purpose\" \"Fix \\\"Open with\\\" menu issues, file associations, and stale app metadata\"",
-      "after": "        debug_operation_detail \"目的\" \"修复「打开方式」菜单问题、文件关联和陈旧的应用元数据\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9678,18 +9848,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_start \"LaunchServices Rebuild\" \"Rebuild LaunchServices database\"",
-      "after": "        debug_operation_start \"LaunchServices 重建\" \"重建 LaunchServices 数据库\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        debug_operation_start \"Legacy Overrides\" \"Detect App Nap and disk-image verification overrides\"",
       "after": "        debug_operation_start \"旧版覆盖项\" \"检测 App Nap 和磁盘映像验证的覆盖设置\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        debug_operation_start \"Network Optimization\" \"Refresh DNS cache and restart mDNSResponder\"",
-      "after": "        debug_operation_start \"网络优化\" \"刷新 DNS 缓存并重启 mDNSResponder\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9710,11 +9870,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "        debug_risk_level \"LOW\" \"DNS cache is automatically rebuilt\"",
       "after": "        debug_risk_level \"LOW\" \"DNS 缓存会自动重建\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        debug_risk_level \"LOW\" \"Database is automatically rebuilt\"",
-      "after": "        debug_risk_level \"LOW\" \"数据库会自动重建\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9740,11 +9895,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "        debug_risk_level \"MEDIUM\" \"Requires sudo, modifies permissions\"",
       "after": "        debug_risk_level \"MEDIUM\" \"需要 sudo，会修改权限\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_EMPTY}${NC} Spotlight indexing disabled\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_EMPTY}${NC} Spotlight 索引已禁用\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9833,6 +9983,11 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect Spotlight search rules\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查 Spotlight 搜索规则\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to inspect network health\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法检查网络状态\""
     },
@@ -9850,16 +10005,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to rebuild $refresh_failed Finder cache service(s)\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法重建 $refresh_failed 个 Finder 缓存服务\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to refresh DNS cache\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法刷新 DNS 缓存\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to remove $failed broken Launch Agent(s)\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法移除 $failed 个损坏的 LaunchAgent\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9888,11 +10033,6 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to verify Spotlight index\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法验证 Spotlight 索引\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Network health check timed out\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 网络健康检查超时\""
     },
@@ -9908,13 +10048,13 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Timed out on $timed_out databases\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $timed_out 个数据库超时\""
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Spotlight search rules changed or could not be read; kept\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Spotlight 搜索规则已变化或无法读取；已保留原样\""
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} lsregister not found\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 未找到 lsregister\""
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Timed out on $timed_out databases\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $timed_out 个数据库超时\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9968,38 +10108,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"Cleaned $removed_count broken Launch Agent(s)\"",
-      "after": "        opt_msg \"已清理 $removed_count 个损坏的 LaunchAgent\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"DNS & Spotlight check skipped (admin access required)\"",
-      "after": "        opt_msg \"DNS 与 Spotlight 检查已跳过（需要管理员权限）\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"DNS cache already refreshed\"",
-      "after": "        opt_msg \"DNS 缓存已刷新\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"DNS cache flushed\"",
-      "after": "        opt_msg \"DNS 缓存已刷新\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"DNS cache refreshed\"",
-      "after": "        opt_msg \"DNS 缓存已刷新\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
       "before": "        opt_msg \"Disk filesystem verified OK\"",
       "after": "        opt_msg \"磁盘文件系统验证正常\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"Disk verify skipped (set MOLE_ENABLE_DISK_VERIFY=1 to enable)\"",
-      "after": "        opt_msg \"磁盘验证已跳过（设置 MOLE_ENABLE_DISK_VERIFY=1 以启用）\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -10183,13 +10293,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"mDNSResponder already restarted\"",
-      "after": "        opt_msg \"mDNSResponder 已重启\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        opt_msg \"mDNSResponder restarted\"",
-      "after": "        opt_msg \"mDNSResponder 已重启\""
+      "before": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count Launch Agent(s) point at a missing program · left in ~/Library/LaunchAgents\"",
+      "after": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count 个 Launch Agent 指向缺失的程序 · 已保留在 ~/Library/LaunchAgents\""
     },
     {
       "file": "lib/ui/app_selector.sh",
@@ -10218,18 +10323,13 @@
     },
     {
       "file": "lib/ui/menu_paginated.sh",
-      "before": "                    printf \"\\033[1;1H\\033[2K${PURPLE_BOLD}%s${NC}  ${GRAY}%d/%d selected${NC}\\n\" \"${title}\" \"$selected_count\" \"$total_items\" >&2",
-      "after": "                    printf \"\\033[1;1H\\033[2K${PURPLE_BOLD}%s${NC}  ${GRAY}%d/%d 已选择${NC}\\n\" \"${title}\" \"$selected_count\" \"$total_items\" >&2"
-    },
-    {
-      "file": "lib/ui/menu_paginated.sh",
       "before": "            date) sort_label=\"Date\" ;;",
       "after": "            date) sort_label=\"日期\" ;;"
     },
     {
       "file": "lib/ui/menu_paginated.sh",
-      "before": "            local -a _segs_filter=(\"${GRAY}Backspace${NC}\" \"${GRAY}Ctrl+U Clear${NC}\" \"${GRAY}ESC Clear${NC}\")",
-      "after": "            local -a _segs_filter=(\"${GRAY}退格${NC}\" \"${GRAY}Ctrl+U 清除${NC}\" \"${GRAY}ESC 清除${NC}\")"
+      "before": "            local -a _segs_filter=(\"${GRAY}Enter Apply${NC}\" \"${GRAY}Backspace${NC}\" \"${GRAY}Ctrl+U Clear${NC}\" \"${GRAY}Esc Clear${NC}\")",
+      "after": "            local -a _segs_filter=(\"${GRAY}回车 应用${NC}\" \"${GRAY}退格${NC}\" \"${GRAY}Ctrl+U 清空${NC}\" \"${GRAY}Esc 清除${NC}\")"
     },
     {
       "file": "lib/ui/menu_paginated.sh",
@@ -10238,13 +10338,8 @@
     },
     {
       "file": "lib/ui/menu_paginated.sh",
-      "before": "            printf \"${clear_line}${GRAY}${ICON_NAV_UP}${ICON_NAV_DOWN}  |  Space  |  Enter Save  |  Q Cancel${NC}\\n\" >&2",
-      "after": "            printf \"${clear_line}${GRAY}${ICON_NAV_UP}${ICON_NAV_DOWN}  |  空格  |  回车 保存  |  Q 取消${NC}\\n\" >&2"
-    },
-    {
-      "file": "lib/ui/menu_paginated.sh",
-      "before": "            printf \"${clear_line}No items available\\n\" >&2",
-      "after": "            printf \"${clear_line}无可用项目\\n\" >&2"
+      "before": "            printf \"${clear_line}No matches\\n\" >&2",
+      "after": "            printf \"${clear_line}无匹配\\n\" >&2"
     },
     {
       "file": "lib/ui/menu_paginated.sh",
@@ -10253,13 +10348,13 @@
     },
     {
       "file": "lib/ui/menu_paginated.sh",
-      "before": "            printf \"\\r\\033[2K${PURPLE_BOLD}%s${NC}  ${YELLOW}/ Search: ${filter_text}_${NC}  ${GRAY}(%d/%d)${NC}\\n\" \"${title}\" \"${#view_indices[@]}\" \"$total_items\" >&2",
-      "after": "            printf \"\\r\\033[2K${PURPLE_BOLD}%s${NC}  ${YELLOW}/ 搜索：${filter_text}_${NC}  ${GRAY}(%d/%d)${NC}\\n\" \"${title}\" \"${#view_indices[@]}\" \"$total_items\" >&2"
+      "before": "            printf \"\\r\\033[2K${YELLOW}/ Search: %s%s${NC}  ${GRAY}%s${NC}\\n\" \"$query_display\" \"$marker\" \"$counts\" >&2",
+      "after": "            printf \"\\r\\033[2K${YELLOW}/ 搜索：%s%s${NC}  ${GRAY}%s${NC}\\n\" \"$query_display\" \"$marker\" \"$counts\" >&2"
     },
     {
       "file": "lib/ui/menu_paginated.sh",
-      "before": "            printf \"\\r\\033[2K${PURPLE_BOLD}%s${NC}  ${YELLOW}/ Search: _ ${NC}${GRAY}(type to search)${NC}\\n\" \"${title}\" >&2",
-      "after": "            printf \"\\r\\033[2K${PURPLE_BOLD}%s${NC}  ${YELLOW}/ 搜索：_ ${NC}${GRAY}（输入以搜索）${NC}\\n\" \"${title}\" >&2"
+      "before": "            printf \"\\r\\033[2K${YELLOW}/ Search: _ ${NC}${GRAY}(type to search)${NC}\\n\" >&2",
+      "after": "            printf \"\\r\\033[2K${YELLOW}/ 搜索：_ ${NC}${GRAY}（输入以搜索）${NC}\\n\" >&2"
     },
     {
       "file": "lib/ui/menu_paginated.sh",
@@ -10290,6 +10385,11 @@
       "file": "lib/ui/menu_paginated.sh",
       "before": "        local page_ctrl=\"${GRAY}h/l Page${NC}\"",
       "after": "        local page_ctrl=\"${GRAY}h/l 翻页${NC}\""
+    },
+    {
+      "file": "lib/ui/menu_paginated.sh",
+      "before": "        local select_all=\"${GRAY}A All${NC}\"",
+      "after": "        local select_all=\"${GRAY}A 全选${NC}\""
     },
     {
       "file": "lib/ui/menu_paginated.sh",
@@ -10363,18 +10463,38 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                            suggestion=\"Run brew uninstall --cask $cask_name\"",
-      "after": "                            suggestion=\"请运行 brew uninstall --cask $cask_name\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "                            suggestion=\"Run brew uninstall --cask --zap $cask_name\"",
-      "after": "                            suggestion=\"请运行 brew uninstall --cask --zap $cask_name\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
       "before": "                            suggestion=\"Select the app again and review the new removal plan\"",
       "after": "                            suggestion=\"请重新选择应用并查看新的移除方案\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        access-denied) kept_label=\"macOS denied access\" ;;",
+      "after": "                        access-denied) kept_label=\"macOS 拒绝访问\" ;;"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        app-reappeared) kept_label=\"Kept (selected app path exists again; select the app again)\" ;;",
+      "after": "                        app-reappeared) kept_label=\"已保留（所选应用路径重新出现；请重新选择该应用）\" ;;"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        live-cache) kept_label=\"Kept (app may be active)\" ;;",
+      "after": "                        live-cache) kept_label=\"已保留（应用可能正在运行）\" ;;"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        owner-unknown) kept_label=\"Kept (other copies of the app could not be checked)\" ;;",
+      "after": "                        owner-unknown) kept_label=\"已保留（无法检查应用的其他副本）\" ;;"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        ownership-unverified) kept_label=\"Kept (agent ownership unverified; review the plist)\" ;;",
+      "after": "                        ownership-unverified) kept_label=\"已保留（代理所有权未验证；请检查 plist）\" ;;"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                        protected) kept_label=\"Kept (protected by Mole)\" ;;",
+      "after": "                        protected) kept_label=\"已保留（受 Mole 保护）\" ;;"
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10398,18 +10518,23 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                        suggestion=\"Run brew uninstall --cask --zap $cask_name\"",
-      "after": "                        suggestion=\"请运行 brew uninstall --cask --zap $cask_name\""
+      "before": "                        shared-owner) kept_label=\"Kept (shared with another installed app)\" ;;",
+      "after": "                        shared-owner) kept_label=\"已保留（与另一个已安装应用共享）\" ;;"
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Could not remove: ${_lpath/#$HOME/$tilde_display}\"",
-      "after": "                    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法移除：${_lpath/#$HOME/$tilde_display}\""
+      "before": "                    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $family_kept_label: $family_kept_count paths\"",
+      "after": "                    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} ${family_kept_label}：$family_kept_count 个路径\""
     },
     {
       "file": "lib/uninstall/batch.sh",
       "before": "                    echo -e \"${ICON_ERROR} ${app_name} failed: $reason\"",
       "after": "                    echo -e \"${ICON_ERROR} ${app_name} 失败：$reason\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                    local kept_label=\"Could not remove\"",
+      "after": "                    local kept_label=\"无法移除\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10433,18 +10558,33 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                echo -e \"  ${BLUE}${ICON_WARNING}${NC} System: $preview_path\"",
-      "after": "                echo -e \"  ${BLUE}${ICON_WARNING}${NC} 系统：$preview_path\""
+      "before": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Steam launcher only; game files managed by Steam are not included\"",
+      "after": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 仅限 Steam 启动器；由 Steam 管理的游戏文件不包含在内\""
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Review only: $preview_path\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 仅供查看：$preview_path\""
+      "before": "                echo -e \"\\n${GRAY}Personal data kept:${NC}\"",
+      "after": "                echo -e \"\\n${GRAY}保留的个人数据：${NC}\""
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                log_warning \"$(printf \"%s: leftover scan timed out; only the app bundle will be removed\" \"$app_name\")\"",
-      "after": "                log_warning \"$(printf \"%s：残留扫描超时；仅会移除应用包本身\" \"$app_name\")\""
+      "before": "                echo -e \"\\n${PURPLE_BOLD}Personal data to remove:${NC}\"",
+      "after": "                echo -e \"\\n${PURPLE_BOLD}将移除的个人数据：${NC}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                log_error \"Could not read the uninstall confirmation; no apps were removed.\"",
+      "after": "                log_error \"无法读取卸载确认；未移除任何应用。\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                log_info \"Dry run complete; the list above is the plan and no apps were removed.\"",
+      "after": "                log_info \"预览完成；以上列表即计划内容，未移除任何应用。\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                log_info \"Run mo uninstall from an interactive terminal; nothing was changed\"",
+      "after": "                log_info \"请在交互式终端运行 mo uninstall；未做任何更改\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10488,13 +10628,13 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                start_inline_spinner \"Uninstalling ${app_name}${brew_tag}...\"",
-      "after": "                start_inline_spinner \"正在卸载 ${app_name}${brew_tag}…\""
+      "before": "                start_inline_spinner \"Uninstalling $(_uninstall_display_text \"$app_name\")${brew_tag}...\"",
+      "after": "                start_inline_spinner \"正在卸载 $(_uninstall_display_text \"$app_name\")${brew_tag}…\""
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "                start_inline_spinner \"[$current_index/${#app_details[@]}] Uninstalling ${app_name}${brew_tag}...\"",
-      "after": "                start_inline_spinner \"[$current_index/${#app_details[@]}] 正在卸载 ${app_name}${brew_tag}…\""
+      "before": "                start_inline_spinner \"[$current_index/${#app_details[@]}] Uninstalling $(_uninstall_display_text \"$app_name\")${brew_tag}...\"",
+      "after": "                start_inline_spinner \"[$current_index/${#app_details[@]}] 正在卸载 $(_uninstall_display_text \"$app_name\")${brew_tag}…\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10528,6 +10668,11 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
+      "before": "            _uninstall_print_preview_paths \"$review_system_display\" \"  ${YELLOW}${ICON_WARNING}${NC} Review only: \" || return $?",
+      "after": "            _uninstall_print_preview_paths \"$review_system_display\" \"  ${YELLOW}${ICON_WARNING}${NC} 仅审查：\" || return $?"
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
       "before": "            admin_prompt=\"Admin required for Homebrew casks: ${brew_cask_apps[*]}\"",
       "after": "            admin_prompt=\"卸载 Homebrew cask 需要管理员权限：${brew_cask_apps[*]}\""
     },
@@ -10538,23 +10683,8 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "            app_size_display=\"N/A (Steam-managed)\"",
-      "after": "            app_size_display=\"N/A（由 Steam 管理）\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Steam launcher only; game files managed by Steam are not included\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 仅 Steam 启动器；由 Steam 管理的游戏文件不包含在内\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
       "before": "            log_error \"Admin access denied\"",
       "after": "            log_error \"管理员权限被拒绝\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "            log_error \"Could not verify whether other installs share ${app_name}'s bundle id; nothing was removed\"",
-      "after": "            log_error \"无法核验其他安装是否与 ${app_name} 共用 bundle id；未移除任何内容\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10573,6 +10703,21 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
+      "before": "            log_error \"Uninstall confirmation needs an interactive terminal; no apps were removed.\"",
+      "after": "            log_error \"卸载确认需要交互式终端；未移除任何应用。\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "            log_error \"Uninstall stopped at ${_batch_exec_app_name} during ${_batch_exec_stage} (exit ${_execute_rc}); apps after it were not touched\"",
+      "after": "            log_error \"卸载在 ${_batch_exec_app_name} 的 ${_batch_exec_stage} 阶段中止（退出码 ${_execute_rc}）；其后的应用未受影响\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "            log_error \"Uninstall stopped at ${_batch_exec_app_name}: ${_batch_exec_stage} timed out; apps after it were not touched\"",
+      "after": "            log_error \"卸载在 ${_batch_exec_app_name} 处中止：${_batch_exec_stage} 超时；其后的应用未受影响\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
       "before": "            log_info \"'$_batch_scan_app_name' matches a Homebrew cask brew cannot read; run brew info --cask <cask>, fix or untap it, then retry mo uninstall --debug\"",
       "after": "            log_info \"'$_batch_scan_app_name' 匹配到 Homebrew 无法读取的 cask；请运行 brew info --cask <cask>，修复或取消 tap 后再重试 mo uninstall --debug\""
     },
@@ -10588,23 +10733,18 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
+      "before": "            log_info \"Run mo uninstall from an interactive terminal, or use mo uninstall --list to inspect apps\"",
+      "after": "            log_info \"请在交互式终端运行 mo uninstall，或用 mo uninstall --list 查看应用\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
       "before": "            log_info \"[DRY RUN] Would refresh LaunchServices and update Dock entries\"",
       "after": "            log_info \"[DRY RUN] 将刷新 LaunchServices 并更新 Dock 条目\""
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "            log_warning \"$(printf \"%s: some paths could not be read, so shared leftovers are left in place\" \"$app_name\")\"",
-      "after": "            log_warning \"$(printf \"%s：部分路径无法读取，共享的残留文件将保留在原处\" \"$app_name\")\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "            log_warning \"$blocked_name requires the official $blocked_vendor uninstaller\"",
-      "after": "            log_warning \"$blocked_name 需要使用官方的 $blocked_vendor 卸载程序\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "            log_warning \"$manual_name cannot be removed safely by Mole from this location\"",
-      "after": "            log_warning \"Mole 无法从该位置安全移除 $manual_name\""
+      "before": "            log_warning \"$(_uninstall_display_text \"$manual_name\") cannot be removed safely by Mole from this location\"",
+      "after": "            log_warning \"$(_uninstall_display_text \"$manual_name\") 无法被 Mole 从此位置安全移除\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10615,6 +10755,11 @@
       "file": "lib/uninstall/batch.sh",
       "before": "            reason=\"selected app changed after preview\"",
       "after": "            reason=\"所选应用在预览后发生了变化\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "            removal_note+=\" ${YELLOW}[Running]${NC}\"",
+      "after": "            removal_note+=\" ${YELLOW}[运行中]${NC}\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10630,6 +10775,11 @@
       "file": "lib/uninstall/batch.sh",
       "before": "            suggestion=\"Select the app again and review the new removal plan\"",
       "after": "            suggestion=\"请重新选择应用并查看新的移除方案\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "        [[ ${#_review_selected_paths[@]} -eq 0 ]] || removal_note+=\", including personal data\"",
+      "after": "        [[ ${#_review_selected_paths[@]} -eq 0 ]] || removal_note+=\"，包含个人数据\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10653,13 +10803,23 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "        echo -e \"${GRAY}${ICON_WARNING} Homebrew apps will be fully cleaned, --zap removes configs and data${NC}\"",
-      "after": "        echo -e \"${GRAY}${ICON_WARNING} Homebrew 应用将被完全清理，--zap 会删除配置与数据${NC}\""
+      "before": "        echo -e \"\\n${PURPLE_BOLD}Files to be removed:${NC}\"",
+      "after": "        echo -e \"\\n${PURPLE_BOLD}待移除的文件：${NC}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "        echo -ne \"${PURPLE}${ICON_ARROW}${NC} ${removal_note}  ${GREEN}Enter${NC} confirm, ${GRAY}ESC${NC} cancel: \"",
+      "after": "        echo -ne \"${PURPLE}${ICON_ARROW}${NC} ${removal_note}  ${GREEN}回车${NC}确认，${GRAY}ESC${NC} 取消： \""
     },
     {
       "file": "lib/uninstall/batch.sh",
       "before": "        local admin_prompt=\"Admin required to uninstall selected apps\"",
       "after": "        local admin_prompt=\"卸载所选应用需要管理员权限\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "        local app_text=\"app\"",
+      "after": "        local app_text=\"个应用\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10670,6 +10830,11 @@
       "file": "lib/uninstall/batch.sh",
       "before": "        local reason_summary=\"could not be removed\"",
       "after": "        local reason_summary=\"无法移除\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "        local removal_note=\"Remove ${app_total} ${app_text}\"",
+      "after": "        local removal_note=\"移除 ${app_total} ${app_text}\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10688,6 +10853,11 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
+      "before": "        log_info \"Run mo uninstall --debug to see which step failed\"",
+      "after": "        log_info \"运行 mo uninstall --debug 查看失败的步骤\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
       "before": "        log_warning \"File list for $app_name contains null bytes, rejecting\" >&2",
       "after": "        log_warning \"$app_name 的文件列表包含空字节，已拒绝\" >&2"
     },
@@ -10700,11 +10870,6 @@
       "file": "lib/uninstall/batch.sh",
       "before": "        log_warning \"No applications selected for uninstallation\"",
       "after": "        log_warning \"未选择要卸载的应用\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "        removal_note+=\" ${YELLOW}[Running]${NC}\"",
-      "after": "        removal_note+=\" ${YELLOW}[运行中]${NC}\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10758,28 +10923,8 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "    echo -e \"\\n${PURPLE_BOLD}Files to be removed:${NC}\"",
-      "after": "    echo -e \"\\n${PURPLE_BOLD}待移除的文件：${NC}\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} ${removal_note}  ${GREEN}Enter${NC} confirm, ${GRAY}ESC${NC} cancel: \"",
-      "after": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} ${removal_note}  ${GREEN}回车${NC} 确认，${GRAY}ESC${NC} 取消： \""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
       "before": "    local _batch_scan_stage=\"application inspection\"",
       "after": "    local _batch_scan_stage=\"应用检查\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "    local app_text=\"app\"",
-      "after": "    local app_text=\"个应用\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "    local removal_note=\"Remove ${app_total} ${app_text}\"",
-      "after": "    local removal_note=\"移除 ${app_total} ${app_text}\""
     },
     {
       "file": "lib/uninstall/batch.sh",
@@ -10820,6 +10965,16 @@
       "file": "lib/uninstall/brew.sh",
       "before": "    debug_log \"brew uninstall failed: cask_gone=$cask_gone app_gone=$app_gone\"",
       "after": "    debug_log \"brew uninstall 失败：cask_gone=$cask_gone app_gone=$app_gone\""
+    },
+    {
+      "file": "lib/uninstall/config_refs.sh",
+      "before": "    printf '\\nConfiguration references kept (review manually):\\n%s\\n' \"$mentions\"",
+      "after": "    printf '\\n已保留配置中的引用（请手动检查）：\\n%s\\n' \"$mentions\""
+    },
+    {
+      "file": "lib/uninstall/review.sh",
+      "before": "    paginated_multi_select \"Personal data to remove\" \"${labels[@]}\" || rc=$?",
+      "after": "    paginated_multi_select \"选择要移除的个人数据\" \"${labels[@]}\" || rc=$?"
     },
     {
       "file": "mole",
@@ -10863,6 +11018,11 @@
     },
     {
       "file": "mole",
+      "before": "        printf '%s\\n' 'Cannot access the current directory. Run cd ~, then retry Mole.' >&2",
+      "after": "        printf '%s\\n' '无法访问当前目录。请运行 cd ~ 后重试 Mole。' >&2"
+    },
+    {
+      "file": "mole",
       "before": "    controls=\"${controls}  |  Q Quit${NC}\"",
       "after": "    controls=\"${controls}  |  Q 退出${NC}\""
     },
@@ -10903,8 +11063,53 @@
     },
     {
       "file": "mole",
+      "before": "  --nightly         Install latest unreleased main branch build",
+      "after": "  --nightly         安装尚未发布的 main 分支构建"
+    },
+    {
+      "file": "mole",
+      "before": "  -f, --force       Force reinstall latest stable version",
+      "after": "  -f, --force       强制重装最新稳定版"
+    },
+    {
+      "file": "mole",
+      "before": "  -h, --help        Show this help message",
+      "after": "  -h, --help        显示本帮助信息"
+    },
+    {
+      "file": "mole",
+      "before": "  -n, --dry-run     Preview Mole removal",
+      "after": "  -n, --dry-run     预览 Mole 卸载操作"
+    },
+    {
+      "file": "mole",
       "before": "MOLE_TAGLINE=\"Deep clean and optimize your Mac.\"",
       "after": "MOLE_TAGLINE=\"深度清理并优化你的 Mac。\""
+    },
+    {
+      "file": "mole",
+      "before": "Options:",
+      "after": "选项："
+    },
+    {
+      "file": "mole",
+      "before": "Remove Mole from this Mac. Operation logs in ~/Library/Logs/mole are kept.",
+      "after": "从这台 Mac 移除 Mole。保留 ~/Library/Logs/mole 中的操作日志。"
+    },
+    {
+      "file": "mole",
+      "before": "Update Mole to the latest release.",
+      "after": "将 Mole 更新到最新稳定版。"
+    },
+    {
+      "file": "mole",
+      "before": "Usage: mo remove [--dry-run]",
+      "after": "用法：mo remove [--dry-run]"
+    },
+    {
+      "file": "mole",
+      "before": "Usage: mo update [--force] [--nightly]",
+      "after": "用法：mo update [--force] [--nightly]"
     }
   ]
 }

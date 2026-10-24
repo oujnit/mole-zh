@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract candidate display-text replacements from the reviewed V1.55 fork.
+"""Extract candidate display-text replacements from the reviewed V1.62 fork.
 
 Run only while maintaining the catalog. The released plugin consumes rules.json
 and never needs this script or access to the fork.
@@ -12,18 +12,40 @@ import subprocess
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parents[2] / "Mole"
-BASE = "2415b030"
+BASE = "91a7bf44"
 LOCALIZED = "upgrade-origin-main"
 
 # Short-circuit display lines were excluded by the conservative diff filter.
-# These five V1.55.0 remove previews were checked against the official tag.
+# These V1.62.0 remove previews were checked against the official tag.
 MANUAL_RULES = [
     ("lib/manage/remove.sh", '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${install}${NC}"', '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${install}${NC}"'),
     ("lib/manage/remove.sh", '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${alias}${NC}"', '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${alias}${NC}"'),
     ("lib/manage/remove.sh", '        [[ -d "$HOME/.cache/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: $HOME/.cache/mole${NC}"', '        [[ -d "$HOME/.cache/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：$HOME/.cache/mole${NC}"'),
-    ("lib/manage/remove.sh", '        [[ -d "$HOME/.config/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would move to Trash: $HOME/.config/mole${NC}"', '        [[ -d "$HOME/.config/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移至废纸篓：$HOME/.config/mole${NC}"'),
-    ("lib/manage/remove.sh", '        [[ -d "$HOME/Library/Logs/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: $HOME/Library/Logs/mole${NC}"', '        [[ -d "$HOME/Library/Logs/mole" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：$HOME/Library/Logs/mole${NC}"'),
+    ("lib/manage/remove.sh", '                echo -e "  ${GRAY}${ICON_LIST} Would move to Trash: $remove_config_dir${NC}"', '                echo -e "  ${GRAY}${ICON_LIST} 将移至废纸篓：$remove_config_dir${NC}"'),
+    ("lib/manage/remove.sh", '        [[ -d "$HOME/Library/Logs/mole" ]] && echo "  ${ICON_LIST} $HOME/Library/Logs/mole (kept, operation history)"', '        [[ -d "$HOME/Library/Logs/mole" ]] && echo "  ${ICON_LIST} $HOME/Library/Logs/mole（保留，操作历史）"'),
+    ("lib/manage/remove.sh", '    [[ -d "$HOME/Library/Logs/mole" ]] && echo "  ${ICON_LIST} ~/Library/Logs/mole (kept, operation history)"', '    [[ -d "$HOME/Library/Logs/mole" ]] && echo "  ${ICON_LIST} ~/Library/Logs/mole（保留，操作历史）"'),
 ]
+
+# New router help is literal heredoc text, so carry its exact lines explicitly.
+MANUAL_RULES += [('mole', 'Usage: mo update [--force] [--nightly]', '用法：mo update [--force] [--nightly]'),
+ ('mole', 'Update Mole to the latest release.', '将 Mole 更新到最新稳定版。'),
+ ('mole', 'Options:', '选项：'),
+ ('mole',
+  '  -f, --force       Force reinstall latest stable version',
+  '  -f, --force       强制重装最新稳定版'),
+ ('mole',
+  '  --nightly         Install latest unreleased main branch build',
+  '  --nightly         安装尚未发布的 main 分支构建'),
+ ('mole', '  -h, --help        Show this help message', '  -h, --help        显示本帮助信息'),
+ ('mole', 'Usage: mo remove [--dry-run]', '用法：mo remove [--dry-run]'),
+ ('mole',
+  'Remove Mole from this Mac. Operation logs in ~/Library/Logs/mole are kept.',
+  '从这台 Mac 移除 Mole。保留 ~/Library/Logs/mole 中的操作日志。'),
+ ('mole', '  -n, --dry-run     Preview Mole removal', '  -n, --dry-run     预览 Mole 卸载操作')]
+
+
+MANUAL_RULES += [('lib/uninstall/batch.sh', '        [[ ${#_review_selected_paths[@]} -eq 0 ]] || removal_note+=", including personal data"', '        [[ ${#_review_selected_paths[@]} -eq 0 ]] || removal_note+="，包含个人数据"')]
+
 
 
 def pairs():
@@ -66,13 +88,29 @@ def is_display_rule(path, before, after):
     stripped = before.lstrip()
     if stripped.startswith(("#", "case ", "[[ ", "elif [[ ", "if [[ ")):
         return False
-    if "mole_localize_guard_reason" in after:
-        return False
     if "EXPORT_LIST_FILE" in before or "log_operation " in before:
         return False
     if difflib.SequenceMatcher(None, before, after).ratio() < 0.32:
         return stripped.startswith(("echo ", "echo\t", "printf ", "log_", "start_")) or path == "bin/completion.sh"
     return True
+
+
+def guard_helper_rule():
+    # Keep stable English guard keys intact. The line catalog cannot insert a
+    # multiline function, so attach the reviewed helper to its unique caller
+    # declaration as one valid Bash line.
+    source = subprocess.check_output(
+        ["git", "show", f"{LOCALIZED}:lib/core/base.sh"], cwd=SOURCE, text=True
+    )
+    match = re.search(r"^mole_localize_guard_reason\(\) \{\n(.*?)^\}", source, re.M | re.S)
+    if match is None:
+        raise RuntimeError("reviewed guard translation helper was not found")
+    body = " ".join(line.strip() for line in match.group(1).splitlines())
+    if not body.endswith("esac"):
+        raise RuntimeError("unexpected guard helper structure")
+    anchor = "mole_report_guard_stop() {"
+    helper = "mole_localize_guard_reason() { " + body + "; }; "
+    return "lib/core/base.sh", anchor, helper + anchor
 
 
 def main():
@@ -88,14 +126,14 @@ def main():
             seen[key] = after
     for key in conflicts:
         seen.pop(key, None)
-    for path, before, after in MANUAL_RULES:
+    for path, before, after in [*MANUAL_RULES, guard_helper_rule()]:
         seen[(path, before)] = after
     rules = [
         {"file": path, "before": before, "after": after}
         for (path, before), after in sorted(seen.items())
     ]
     target = Path(__file__).resolve().parents[1] / "internal/plugin/rules.json"
-    target.write_text(json.dumps({"base": "V1.55.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
+    target.write_text(json.dumps({"base": "V1.62.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
     print(f"{len(rules)} rules; {len(set(conflicts))} ambiguous rules omitted")
 
 
