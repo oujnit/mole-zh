@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract candidate display-text replacements from the reviewed V1.62 fork.
+"""Extract candidate display-text replacements from the reviewed V1.63 fork.
 
 Run only while maintaining the catalog. The released plugin consumes rules.json
 and never needs this script or access to the fork.
@@ -12,11 +12,11 @@ import subprocess
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parents[2] / "Mole"
-BASE = "91a7bf44"
+BASE = "a7c4c84e"
 LOCALIZED = "upgrade-origin-main"
 
 # Short-circuit display lines were excluded by the conservative diff filter.
-# These V1.62.0 remove previews were checked against the official tag.
+# These V1.62.0-era remove previews were checked against the official tag.
 MANUAL_RULES = [
     ("lib/manage/remove.sh", '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${install}${NC}"', '                [[ -f "$install" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${install}${NC}"'),
     ("lib/manage/remove.sh", '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} Would remove: ${alias}${NC}"', '                [[ -f "$alias" ]] && echo -e "  ${GRAY}${ICON_LIST} 将移除：${alias}${NC}"'),
@@ -140,7 +140,7 @@ def main():
         for (path, before), after in sorted(seen.items())
     ]
     target = Path(__file__).resolve().parents[1] / "internal/plugin/rules.json"
-    target.write_text(json.dumps({"base": "V1.62.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
+    target.write_text(json.dumps({"base": "V1.63.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
     print(f"{len(rules)} rules; {len(set(conflicts))} ambiguous rules omitted")
 
 
