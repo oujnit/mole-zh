@@ -7013,6 +7013,11 @@
     },
     {
       "file": "lib/clean/user.sh",
+      "before": "        echo \"Check that it is still mounted with diskutil info -plist \\\"$resolved\\\", then retry\" >&2",
+      "after": "        echo \"请用 diskutil info -plist \\\"$resolved\\\" 确认该卷仍已挂载，然后重试\" >&2"
+    },
+    {
+      "file": "lib/clean/user.sh",
       "before": "        echo \"External cleanup only supports mounted paths directly under $resolved_root: $resolved\" >&2",
       "after": "        echo \"外置硬盘清理仅支持直接挂载在 ${resolved_root} 下的路径：$resolved\" >&2"
     },
@@ -7035,6 +7040,11 @@
       "file": "lib/clean/user.sh",
       "before": "        echo \"Missing external volume path\" >&2",
       "after": "        echo \"缺少外置硬盘路径\" >&2"
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "        echo \"Refusing to clean a volume diskutil could not describe: $resolved\" >&2",
+      "after": "        echo \"拒绝清理 diskutil 无法描述的卷：$resolved\" >&2"
     },
     {
       "file": "lib/clean/user.sh",
@@ -7350,6 +7360,16 @@
       "file": "lib/clean/user.sh",
       "before": "    _report_large_or_stop \"Conda packages\" \"$HOME/.conda/pkgs\" || return $?",
       "after": "    _report_large_or_stop \"Conda 包\" \"$HOME/.conda/pkgs\" || return $?"
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "    _report_large_or_stop \"Conductor archived contexts\" \"$HOME/Conductor/archived-contexts\" || return $?",
+      "after": "    _report_large_or_stop \"Conductor 已归档上下文\" \"$HOME/Conductor/archived-contexts\" || return $?"
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "    _report_large_or_stop \"Conductor workspaces\" \"$HOME/Conductor/workspaces\" || return $?",
+      "after": "    _report_large_or_stop \"Conductor 工作区\" \"$HOME/Conductor/workspaces\" || return $?"
     },
     {
       "file": "lib/clean/user.sh",
@@ -10745,6 +10765,11 @@
       "file": "lib/uninstall/batch.sh",
       "before": "            log_info \"'$_batch_scan_app_name' matches a Homebrew cask brew cannot read; run brew info --cask <cask>, fix or untap it, then retry mo uninstall --debug\"",
       "after": "            log_info \"'$_batch_scan_app_name' 匹配到 Homebrew 无法读取的 cask；请运行 brew info --cask <cask>，修复或取消 tap 后再重试 mo uninstall --debug\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "            log_info \"Homebrew itself failed: $brew_failure; fix Homebrew, then retry mo uninstall\"",
+      "after": "            log_info \"Homebrew 本身失败：$brew_failure；请先修复 Homebrew，再重试 mo uninstall\""
     },
     {
       "file": "lib/uninstall/batch.sh",
