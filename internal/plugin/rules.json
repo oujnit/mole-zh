@@ -1,5 +1,5 @@
 {
-  "base": "V1.63.0",
+  "base": "V1.67.0",
   "rules": [
     {
       "file": "bin/analyze.sh",
@@ -128,8 +128,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "                start_section_spinner \"Scanning items...\"",
-      "after": "                start_section_spinner \"正在扫描项目...\""
+      "before": "                start_section_spinner \"Scanning ${description}...\"",
+      "after": "                start_section_spinner \"正在扫描 ${description}...\""
     },
     {
       "file": "bin/clean.sh",
@@ -143,8 +143,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "                summary_line+=\" | Items cleaned: $files_cleaned\"",
-      "after": "                summary_line+=\" | 清理项目：$files_cleaned\""
+      "before": "                summary_line+=\" · $(mole_count_label \"$files_cleaned\" item)\"",
+      "after": "                summary_line+=\" · $(printf '%s 个项目' \"$files_cleaned\")\""
     },
     {
       "file": "bin/clean.sh",
@@ -153,13 +153,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "            [[ $files_cleaned -gt 0 ]] && stats+=\" | Items: $files_cleaned\"",
-      "after": "            [[ $files_cleaned -gt 0 ]] && stats+=\" | 项目数：$files_cleaned\""
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            [[ $total_items -gt 0 ]] && stats+=\" | Categories: $total_items\"",
-      "after": "            [[ $total_items -gt 0 ]] && stats+=\" | 分类：$total_items\""
+      "before": "            [[ $files_cleaned -gt 0 ]] && stats+=\" · $(mole_count_label \"$files_cleaned\" item)\"",
+      "after": "            [[ $files_cleaned -gt 0 ]] && stats+=\" · $(printf '%s 个项目' \"$files_cleaned\")\""
     },
     {
       "file": "bin/clean.sh",
@@ -203,8 +198,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "            echo -e \"${BLUE}${ICON_SUCCESS}${NC} Whitelist: $summary\"",
-      "after": "            echo -e \"${BLUE}${ICON_SUCCESS}${NC} 白名单：$summary\""
+      "before": "            echo -e \"${BLUE}${ICON_ADMIN}${NC} Whitelist: $summary\"",
+      "after": "            echo -e \"${BLUE}${ICON_ADMIN}${NC} 白名单：$summary\""
     },
     {
       "file": "bin/clean.sh",
@@ -263,8 +258,8 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "            local summary_line=\"Tracked cleanup: $(colorize_human_size \"$freed_size_human\")\"",
-      "after": "            local summary_line=\"已统计清理量：$(colorize_human_size \"$freed_size_human\")\""
+      "before": "            local summary_line=\"Removed: $(colorize_human_size \"$freed_size_human\")\"",
+      "after": "            local summary_line=\"已移除：$(colorize_human_size \"$freed_size_human\")\""
     },
     {
       "file": "bin/clean.sh",
@@ -338,6 +333,11 @@
     },
     {
       "file": "bin/clean.sh",
+      "before": "            start_section_spinner \"Checking ${description}...\"",
+      "after": "            start_section_spinner \"正在检查 ${description}...\""
+    },
+    {
+      "file": "bin/clean.sh",
       "before": "            start_section_spinner \"Cleaning...\"",
       "after": "            start_section_spinner \"清理中...\""
     },
@@ -355,11 +355,6 @@
       "file": "bin/clean.sh",
       "before": "            summary_details+=(\"Detailed file list: ${GRAY}$CLEAN_PREVIEW_FINAL_FILE${NC}\")",
       "after": "            summary_details+=(\"详细文件列表：${GRAY}$CLEAN_PREVIEW_FINAL_FILE${NC}\")"
-    },
-    {
-      "file": "bin/clean.sh",
-      "before": "            summary_details+=(\"Use ${GRAY}mo clean --whitelist${NC} to add protection rules\")",
-      "after": "            summary_details+=(\"使用 ${GRAY}mo clean --whitelist${NC} 添加保护规则\")"
     },
     {
       "file": "bin/clean.sh",
@@ -1308,28 +1303,8 @@
     },
     {
       "file": "bin/slim.sh",
-      "before": "            details+=(\"Slimmed ${GREEN}$total_slimmed${NC} apps, freed ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC} once the Trash is emptied\")",
-      "after": "            details+=(\"已精简 ${GREEN}$total_slimmed${NC} 个应用，清空废纸篓后释放 ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")"
-    },
-    {
-      "file": "bin/slim.sh",
-      "before": "            details+=(\"Would slim ${GREEN}$total_slimmed${NC} apps, free ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")",
-      "after": "            details+=(\"将精简 ${GREEN}$total_slimmed${NC} 个应用，释放 ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}\")"
-    },
-    {
-      "file": "bin/slim.sh",
       "before": "            printf 'Run mo slim in a terminal to choose apps.\\n'",
       "after": "            printf '请在终端中运行 mo slim 以选择应用。\\n'"
-    },
-    {
-      "file": "bin/slim.sh",
-      "before": "        details+=(\"${ICON_WARNING} Kept ${failure//\\\\/\\\\\\\\}\")",
-      "after": "        details+=(\"${ICON_WARNING} 保留 ${failure//\\\\/\\\\\\\\}\")"
-    },
-    {
-      "file": "bin/slim.sh",
-      "before": "        details+=(\"No apps were slimmed\")",
-      "after": "        details+=(\"未精简任何应用\")"
     },
     {
       "file": "bin/slim.sh",
@@ -1343,18 +1318,23 @@
     },
     {
       "file": "bin/slim.sh",
-      "before": "        heading=\"Dry run complete - no changes made\"",
-      "after": "        heading=\"预览完成 — 未做任何更改\""
-    },
-    {
-      "file": "bin/slim.sh",
-      "before": "        heading=\"Slimming incomplete\"",
-      "after": "        heading=\"部分应用未能精简\""
+      "before": "        local line=\"Slimmed ${total_slimmed} ${app_text}, freed ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}: \"",
+      "after": "        local line=\"已精简 ${total_slimmed} ${app_text}，释放 ${GREEN}$(bytes_to_human \"$total_freed_bytes\")${NC}：\""
     },
     {
       "file": "bin/slim.sh",
       "before": "        printf 'mo slim needs an Apple Silicon Mac; on an Intel Mac the Intel code is the code that runs.\\n' >&2",
       "after": "        printf 'mo slim 需要 Apple Silicon Mac；在 Intel Mac 上 Intel 代码正是实际运行的代码。\\n' >&2"
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    [[ $total_failed -eq 0 ]] || title=\"Slim incomplete\"",
+      "after": "    [[ $total_failed -eq 0 ]] || title=\"部分应用未能精简\""
+    },
+    {
+      "file": "bin/slim.sh",
+      "before": "    [[ ${#details[@]} -gt 0 ]] || details+=(\"No apps were slimmed\")",
+      "after": "    [[ ${#details[@]} -gt 0 ]] || details+=(\"未精简任何应用\")"
     },
     {
       "file": "bin/slim.sh",
@@ -1408,18 +1388,18 @@
     },
     {
       "file": "bin/slim.sh",
-      "before": "    echo -e \"${PURPLE_BOLD}Apps to slim:${NC}\"",
-      "after": "    echo -e \"${PURPLE_BOLD}待精简应用：${NC}\""
+      "before": "    echo -e \"\\n${PURPLE_BOLD}Apps to slim:${NC}\"",
+      "after": "    echo -e \"\\n${PURPLE_BOLD}待精简应用：${NC}\""
     },
     {
       "file": "bin/slim.sh",
-      "before": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} Slim ${#indices[@]} apps, $(bytes_to_human \"$total\")  ${GREEN}Enter${NC} confirm, ${GRAY}ESC${NC} cancel: \"",
-      "after": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} 精简 ${#indices[@]} 个应用，共 $(bytes_to_human \"$total\")  ${GREEN}回车${NC}确认，${GRAY}ESC${NC} 取消： \""
+      "before": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} Slim ${#indices[@]} ${app_text}, $(bytes_to_human \"$total\")  ${GREEN}Enter${NC} confirm, ${GRAY}ESC${NC} cancel: \"",
+      "after": "    echo -ne \"${PURPLE}${ICON_ARROW}${NC} 精简 ${#indices[@]} ${app_text}，共 $(bytes_to_human \"$total\")  ${GREEN}回车${NC}确认，${GRAY}ESC${NC} 取消： \""
     },
     {
       "file": "bin/slim.sh",
-      "before": "    local heading=\"Apps slimmed\"",
-      "after": "    local heading=\"精简完成\""
+      "before": "    local title=\"Slim complete\"",
+      "after": "    local title=\"精简完成\""
     },
     {
       "file": "bin/slim.sh",
@@ -1563,23 +1543,23 @@
     },
     {
       "file": "bin/touchid.sh",
+      "before": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Touch ID is not configured for sudo\"",
+      "after": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Touch ID 尚未为 sudo 配置\""
+    },
+    {
+      "file": "bin/touchid.sh",
       "before": "        echo -e \"${YELLOW}Touch ID is not currently enabled${NC}\"",
       "after": "        echo -e \"${YELLOW}Touch ID 当前未启用${NC}\""
     },
     {
       "file": "bin/touchid.sh",
-      "before": "        echo -e \"${YELLOW}☻${NC} Touch ID is not configured for sudo\"",
-      "after": "        echo -e \"${YELLOW}☻${NC} Touch ID 尚未为 sudo 配置\""
+      "before": "        echo -ne \"${PURPLE}${ICON_CONFIRM}${NC} Press ${GREEN}Enter${NC} to disable, ${GRAY}Q${NC} to quit: \"",
+      "after": "        echo -ne \"${PURPLE}${ICON_CONFIRM}${NC} 按 ${GREEN}回车${NC} 停用，${GRAY}Q${NC} 退出： \""
     },
     {
       "file": "bin/touchid.sh",
-      "before": "        echo -ne \"${PURPLE}☛${NC} Press ${GREEN}Enter${NC} to disable, ${GRAY}Q${NC} to quit: \"",
-      "after": "        echo -ne \"${PURPLE}☛${NC} 按 ${GREEN}回车${NC} 停用，${GRAY}Q${NC} 退出： \""
-    },
-    {
-      "file": "bin/touchid.sh",
-      "before": "        echo -ne \"${PURPLE}☛${NC} Press ${GREEN}Enter${NC} to enable, ${GRAY}Q${NC} to quit: \"",
-      "after": "        echo -ne \"${PURPLE}☛${NC} 按 ${GREEN}回车${NC} 启用，${GRAY}Q${NC} 退出： \""
+      "before": "        echo -ne \"${PURPLE}${ICON_CONFIRM}${NC} Press ${GREEN}Enter${NC} to enable, ${GRAY}Q${NC} to quit: \"",
+      "after": "        echo -ne \"${PURPLE}${ICON_CONFIRM}${NC} 按 ${GREEN}回车${NC} 启用，${GRAY}Q${NC} 退出： \""
     },
     {
       "file": "bin/touchid.sh",
@@ -2833,8 +2813,8 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "                    \"Xcode cache\" || return 0",
-      "after": "                    \"Xcode 缓存\" || return 0"
+      "before": "                    \"Xcode cache\" || {",
+      "after": "                    \"Xcode 缓存\" || {"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2858,13 +2838,13 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "                \"CoreSimulator logs\" || return 0",
-      "after": "                \"CoreSimulator 日志\" || return 0"
+      "before": "                \"CoreSimulator logs\" || {",
+      "after": "                \"CoreSimulator 日志\" || {"
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "                \"Simulator cache\" || return 0",
-      "after": "                \"模拟器缓存\" || return 0"
+      "before": "                \"Simulator cache\" || {",
+      "after": "                \"模拟器缓存\" || {"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2878,8 +2858,8 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "                \"Simulator temp files\" || return 0",
-      "after": "                \"模拟器临时文件\" || return 0"
+      "before": "                \"Simulator temp files\" || {",
+      "after": "                \"模拟器临时文件\" || {"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2888,8 +2868,8 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "                \"Xcode build products\" || return 0",
-      "after": "                \"Xcode 构建产物\" || return 0"
+      "before": "                \"Xcode build products\" || {",
+      "after": "                \"Xcode 构建产物\" || {"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2928,23 +2908,28 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Autodesk Fusion old versions${NC} · ${YELLOW}${cleaned_count} dirs, $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Autodesk Fusion 旧版本${NC} · ${YELLOW}${cleaned_count} 个目录，$(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Autodesk Fusion old versions${NC} · ${YELLOW}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Autodesk Fusion 旧版本${NC} · ${YELLOW}$(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} NeatDM stale downloads · ${stale_count} items, $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} NeatDM 过期下载 · ${stale_count} 个项目，$(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} NeatDM stale downloads · $(mole_count_label \"${stale_count}\" item), $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} NeatDM 过期下载 · $(printf '%s 个项目' \"${stale_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion 旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Xcode DerivedData · ${dry_run_count} ${project_label}, $(colorize_human_size \"${size_human}\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Xcode DerivedData · ${dry_run_count} ${project_label}, $(colorize_human_size \"${size_human}\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM stale downloads · ${stale_count} items, $(colorize_human_size \"${size_human}\")\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM 失效下载 · ${stale_count} 个项目，$(colorize_human_size \"${size_human}\")\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion old versions${NC} · ${line_color}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Autodesk Fusion 旧版本${NC} · ${line_color}已清理 $(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"${size_human}\")\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM stale downloads · $(mole_count_label \"${stale_count}\" item), $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} NeatDM 失效下载 · $(printf '%s 个项目' \"${stale_count}\"), $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -2960,6 +2945,11 @@
       "file": "lib/clean/app_caches.sh",
       "before": "            start_section_spinner \"Measuring Xcode DerivedData, ${dry_run_seen}/${project_count}...\"",
       "after": "            start_section_spinner \"正在测量 Xcode DerivedData，${dry_run_seen}/${project_count}...\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "            ~/Library/Application\\ Support/CodeBuddyExtension/logs/* \"CodeBuddy Extension logs\" || codebuddy_rc=$?",
+      "after": "            ~/Library/Application\\ Support/CodeBuddyExtension/logs/* \"CodeBuddy Extension 日志\" || codebuddy_rc=$?"
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3005,6 +2995,106 @@
       "file": "lib/clean/app_caches.sh",
       "before": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode DerivedData · ${removed} ${project_label}, $(colorize_human_size \"${size_human}\")\"",
       "after": "        echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode DerivedData · 已清理 ${removed} ${project_label}，$(colorize_human_size \"${size_human}\")\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/Cache/* \"CodeBuddy CN cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/Cache/* \"CodeBuddy CN 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedData/* \"CodeBuddy CN cached data\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedData/* \"CodeBuddy CN 缓存数据\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedExtensionVSIXs/* \"CodeBuddy CN extension cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedExtensionVSIXs/* \"CodeBuddy CN 扩展缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/Code\\ Cache/* \"CodeBuddy CN code cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/Code\\ Cache/* \"CodeBuddy CN 代码缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnGraphiteCache/* \"CodeBuddy CN Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnGraphiteCache/* \"CodeBuddy CN Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnWebGPUCache/* \"CodeBuddy CN WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnWebGPUCache/* \"CodeBuddy CN WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/GPUCache/* \"CodeBuddy CN GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/GPUCache/* \"CodeBuddy CN GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/logs/* \"CodeBuddy CN logs\"",
+      "after": "        mole_safe_clean_app_cache \"CodeBuddy CN\" ~/Library/Application\\ Support/CodeBuddy\\ CN/logs/* \"CodeBuddy CN 日志\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Application\\ Cache/* \"Microsoft Teams legacy application cache\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Application\\ Cache/* \"Microsoft Teams 旧版应用缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Cache/* \"Microsoft Teams legacy cache\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Cache/* \"Microsoft Teams 旧版缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Code\\ Cache/* \"Microsoft Teams legacy code cache\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/Code\\ Cache/* \"Microsoft Teams 旧版代码缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/GPUCache/* \"Microsoft Teams legacy GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/GPUCache/* \"Microsoft Teams 旧版 GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/logs/* \"Microsoft Teams legacy logs\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/logs/* \"Microsoft Teams 旧版日志\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/tmp/* \"Microsoft Teams legacy temp files\"",
+      "after": "        mole_safe_clean_app_cache \"Microsoft Teams\" ~/Library/Application\\ Support/Microsoft/Teams/tmp/* \"Microsoft Teams 旧版临时文件\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/Cache/* \"mihomo-party cache\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/Cache/* \"mihomo-party 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/Code\\ Cache/* \"mihomo-party code cache\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/Code\\ Cache/* \"mihomo-party 代码缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/DawnGraphiteCache/* \"mihomo-party Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/DawnGraphiteCache/* \"mihomo-party Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/DawnWebGPUCache/* \"mihomo-party WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/DawnWebGPUCache/* \"mihomo-party WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/GPUCache/* \"mihomo-party GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/GPUCache/* \"mihomo-party GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/logs/* \"mihomo-party logs\"",
+      "after": "        mole_safe_clean_app_cache \"mihomo-party\" ~/Library/Application\\ Support/mihomo-party/logs/* \"mihomo-party 日志\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3078,86 +3168,6 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddyExtension/Cache/* \"CodeBuddy Extension cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddyExtension/Cache/* \"CodeBuddy Extension 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddyExtension/logs/* \"CodeBuddy Extension logs\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddyExtension/logs/* \"CodeBuddy Extension 日志\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/Cache/* \"CodeBuddy CN cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/Cache/* \"CodeBuddy CN 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedData/* \"CodeBuddy CN cached data\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedData/* \"CodeBuddy CN 缓存数据\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedExtensionVSIXs/* \"CodeBuddy CN extension cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/CachedExtensionVSIXs/* \"CodeBuddy CN 扩展缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/Code\\ Cache/* \"CodeBuddy CN code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/Code\\ Cache/* \"CodeBuddy CN 代码缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnGraphiteCache/* \"CodeBuddy CN Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnGraphiteCache/* \"CodeBuddy CN Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnWebGPUCache/* \"CodeBuddy CN WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/DawnWebGPUCache/* \"CodeBuddy CN WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/GPUCache/* \"CodeBuddy CN GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/GPUCache/* \"CodeBuddy CN GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/logs/* \"CodeBuddy CN logs\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/CodeBuddy\\ CN/logs/* \"CodeBuddy CN 日志\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Application\\ Cache/* \"Microsoft Teams legacy application cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Application\\ Cache/* \"Microsoft Teams 旧版应用缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Cache/* \"Microsoft Teams legacy cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Cache/* \"Microsoft Teams 旧版缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Code\\ Cache/* \"Microsoft Teams legacy code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/Code\\ Cache/* \"Microsoft Teams 旧版代码缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/GPUCache/* \"Microsoft Teams legacy GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/GPUCache/* \"Microsoft Teams 旧版 GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/logs/* \"Microsoft Teams legacy logs\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/logs/* \"Microsoft Teams 旧版日志\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/tmp/* \"Microsoft Teams legacy temp files\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Microsoft/Teams/tmp/* \"Microsoft Teams 旧版临时文件\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "        safe_clean ~/Library/Application\\ Support/PCSX2/cache/* \"PCSX2 shader cache\"",
       "after": "        safe_clean ~/Library/Application\\ Support/PCSX2/cache/* \"PCSX2 着色器缓存\""
     },
@@ -3195,36 +3205,6 @@
       "file": "lib/clean/app_caches.sh",
       "before": "        safe_clean ~/Library/Application\\ Support/iDingTalk/log/* \"DingTalk logs\"",
       "after": "        safe_clean ~/Library/Application\\ Support/iDingTalk/log/* \"钉钉日志\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/Cache/* \"mihomo-party cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/Cache/* \"mihomo-party 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/Code\\ Cache/* \"mihomo-party code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/Code\\ Cache/* \"mihomo-party 代码缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/DawnGraphiteCache/* \"mihomo-party Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/DawnGraphiteCache/* \"mihomo-party Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/DawnWebGPUCache/* \"mihomo-party WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/DawnWebGPUCache/* \"mihomo-party WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/GPUCache/* \"mihomo-party GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/GPUCache/* \"mihomo-party GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/mihomo-party/logs/* \"mihomo-party logs\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/mihomo-party/logs/* \"mihomo-party 日志\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3278,8 +3258,53 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
+      "before": "        ~/Library/Application\\ Support/Adobe/Common/Media\\ Cache\\ Files/* \"Adobe media cache files\" || adobe_media_rc=$?",
+      "after": "        ~/Library/Application\\ Support/Adobe/Common/Media\\ Cache\\ Files/* \"Adobe 媒体缓存文件\" || adobe_media_rc=$?"
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
       "before": "    local project_label=\"projects\"",
       "after": "    local project_label=\"个项目\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Discord\" ~/Library/Application\\ Support/discord/Cache/* \"Discord cache\"",
+      "after": "    mole_safe_clean_app_cache \"Discord\" ~/Library/Application\\ Support/discord/Cache/* \"Discord 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Legcord\" ~/Library/Application\\ Support/legcord/Cache/* \"Legcord cache\"",
+      "after": "    mole_safe_clean_app_cache \"Legcord\" ~/Library/Application\\ Support/legcord/Cache/* \"Legcord 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Slack\" ~/Library/Application\\ Support/Slack/Cache/* \"Slack cache\"",
+      "after": "    mole_safe_clean_app_cache \"Slack\" ~/Library/Application\\ Support/Slack/Cache/* \"Slack 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/Cache/* \"VS Code cache\"",
+      "after": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/Cache/* \"VS Code 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/CachedData/* \"VS Code data cache\"",
+      "after": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/CachedData/* \"VS Code 数据缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code extension cache\"",
+      "after": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code 扩展缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code webview cache\"",
+      "after": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code WebView 缓存\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
+      "before": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/logs/* \"VS Code logs\"",
+      "after": "    mole_safe_clean_app_cache \"Visual Studio Code\" ~/Library/Application\\ Support/Code/logs/* \"VS Code 日志\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3323,43 +3348,8 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Adobe/Common/Media\\ Cache\\ Files/* \"Adobe media cache files\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Adobe/Common/Media\\ Cache\\ Files/* \"Adobe 媒体缓存文件\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/Cache/* \"VS Code cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/Cache/* \"VS Code 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/CachedData/* \"VS Code data cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/CachedData/* \"VS Code 数据缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code extension cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/CachedExtensionVSIXs/* \"VS Code 扩展缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code webview cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/WebStorage/*/CacheStorage/* \"VS Code WebView 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Code/logs/* \"VS Code logs\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Code/logs/* \"VS Code 日志\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Application\\ Support/Quark/Cache/videoCache/* \"Quark video cache\"",
       "after": "    safe_clean ~/Library/Application\\ Support/Quark/Cache/videoCache/* \"夸克视频缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Slack/Cache/* \"Slack cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Slack/Cache/* \"Slack 缓存\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3373,28 +3363,8 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Zed/node/cache/* \"Zed npm cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Zed/node/cache/* \"Zed npm 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/Zed/node/node-v*/cache/* \"Zed npm cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/Zed/node/node-v*/cache/* \"Zed npm 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Application\\ Support/com.bohemiancoding.sketch3/cache/* \"Sketch app cache\"",
       "after": "    safe_clean ~/Library/Application\\ Support/com.bohemiancoding.sketch3/cache/* \"Sketch 应用缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/discord/Cache/* \"Discord cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/discord/Cache/* \"Discord 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Application\\ Support/legcord/Cache/* \"Legcord cache\"",
-      "after": "    safe_clean ~/Library/Application\\ Support/legcord/Cache/* \"Legcord 缓存\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -3928,6 +3898,11 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
+      "before": "    start_section_spinner \"Checking Xcode DerivedData...\"",
+      "after": "    start_section_spinner \"正在检查 Xcode DerivedData...\""
+    },
+    {
+      "file": "lib/clean/app_caches.sh",
       "before": "    start_section_spinner \"Removing Xcode DerivedData, 0/${project_count}...\"",
       "after": "    start_section_spinner \"正在移除 Xcode DerivedData，0/${project_count}...\""
     },
@@ -3978,8 +3953,8 @@
     },
     {
       "file": "lib/clean/apps.sh",
-      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Cleaned $orphaned_count items, about ${orphaned_mb}MB\"",
-      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 已清理 $orphaned_count 个项目，约 ${orphaned_mb}MB\""
+      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Cleaned $(mole_count_label \"$orphaned_count\" item), about ${orphaned_mb}MB\"",
+      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 已清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_mb}MB\""
     },
     {
       "file": "lib/clean/apps.sh",
@@ -4008,8 +3983,8 @@
     },
     {
       "file": "lib/clean/apps.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Would clean $orphaned_count items, about ${orphaned_mb}MB\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 将清理 $orphaned_count 个项目，约 ${orphaned_mb}MB\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Would clean $(mole_count_label \"$orphaned_count\" item), about ${orphaned_mb}MB\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 将清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_mb}MB\""
     },
     {
       "file": "lib/clean/apps.sh",
@@ -4098,8 +4073,8 @@
     },
     {
       "file": "lib/clean/brew.sh",
-      "before": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Homebrew cleanup · ${removed_count} items\"",
-      "after": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Homebrew 清理 · ${removed_count} 个项目\""
+      "before": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Homebrew cleanup · $(mole_count_label \"${removed_count}\" item)\"",
+      "after": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Homebrew 清理 · $(printf '%s 个项目' \"${removed_count}\")\""
     },
     {
       "file": "lib/clean/brew.sh",
@@ -4143,8 +4118,8 @@
     },
     {
       "file": "lib/clean/brew.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew cleanup · ${#rows[@]} items\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew 清理 · ${#rows[@]} 个项目\""
+      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew cleanup · $(mole_count_label \"${#rows[@]}\" item)\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Homebrew 清理 · $(printf '%s 个项目' \"${#rows[@]}\")\""
     },
     {
       "file": "lib/clean/brew.sh",
@@ -4183,23 +4158,23 @@
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python bytecode cache · ${display_root}${NC} · ${YELLOW}${removed_count} dirs, $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python 字节码缓存 · ${display_root}${NC} · ${YELLOW}${removed_count} 个目录，$(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python bytecode cache · ${display_root}${NC} · ${YELLOW}$(mole_count_label \"${removed_count}\" dir), $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python 字节码缓存 · ${display_root}${NC} · ${YELLOW}$(printf '%s 个目录' \"${removed_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python bytecode cache · ${display_root}${NC} · ${YELLOW}${removed_count} dirs, $(colorize_human_size \"$size_human\") ${YELLOW}dry, ${skipped_count} skipped${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python 字节码缓存 · ${display_root}${NC} · ${YELLOW}${removed_count} 个目录，$(colorize_human_size \"$size_human\") ${YELLOW}预览，${skipped_count} 个已跳过${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python bytecode cache · ${display_root}${NC} · ${YELLOW}$(mole_count_label \"${removed_count}\" dir), $(colorize_human_size \"$size_human\") ${YELLOW}dry, ${skipped_count} skipped${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Python 字节码缓存 · ${display_root}${NC} · ${YELLOW}$(printf '%s 个目录' \"${removed_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览，${skipped_count} skipped${NC}\""
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, $(colorize_human_size \"${size_human}\")\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}已清理 ${removed_count} 个目录，$(colorize_human_size \"${size_human}\")\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}$(mole_count_label \"${removed_count}\" dir), $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}已清理 $(printf '%s 个目录' \"${removed_count}\"), $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}${removed_count} dirs, $(colorize_human_size \"${size_human}\"), ${skipped_count} skipped\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}已清理 ${removed_count} 个目录，$(colorize_human_size \"${size_human}\")，跳过 ${skipped_count} 个\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python bytecode cache · ${display_root}${NC} · ${line_color}$(mole_count_label \"${removed_count}\" dir), $(colorize_human_size \"${size_human}\"), ${skipped_count} skipped\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Python 字节码缓存 · ${display_root}${NC} · ${line_color}$(printf '%s 个目录' \"${removed_count}\")，$(colorize_human_size \"${size_human}\")，跳过 ${skipped_count} 个\""
     },
     {
       "file": "lib/clean/caches.sh",
@@ -4363,33 +4338,13 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} bun cache · skipped (whitelist)\"",
-      "after": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} bun 缓存 · 已跳过（白名单）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} bun cache\"",
-      "after": "                echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} bun 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex runtimes · would skip (whitelist)\"",
       "after": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Codex 运行时 · 将跳过（白名单）\""
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} bun cache · would skip (whitelist)\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} bun 缓存 · 将跳过（白名单）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "                safe_clean \"$dir_path\" \"JetBrains Toolbox old IDE version\"",
       "after": "                safe_clean \"$dir_path\" \"JetBrains Toolbox 旧 IDE 版本\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "                start_section_spinner \"Cleaning bun cache...\"",
-      "after": "                start_section_spinner \"正在清理 bun 缓存...\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4683,11 +4638,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} bun cache · would clean\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} bun 缓存 · 将清理\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} conda index/tarball/log caches · would skip (whitelist)\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} conda 索引/压缩包/日志缓存 · 将跳过（白名单）\""
     },
@@ -4725,16 +4675,6 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode Simulator system cache · removed ${removed_count} ($(colorize_human_size \"${removed_human}\")), skipped ${skipped_count} protected\"",
       "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Xcode 模拟器系统缓存 · 已清理 ${removed_count} 个（$(colorize_human_size \"${removed_human}\")），跳过受保护的 ${skipped_count} 个\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            safe_clean \"$bun_cache_path\"/* \"Bun cache\"",
-      "after": "            safe_clean \"$bun_cache_path\"/* \"Bun 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            safe_clean \"$bun_default_cache\"/* \"Orphaned bun cache\"",
-      "after": "            safe_clean \"$bun_default_cache\"/* \"残留的 bun 缓存\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4800,16 +4740,6 @@
       "file": "lib/clean/dev.sh",
       "before": "        \"$profile_root/Default/GPUCache\"/* \"$label GPU cache\" || return 1",
       "after": "        \"$profile_root/Default/GPUCache\"/* \"$label GPU 缓存\" || return 1"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        \"Android NDK versions\" \\",
-      "after": "        \"Android NDK 版本\" \\"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        \"Android Studio → SDK Manager\"",
-      "after": "        \"Android Studio → SDK 管理器\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4903,13 +4833,28 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker unused data · review with docker system df\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker 未使用数据 · 请使用 docker system df 查看\""
+      "before": "        [[ -t 1 ]] && start_section_spinner \"Cleaning $display_name...\"",
+      "after": "        [[ -t 1 ]] && start_section_spinner \"正在清理 $display_name...\""
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · ${orb_size_label}review with docker system df\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · ${orb_size_label}请用 docker system df 查看\""
+      "before": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"Bun cache\"",
+      "after": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"Bun 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"Orphaned bun cache\"",
+      "after": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"残留的 bun 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker unused data · review with docker system df -v\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker 未使用数据 · 请使用 docker system df -v 查看\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · ${orb_size_label}review with docker system df -v\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · ${orb_size_label}请用 docker system df -v 查看\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4935,11 +4880,6 @@
       "file": "lib/clean/dev.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_GO_CACHE_BOUND_REASON})\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_GO_CACHE_BOUND_REASON\")）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${reason})\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$reason\")）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5023,11 +4963,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} ${tool_name} · ${count} found${hint}\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} ${tool_name} · 发现 ${count} 个${hint}\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode Simulator system cache · skipped ${skipped_count} protected, none removed\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode 模拟器系统缓存 · 已跳过 ${skipped_count} 个受保护，未移除\""
     },
@@ -5048,8 +4983,123 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        safe_clean \"$bun_default_cache\"/* \"Bun cache\"",
-      "after": "        safe_clean \"$bun_default_cache\"/* \"Bun 缓存\""
+      "before": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/Cache/* \"Antigravity cache\"",
+      "after": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/Cache/* \"Antigravity 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/Code\\ Cache/* \"Antigravity code cache\"",
+      "after": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/Code\\ Cache/* \"Antigravity 代码缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/DawnGraphiteCache/* \"Antigravity Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/DawnGraphiteCache/* \"Antigravity Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/DawnWebGPUCache/* \"Antigravity WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/DawnWebGPUCache/* \"Antigravity WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/GPUCache/* \"Antigravity GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Antigravity\" ~/Library/Application\\ Support/Antigravity/GPUCache/* \"Antigravity GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/Cache/* \"Claude cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/Cache/* \"Claude 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/Code\\ Cache/* \"Claude code cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/Code\\ Cache/* \"Claude 代码缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/DawnGraphiteCache/* \"Claude Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/DawnGraphiteCache/* \"Claude Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/DawnWebGPUCache/* \"Claude WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/DawnWebGPUCache/* \"Claude WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/GPUCache/* \"Claude GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/GPUCache/* \"Claude GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/sentry/* \"Claude sentry cache\"",
+      "after": "        mole_safe_clean_app_cache \"Claude\" ~/Library/Application\\ Support/Claude/sentry/* \"Claude sentry 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/Cache/* \"Filo cache\"",
+      "after": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/Cache/* \"Filo 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/Code\\ Cache/* \"Filo code cache\"",
+      "after": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/Code\\ Cache/* \"Filo 代码缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/DawnGraphiteCache/* \"Filo Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/DawnGraphiteCache/* \"Filo Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/DawnWebGPUCache/* \"Filo WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/DawnWebGPUCache/* \"Filo WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/GPUCache/* \"Filo GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Filo\" ~/Library/Application\\ Support/Filo/production/GPUCache/* \"Filo GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/Cache/* \"Qoder cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/Cache/* \"Qoder 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/CachedData/* \"Qoder cached data\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/CachedData/* \"Qoder 缓存数据\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/CachedExtensionVSIXs/* \"Qoder extension cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/CachedExtensionVSIXs/* \"Qoder 扩展缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/Code\\ Cache/* \"Qoder code cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/Code\\ Cache/* \"Qoder 代码缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/DawnGraphiteCache/* \"Qoder Dawn cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/DawnGraphiteCache/* \"Qoder Dawn 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/DawnWebGPUCache/* \"Qoder WebGPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/DawnWebGPUCache/* \"Qoder WebGPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/GPUCache/* \"Qoder GPU cache\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/GPUCache/* \"Qoder GPU 缓存\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/logs/* \"Qoder logs\"",
+      "after": "        mole_safe_clean_app_cache \"Qoder\" ~/Library/Application\\ Support/Qoder/logs/* \"Qoder 日志\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5088,133 +5138,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        safe_clean \"$uv_cache_path\"/* \"uv cache\"",
-      "after": "        safe_clean \"$uv_cache_path\"/* \"uv 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "        safe_clean \"${stale_profiles[@]}\" \"Leaked browser profiles\" || return $?",
       "after": "        safe_clean \"${stale_profiles[@]}\" \"残留的浏览器配置文件\" || return $?"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Antigravity/Cache/* \"Antigravity cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Antigravity/Cache/* \"Antigravity 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Antigravity/Code\\ Cache/* \"Antigravity code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Antigravity/Code\\ Cache/* \"Antigravity 代码缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Antigravity/DawnGraphiteCache/* \"Antigravity Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Antigravity/DawnGraphiteCache/* \"Antigravity Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Antigravity/DawnWebGPUCache/* \"Antigravity WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Antigravity/DawnWebGPUCache/* \"Antigravity WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Antigravity/GPUCache/* \"Antigravity GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Antigravity/GPUCache/* \"Antigravity GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/Cache/* \"Claude cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/Cache/* \"Claude 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/Code\\ Cache/* \"Claude code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/Code\\ Cache/* \"Claude 代码缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/DawnGraphiteCache/* \"Claude Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/DawnGraphiteCache/* \"Claude Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/DawnWebGPUCache/* \"Claude WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/DawnWebGPUCache/* \"Claude WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/GPUCache/* \"Claude GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/GPUCache/* \"Claude GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Claude/sentry/* \"Claude sentry cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Claude/sentry/* \"Claude sentry 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Filo/production/Cache/* \"Filo cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Filo/production/Cache/* \"Filo 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Filo/production/Code\\ Cache/* \"Filo code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Filo/production/Code\\ Cache/* \"Filo 代码缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Filo/production/DawnGraphiteCache/* \"Filo Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Filo/production/DawnGraphiteCache/* \"Filo Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Filo/production/DawnWebGPUCache/* \"Filo WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Filo/production/DawnWebGPUCache/* \"Filo WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Filo/production/GPUCache/* \"Filo GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Filo/production/GPUCache/* \"Filo GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/Cache/* \"Qoder cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/Cache/* \"Qoder 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/CachedData/* \"Qoder cached data\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/CachedData/* \"Qoder 缓存数据\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/CachedExtensionVSIXs/* \"Qoder extension cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/CachedExtensionVSIXs/* \"Qoder 扩展缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/Code\\ Cache/* \"Qoder code cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/Code\\ Cache/* \"Qoder 代码缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/DawnGraphiteCache/* \"Qoder Dawn cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/DawnGraphiteCache/* \"Qoder Dawn 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/DawnWebGPUCache/* \"Qoder WebGPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/DawnWebGPUCache/* \"Qoder WebGPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/GPUCache/* \"Qoder GPU cache\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/GPUCache/* \"Qoder GPU 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        safe_clean ~/Library/Application\\ Support/Qoder/logs/* \"Qoder logs\"",
-      "after": "        safe_clean ~/Library/Application\\ Support/Qoder/logs/* \"Qoder 日志\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5230,11 +5155,6 @@
       "file": "lib/clean/dev.sh",
       "before": "        start_section_spinner \"Checking pnpm store path...\"",
       "after": "        start_section_spinner \"正在检查 pnpm 存储路径...\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        start_section_spinner \"Cleaning $display_name...\"",
-      "after": "        start_section_spinner \"正在清理 $display_name...\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5278,8 +5198,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "    local -a npm_descriptions=(\"npm cache directory\" \"npm npx cache\" \"npm logs\" \"npm prebuilds\")",
-      "after": "    local -a npm_descriptions=(\"npm 缓存目录\" \"npm npx 缓存\" \"npm 日志\" \"npm prebuilds\")"
+      "before": "    local -a npm_descriptions=(\"npm cache directory\" \"npm logs\" \"npm prebuilds\")",
+      "after": "    local -a npm_descriptions=(\"npm 缓存目录\" \"npm 日志\" \"npm prebuilds\")"
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5513,11 +5433,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.jupyter/runtime/* \"Jupyter runtime cache\"",
-      "after": "    safe_clean ~/.jupyter/runtime/* \"Jupyter 运行时缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.kube/cache/* \"Kubernetes cache\"",
       "after": "    safe_clean ~/.kube/cache/* \"Kubernetes 缓存\""
     },
@@ -5585,11 +5500,6 @@
       "file": "lib/clean/dev.sh",
       "before": "    safe_clean ~/.vite/cache/* \"Vite cache\"",
       "after": "    safe_clean ~/.vite/cache/* \"Vite 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "    safe_clean ~/.yarn/cache/* \"Yarn cache\"",
-      "after": "    safe_clean ~/.yarn/cache/* \"Yarn 缓存\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -6173,11 +6083,6 @@
     },
     {
       "file": "lib/clean/system.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Time Machine local snapshots · ${GREEN}${snapshot_count}${NC} ${GRAY}(review: tmutil listlocalsnapshots /)${NC}\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Time Machine 本地快照 · ${GREEN}${snapshot_count}${NC} ${GRAY}（查看：tmutil listlocalsnapshots /）${NC}\""
-    },
-    {
-      "file": "lib/clean/system.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} ${label} · ${GRAY}timed out, cleanup may be partial${NC}\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} ${label} · ${GRAY}超时，清理可能不完整${NC}\""
     },
@@ -6508,23 +6413,13 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Trash · would empty, $preview_count items\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 废纸篓 · 将清空，${preview_count} 项\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker storage · ${GRAY}${docker_detail}${NC}\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker 存储 · ${GRAY}${docker_detail}${NC}\""
+      "before": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Trash · would empty, $(mole_count_label \"$preview_count\" item)\"",
+      "after": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 废纸篓 · 将清空，$(printf '%s 个项目' \"$preview_count\")\""
     },
     {
       "file": "lib/clean/user.sh",
       "before": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker storage · ${GRAY}docker system df${NC}\"",
       "after": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker 存储 · ${GRAY}docker system df${NC}\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Time Machine local snapshots · ${GREEN}${snapshot_count}${NC}\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Time Machine 本地快照 · ${GREEN}${snapshot_count}${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6628,13 +6523,13 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Trash · emptied, $cleaned_count items\"",
-      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 废纸篓 · 已清空，${cleaned_count} 项\""
+      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Trash · emptied, $(mole_count_label \"$cleaned_count\" item)\"",
+      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 废纸篓 · 已清空，$(printf '%s 个项目' \"$cleaned_count\")\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} ${label} old versions${NC} · ${YELLOW}${cleaned_count} dirs, $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} ${label} 旧版本${NC} · ${YELLOW}${cleaned_count} 个目录，$(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} ${label} old versions${NC} · ${YELLOW}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} ${label} 旧版本${NC} · ${YELLOW}$(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6643,8 +6538,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Edge updater old versions${NC} · ${YELLOW}${cleaned_count} dirs, $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Edge 更新器旧版本${NC} · ${YELLOW}${cleaned_count} 个目录，$(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Edge updater old versions${NC} · ${YELLOW}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Edge 更新器旧版本${NC} · ${YELLOW}$(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6678,13 +6573,13 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Trash · removed $cleaned_count items, $skipped_count could not be removed\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 废纸篓 · 已移除 ${cleaned_count} 项，${skipped_count} 项无法移除\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Trash · removed $(mole_count_label \"$cleaned_count\" item), $skipped_count could not be removed\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 废纸篓 · 已移除 $(printf '%s 个项目' \"$cleaned_count\")，$skipped_count 项无法移除\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} 旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} old versions${NC} · ${line_color}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} ${label} 旧版本${NC} · ${line_color}已清理 $(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6693,8 +6588,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge updater old versions${NC} · ${line_color}${cleaned_count} dirs, $(colorize_human_size \"${size_human}\")\"",
-      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge 更新器旧版本${NC} · ${line_color}已清理 ${cleaned_count} 个目录，$(colorize_human_size \"${size_human}\")\""
+      "before": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge updater old versions${NC} · ${line_color}$(mole_count_label \"${cleaned_count}\" dir), $(colorize_human_size \"${size_human}\")\"",
+      "after": "            echo -e \"  ${line_color}${ICON_SUCCESS}${NC} Edge 更新器旧版本${NC} · ${line_color}已清理 $(printf '%s 个目录' \"${cleaned_count}\"), $(colorize_human_size \"${size_human}\")\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -6988,6 +6883,16 @@
     },
     {
       "file": "lib/clean/user.sh",
+      "before": "            start_section_spinner \"Measuring Trash...\"",
+      "after": "            start_section_spinner \"正在测量废纸篓...\""
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "            update_inline_spinner_message \"Emptying trash... $processed_count/$trash_count\" || true",
+      "after": "            update_inline_spinner_message \"正在清空废纸篓… $processed_count/$trash_count\" || true"
+    },
+    {
+      "file": "lib/clean/user.sh",
       "before": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"Emptying trash...\"",
       "after": "        MOLE_SPINNER_PREFIX=\"  \" start_inline_spinner \"正在清空废纸篓…\""
     },
@@ -7118,8 +7023,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Trash · $skipped_count items could not be removed\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 废纸篓 · ${skipped_count} 项无法移除\""
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Trash · $(mole_count_label \"$skipped_count\" item) could not be removed\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} 废纸篓 · $(printf '%s 个项目' \"$skipped_count\") 无法移除\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7140,11 +7045,6 @@
       "file": "lib/clean/user.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart caches · would prune items older than ${MOLE_ORPHAN_AGE_DAYS} days (${cache_size_human})\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart 缓存 · 将清理超过 ${MOLE_ORPHAN_AGE_DAYS} 天的项目（${cache_size_human}）\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI agent worktrees · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} AI 代理工作树 · ${GREEN}$(bytes_to_human \"$((size_kb * 1024))\")${NC} · ${GRAY}$(format_path_link \"$container\")${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7215,11 +7115,6 @@
       "file": "lib/clean/user.sh",
       "before": "        safe_clean ~/Library/Application\\ Support/net.imput.helium/extensions_crx_cache/* \"Helium extensions cache\"",
       "after": "        safe_clean ~/Library/Application\\ Support/net.imput.helium/extensions_crx_cache/* \"Helium 扩展缓存\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "        safe_clean ~/Library/Caches/BraveSoftware/Brave-Browser/* \"Brave cache\"",
-      "after": "        safe_clean ~/Library/Caches/BraveSoftware/Brave-Browser/* \"Brave 缓存\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7408,13 +7303,13 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    _report_large_or_stop \"Simulator data\" \"$HOME/Library/Developer/CoreSimulator/Devices\" || return $?",
-      "after": "    _report_large_or_stop \"模拟器数据\" \"$HOME/Library/Developer/CoreSimulator/Devices\" || return $?"
+      "before": "    _report_large_or_stop \"Simulator data\" \"$HOME/Library/Developer/CoreSimulator/Devices\" \"\" simulators || return $?",
+      "after": "    _report_large_or_stop \"模拟器数据\" \"$HOME/Library/Developer/CoreSimulator/Devices\" \"\" simulators || return $?"
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    _report_large_or_stop \"Xcode archives\" \"$HOME/Library/Developer/Xcode/Archives\" \"\" \"date\" || return $?",
-      "after": "    _report_large_or_stop \"Xcode 归档\" \"$HOME/Library/Developer/Xcode/Archives\" \"\" \"date\" || return $?"
+      "before": "    _report_large_or_stop \"Xcode archives\" \"$HOME/Library/Developer/Xcode/Archives\" \"\" archives || return $?",
+      "after": "    _report_large_or_stop \"Xcode 归档\" \"$HOME/Library/Developer/Xcode/Archives\" \"\" archives || return $?"
     },
     {
       "file": "lib/clean/user.sh",
@@ -7428,8 +7323,8 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    _report_large_or_stop \"pnpm store\" \"$HOME/Library/pnpm/store\" || return $?",
-      "after": "    _report_large_or_stop \"pnpm 存储\" \"$HOME/Library/pnpm/store\" || return $?"
+      "before": "    _report_large_or_stop \"pnpm store\" \"$HOME/Library/pnpm/store\" \"\" stores || return $?",
+      "after": "    _report_large_or_stop \"pnpm 存储\" \"$HOME/Library/pnpm/store\" \"\" stores || return $?"
     },
     {
       "file": "lib/clean/user.sh",
@@ -7560,11 +7455,6 @@
       "file": "lib/clean/user.sh",
       "before": "    safe_clean ~/Library/Caches/GeoServices/* \"Maps geo tile cache\"",
       "after": "    safe_clean ~/Library/Caches/GeoServices/* \"地图地理切片缓存\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "    safe_clean ~/Library/Caches/Google/Chrome/* \"Chrome cache\"",
-      "after": "    safe_clean ~/Library/Caches/Google/Chrome/* \"Chrome 缓存\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7918,6 +7808,16 @@
     },
     {
       "file": "lib/core/base.sh",
+      "before": "            start_section_spinner \"Scanning ${label}, $completed/$total...\"",
+      "after": "            start_section_spinner \"正在扫描 ${label}，$completed/$total...\""
+    },
+    {
+      "file": "lib/core/base.sh",
+      "before": "            start_section_spinner \"Scanning items... $completed/$total\"",
+      "after": "            start_section_spinner \"正在扫描项目... $completed/$total\""
+    },
+    {
+      "file": "lib/core/base.sh",
       "before": "        echo \"Error: Failed to create temporary file: $error_msg\" >&2",
       "after": "        echo \"错误：无法创建临时文件：$error_msg\" >&2"
     },
@@ -7925,6 +7825,11 @@
       "file": "lib/core/base.sh",
       "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
       "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/core/base.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · stopped (${reason})\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已停止（$(mole_localize_guard_reason \"$reason\")）\""
     },
     {
       "file": "lib/core/base.sh",
@@ -9288,8 +9193,8 @@
     },
     {
       "file": "lib/optimize/diagnostics.sh",
-      "before": "            echo -e \"  ${GRAY}${ICON_INFO}${NC} Only system-managed CoreSimulator images are mounted, informational only, not a detach target\"",
-      "after": "            echo -e \"  ${GRAY}${ICON_INFO}${NC} 仅挂载了系统管理的 CoreSimulator 映像，仅供参考，不是卸载目标\""
+      "before": "            echo -e \"  ${GRAY}${ICON_ADMIN}${NC} Only system-managed CoreSimulator images are mounted, informational only, not a detach target\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_ADMIN}${NC} 仅挂载了系统管理的 CoreSimulator 映像，仅供参考，不是卸载目标\""
     },
     {
       "file": "lib/optimize/diagnostics.sh",
@@ -9478,8 +9383,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "                echo -e \"  ${BLUE}${ICON_INFO}${NC} Spotlight search is slow, rebuilding index, may take 1-2 hours\"",
-      "after": "                echo -e \"  ${BLUE}${ICON_INFO}${NC} Spotlight 搜索较慢，正在重建索引，可能需要 1-2 小时\""
+      "before": "                echo -e \"  ${BLUE}${ICON_ADMIN}${NC} Spotlight search is slow, rebuilding index, may take 1-2 hours\"",
+      "after": "                echo -e \"  ${BLUE}${ICON_ADMIN}${NC} Spotlight 搜索较慢，正在重建索引，可能需要 1-2 小时\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -10923,13 +10828,13 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "        summary_details+=(\"${GRAY}${ICON_SUBLIST}${NC} Check ${GRAY}System Settings > General > Login Items & Extensions${NC} to remove leftover extensions\")",
-      "after": "        summary_details+=(\"${GRAY}${ICON_SUBLIST}${NC} 请前往 ${GRAY}系统设置 > 通用 > 登录项与扩展${NC} 以移除残留扩展\")"
+      "before": "        summary_details+=(\"${GRAY}${ICON_REVIEW}${NC} Check ${GRAY}System Settings > General > Login Items & Extensions${NC} to remove leftover extensions\")",
+      "after": "        summary_details+=(\"${GRAY}${ICON_REVIEW}${NC} 请前往 ${GRAY}系统设置 > 通用 > 登录项与扩展${NC} 以移除残留扩展\")"
     },
     {
       "file": "lib/uninstall/batch.sh",
-      "before": "        summary_details+=(\"${GRAY}${ICON_SUBLIST}${NC} Quit the app to free its in-memory copy; reinstalling before quitting may behave oddly\")",
-      "after": "        summary_details+=(\"${GRAY}${ICON_SUBLIST}${NC} 退出该应用以释放其内存副本；在退出前重新安装可能出现异常\")"
+      "before": "        summary_details+=(\"${GRAY}${ICON_REVIEW}${NC} Quit the app to free its in-memory copy; reinstalling before quitting may behave oddly\")",
+      "after": "        summary_details+=(\"${GRAY}${ICON_REVIEW}${NC} 退出该应用以释放其内存副本；在退出前重新安装可能出现异常\")"
     },
     {
       "file": "lib/uninstall/batch.sh",
