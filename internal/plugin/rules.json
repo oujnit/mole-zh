@@ -1,5 +1,5 @@
 {
-  "base": "V1.67.0",
+  "base": "V1.69.0",
   "rules": [
     {
       "file": "bin/analyze.sh",
@@ -923,11 +923,6 @@
     },
     {
       "file": "bin/installer.sh",
-      "before": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} Great! No installer files to clean\"",
-      "after": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} 太棒了！没有需要清理的安装包\""
-    },
-    {
-      "file": "bin/installer.sh",
       "before": "            local scan_reason=\"incomplete\"",
       "after": "            local scan_reason=\"不完整\""
     },
@@ -955,11 +950,6 @@
       "file": "bin/installer.sh",
       "before": "            summary_details+=(\"Would remove ${GREEN}$total_deleted${NC} installers, free ${GREEN}${freed_mb}MB${NC}\")",
       "after": "            summary_details+=(\"将移除 ${GREEN}$total_deleted${NC} 个安装包，释放 ${GREEN}${freed_mb}MB${NC}\")"
-    },
-    {
-      "file": "bin/installer.sh",
-      "before": "        echo -e \"${GREEN}${ICON_SUCCESS}${NC} Great! No installer files to clean\"",
-      "after": "        echo -e \"${GREEN}${ICON_SUCCESS}${NC} 太棒了！没有需要清理的安装包\""
     },
     {
       "file": "bin/installer.sh",
@@ -1903,21 +1893,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Cannot delete %s, size unknown\", selected.Name)",
-      "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"无法删除 %s，大小未知\", selected.Name)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Deleted %d items\", msg.count)",
-      "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"已删除 %d 项\", msg.count)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Deleted %d items; some failed: %v\", msg.count, msg.err)",
-      "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"已删除 %d 项；部分失败：%v\", msg.count, msg.err)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\t\t\t\tm.status = fmt.Sprintf(\"Moving to Trash... %s items\", formatNumber(count))",
       "after": "\t\t\t\t\tm.status = fmt.Sprintf(\"正在移入废纸篓… %s 项\", formatNumber(count))"
     },
@@ -1958,11 +1933,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = \"Nothing to delete\"",
-      "after": "\t\t\t\tm.status = \"没有可删除的内容\""
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\t\t\tm.status = fmt.Sprintf(\"%d selected, %s\", count, measuredSizeLabel(size, state))",
       "after": "\t\t\t\tm.status = fmt.Sprintf(\"已选择 %d 项，%s\", count, measuredSizeLabel(size, state))"
     },
@@ -1970,21 +1940,6 @@
       "file": "cmd/analyze/update.go",
       "before": "\t\t\t\tm.status = fmt.Sprintf(\"Cannot select %s, size unknown\", m.entries[m.selected].Name)",
       "after": "\t\t\t\tm.status = fmt.Sprintf(\"无法选择 %s，大小未知\", m.entries[m.selected].Name)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Deleted %d items\", msg.count)",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"已删除 %d 项\", msg.count)"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Deleting %s...\", filepath.Base(targetPath))",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"正在删除 %s…\", filepath.Base(targetPath))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\t\tm.status = fmt.Sprintf(\"Failed to delete: %v\", msg.err)",
-      "after": "\t\t\t\tm.status = fmt.Sprintf(\"删除失败：%v\", msg.err)"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -2023,11 +1978,6 @@
     },
     {
       "file": "cmd/analyze/update.go",
-      "before": "\t\t\tm.status = \"Delete is available after the scan finishes\"",
-      "after": "\t\t\tm.status = \"扫描完成后即可删除\""
-    },
-    {
-      "file": "cmd/analyze/update.go",
       "before": "\t\t\tm.status = \"Filter: type to match, Enter to apply, Esc to clear\"",
       "after": "\t\t\tm.status = \"筛选：输入以匹配，回车应用，Esc 清除\""
     },
@@ -2055,11 +2005,6 @@
       "file": "cmd/analyze/update.go",
       "before": "\t\t\tm.status = fmt.Sprintf(\"Cached view for %s\", displayPath(m.path))",
       "after": "\t\t\tm.status = fmt.Sprintf(\"%s 的缓存视图\", displayPath(m.path))"
-    },
-    {
-      "file": "cmd/analyze/update.go",
-      "before": "\t\t\tm.status = fmt.Sprintf(\"Deleting %d items...\", len(pathsToDelete))",
-      "after": "\t\t\tm.status = fmt.Sprintf(\"正在删除 %d 项…\", len(pathsToDelete))"
     },
     {
       "file": "cmd/analyze/update.go",
@@ -2220,41 +2165,6 @@
       "file": "cmd/analyze/view.go",
       "before": "\t\t\tfmt.Fprintf(&b, \"  %sFilter:%s %s%s  %s(%d matches)%s\\n\\n\",",
       "after": "\t\t\tfmt.Fprintf(&b, \"  %s筛选：%s %s%s  %s(%d 个匹配)%s\\n\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%s%d Time Machine local %s · snapshot-only space is not listed below%s%s\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s%d 个 Time Machine 本地%s · 仅快照占用的空间未在下方列出%s%s\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%s%s%s%s Deleting: %s%s items%s removed, please wait...\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s%s%s%s 正在删除：%s%s 项%s 已删除，请稍候…\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%s%s%s%s Deleting: moving to Trash, please wait...\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s%s%s%s 正在删除：移至废纸篓，请稍候…\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%sApp bundle: this deletes the bundle only. Use %s to also remove its support files.%s\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s应用包：此操作只删除应用本体。使用 %s 可同时移除支持文件。%s\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%sApp bundles delete the bundle only. Use mo uninstall <App> to also remove support files.%s\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s应用包只会删除应用本体。使用 mo uninstall <应用> 可同时移除支持文件。%s\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%sDelete:%s %d items, %s  %sPress Enter to confirm  |  ESC cancel%s\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s删除：%s %d 项，%s  %s按回车确认  |  ESC 取消%s\\n\","
-    },
-    {
-      "file": "cmd/analyze/view.go",
-      "before": "\t\t\tfmt.Fprintf(&b, \"%sDelete:%s %s, %s  %sPress Enter to confirm  |  ESC cancel%s\\n\",",
-      "after": "\t\t\tfmt.Fprintf(&b, \"%s删除：%s %s，%s  %s按回车确认  |  ESC 取消%s\\n\","
     },
     {
       "file": "cmd/analyze/view.go",
@@ -3373,11 +3283,6 @@
     },
     {
       "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Caches/Adobe/* \"Adobe cache\"",
-      "after": "    safe_clean ~/Library/Caches/Adobe/* \"Adobe 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Caches/SentryCrash/Warp/* \"Warp Sentry crash reports\"",
       "after": "    safe_clean ~/Library/Caches/SentryCrash/Warp/* \"Warp Sentry 崩溃报告\""
     },
@@ -3385,11 +3290,6 @@
       "file": "lib/clean/app_caches.sh",
       "before": "    safe_clean ~/Library/Caches/Zed/* \"Zed cache\"",
       "after": "    safe_clean ~/Library/Caches/Zed/* \"Zed 缓存\""
-    },
-    {
-      "file": "lib/clean/app_caches.sh",
-      "before": "    safe_clean ~/Library/Caches/com.adobe.*/* \"Adobe app caches\"",
-      "after": "    safe_clean ~/Library/Caches/com.adobe.*/* \"Adobe 应用缓存\""
     },
     {
       "file": "lib/clean/app_caches.sh",
@@ -4195,11 +4095,6 @@
       "file": "lib/clean/caches.sh",
       "before": "        echo -e \"${BLUE}First-time setup${NC}\"",
       "after": "        echo -e \"${BLUE}首次设置${NC}\""
-    },
-    {
-      "file": "lib/clean/caches.sh",
-      "before": "        echo -e \"${GRAY}You may see ${GREEN}${#tcc_dirs[@]} permission dialogs${NC}${GRAY}, please approve them all.${NC}\"",
-      "after": "        echo -e \"${GRAY}您可能会看到 ${GREEN}${#tcc_dirs[@]} 个权限弹窗${NC}${GRAY}，请全部允许。${NC}\""
     },
     {
       "file": "lib/clean/caches.sh",
@@ -5783,11 +5678,6 @@
     },
     {
       "file": "lib/clean/project.sh",
-      "before": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} Great! No old project artifacts to clean\"",
-      "after": "            echo -e \"${GREEN}${ICON_SUCCESS}${NC} 太好了！没有需要清理的旧项目构建产物\""
-    },
-    {
-      "file": "lib/clean/project.sh",
       "before": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} Project discovery was incomplete; using completed roots without saving them. Run mo purge --paths to review search paths.\" >&2",
       "after": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} 项目发现不完整；将使用已完成的根目录且不保存。运行 mo purge --paths 检查搜索路径。\" >&2"
     },
@@ -6068,16 +5958,6 @@
     },
     {
       "file": "lib/clean/system.sh",
-      "before": "        echo -e \"  ${YELLOW}!${NC} Snapshot check · skipped (Time Machine status unknown)\"",
-      "after": "        echo -e \"  ${YELLOW}!${NC} 快照检查 · 已跳过（Time Machine 状态未知）\""
-    },
-    {
-      "file": "lib/clean/system.sh",
-      "before": "        echo -e \"  ${YELLOW}!${NC} Snapshot check · skipped (backup in progress)\"",
-      "after": "        echo -e \"  ${YELLOW}!${NC} 快照检查 · 已跳过（备份进行中）\""
-    },
-    {
-      "file": "lib/clean/system.sh",
       "before": "        echo -e \"  ${YELLOW}!${NC} Time Machine cleanup · skipped (configuration check timed out)\"",
       "after": "        echo -e \"  ${YELLOW}!${NC} Time Machine 清理 · 已跳过（配置检查超时）\""
     },
@@ -6250,11 +6130,6 @@
       "file": "lib/clean/system.sh",
       "before": "    start_section_spinner \"Checking Time Machine configuration...\"",
       "after": "    start_section_spinner \"正在检查 Time Machine 配置…\""
-    },
-    {
-      "file": "lib/clean/system.sh",
-      "before": "    start_section_spinner \"Checking Time Machine status...\"",
-      "after": "    start_section_spinner \"正在检查 Time Machine 状态…\""
     },
     {
       "file": "lib/clean/system.sh",
@@ -8460,11 +8335,6 @@
       "file": "lib/core/log.sh",
       "before": "    echo -e \"${GRAY}[DEBUG] Debug logging enabled. Session log: $DEBUG_LOG_FILE${NC}\" >&2",
       "after": "    echo -e \"${GRAY}[DEBUG] 调试日志已启用。会话日志：$DEBUG_LOG_FILE${NC}\" >&2"
-    },
-    {
-      "file": "lib/core/sudo.sh",
-      "before": "        echo -e \"${GRAY}Note: Touch ID dialog may appear once more, just cancel it${NC}\" > \"$tty_path\"",
-      "after": "        echo -e \"${GRAY}提示：Touch ID 对话框可能再次弹出，直接取消即可${NC}\" > \"$tty_path\""
     },
     {
       "file": "lib/core/sudo.sh",

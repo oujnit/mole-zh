@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Extract candidate display-text replacements from the reviewed V1.67 fork.
+"""Extract candidate display-text replacements from the reviewed localization fork.
 
-Run only while maintaining the catalog. The released plugin consumes rules.json
-and never needs this script or access to the fork.
+Maintainers run this only when regenerating rules against an official Mole tag;
+the released plugin consumes rules.json and does not need this script.
+
+When publishing, set `base` in the emitted JSON to the official release the
+catalog was validated against (currently V1.69.0).
 """
 
 import difflib
@@ -140,7 +143,7 @@ def main():
         for (path, before), after in sorted(seen.items())
     ]
     target = Path(__file__).resolve().parents[1] / "internal/plugin/rules.json"
-    target.write_text(json.dumps({"base": "V1.67.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
+    target.write_text(json.dumps({"base": "V1.69.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
     print(f"{len(rules)} rules; {len(set(conflicts))} ambiguous rules omitted")
 
 
