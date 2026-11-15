@@ -1,5 +1,5 @@
 {
-  "base": "V1.69.0",
+  "base": "V1.72.0",
   "rules": [
     {
       "file": "bin/analyze.sh",
@@ -2483,6 +2483,11 @@
     },
     {
       "file": "cmd/status/view.go",
+      "before": "\t\tlines = append(lines, dangerStyle.Render(\"Status critical\"))",
+      "after": "\t\tlines = append(lines, dangerStyle.Render(\"状态 critical\"))"
+    },
+    {
+      "file": "cmd/status/view.go",
       "before": "\t\tlines = append(lines, fmt.Sprintf(\"Down   %s  %s\", rxSparkline, formatRate(totalRx)))",
       "after": "\t\tlines = append(lines, fmt.Sprintf(\"下行   %s  %s\", rxSparkline, formatRate(totalRx)))"
     },
@@ -2533,6 +2538,11 @@
     },
     {
       "file": "cmd/status/view.go",
+      "before": "\t\tlines = append(lines, warnStyle.Render(\"Status warn\"))",
+      "after": "\t\tlines = append(lines, warnStyle.Render(\"状态 warn\"))"
+    },
+    {
+      "file": "cmd/status/view.go",
       "before": "\t\tparts = append(parts, humanBytesShort(d.Purgeable)+\" purgeable\")",
       "after": "\t\tparts = append(parts, humanBytesShort(d.Purgeable)+\" 可清除\")"
     },
@@ -2540,11 +2550,6 @@
       "file": "cmd/status/view.go",
       "before": "\t\tprefix = \"LAST ALERT\"",
       "after": "\t\tprefix = \"上次告警\""
-    },
-    {
-      "file": "cmd/status/view.go",
-      "before": "\t\tpressureText := \"Status \" + mem.Pressure",
-      "after": "\t\tpressureText := \"状态 \" + mem.Pressure"
     },
     {
       "file": "cmd/status/view.go",
@@ -3853,8 +3858,8 @@
     },
     {
       "file": "lib/clean/apps.sh",
-      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Cleaned $(mole_count_label \"$orphaned_count\" item), about ${orphaned_mb}MB\"",
-      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 已清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_mb}MB\""
+      "before": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Cleaned $(mole_count_label \"$orphaned_count\" item), about ${orphaned_human}\"",
+      "after": "            echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} 已清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_human}\""
     },
     {
       "file": "lib/clean/apps.sh",
@@ -3883,8 +3888,8 @@
     },
     {
       "file": "lib/clean/apps.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Would clean $(mole_count_label \"$orphaned_count\" item), about ${orphaned_mb}MB\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 将清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_mb}MB\""
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Would clean $(mole_count_label \"$orphaned_count\" item), about ${orphaned_human}\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 将清理 $(printf '%s 个项目' \"$orphaned_count\"), about ${orphaned_human}\""
     },
     {
       "file": "lib/clean/apps.sh",
@@ -4298,6 +4303,11 @@
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · $(bytes_to_human $((orb_size * 1024)))\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · $(bytes_to_human $((orb_size * 1024)))\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · skipped (crash handler state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${display_name} · 已跳过（崩溃处理程序状态未知）\""
     },
@@ -4380,6 +4390,11 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Rust dependency cache · stopped (process state unknown)\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Rust 依赖缓存 · 已停止（进程状态未知）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} T3 Code caches · skipped (process state unknown)\"",
+      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} T3 Code 缓存 · 已跳过（进程状态未知）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4740,16 +4755,6 @@
       "file": "lib/clean/dev.sh",
       "before": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"Orphaned bun cache\"",
       "after": "        _dev_safe_clean_owner_absent_cache bun_process_state \"bun\" \"$bun_default_cache\"/* \"残留的 bun 缓存\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker unused data · review with docker system df -v\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} Docker 未使用数据 · 请使用 docker system df -v 查看\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack container data · ${orb_size_label}review with docker system df -v\"",
-      "after": "        echo -e \"  ${GRAY}${ICON_REVIEW}${NC} OrbStack 容器数据 · ${orb_size_label}请用 docker system df -v 查看\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5603,6 +5608,11 @@
     },
     {
       "file": "lib/clean/project.sh",
+      "before": "                    echo -e \"${YELLOW}${ICON_WARNING}${NC} Skipped $display_item_path (final removal check failed; re-run mo purge to review it again)\"",
+      "after": "                    echo -e \"${YELLOW}${ICON_WARNING}${NC} 已跳过 ${display_item_path}（最终移除检查失败；请重新运行 mo purge 再次检查）\""
+    },
+    {
+      "file": "lib/clean/project.sh",
       "before": "                    group_size_label=\"${group_size_label} + unknown\"",
       "after": "                    group_size_label=\"${group_size_label} + 未知\""
     },
@@ -5625,11 +5635,6 @@
       "file": "lib/clean/project.sh",
       "before": "                echo -e \"${YELLOW}${ICON_WARNING}${NC} Skipped $display_item_path (could not inspect contents; re-run mo purge to review it again)\"",
       "after": "                echo -e \"${YELLOW}${ICON_WARNING}${NC} 已跳过 ${display_item_path}（无法检查内容；请重新运行 mo purge 再次检查）\""
-    },
-    {
-      "file": "lib/clean/project.sh",
-      "before": "                echo -e \"${YELLOW}${ICON_WARNING}${NC} Skipped $display_item_path (final removal check failed; re-run mo purge to review it again)\"",
-      "after": "                echo -e \"${YELLOW}${ICON_WARNING}${NC} 已跳过 ${display_item_path}（最终移除检查失败；请重新运行 mo purge 再次检查）\""
     },
     {
       "file": "lib/clean/project.sh",
@@ -6290,11 +6295,6 @@
       "file": "lib/clean/user.sh",
       "before": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Trash · would empty, $(mole_count_label \"$preview_count\" item)\"",
       "after": "                echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} 废纸篓 · 将清空，$(printf '%s 个项目' \"$preview_count\")\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker storage · ${GRAY}docker system df${NC}\"",
-      "after": "                echo -e \"  ${YELLOW}${ICON_REVIEW}${NC} Docker 存储 · ${GRAY}docker system df${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7288,13 +7288,13 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 cache\"",
-      "after": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 缓存\""
+      "before": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $2 · ${GRAY}time limit reached, skipped remaining items${NC}\"",
+      "after": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $2 · ${GRAY}已达到时间限制，跳过剩余项目${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "    safe_clean ~/.cache/puppeteer/* \"Puppeteer browser cache\"",
-      "after": "    safe_clean ~/.cache/puppeteer/* \"Puppeteer 浏览器缓存\""
+      "before": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 cache\"",
+      "after": "    safe_clean /Library/Apple/usr/share/rosetta/rosetta_update_bundle \"Rosetta 2 缓存\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7873,11 +7873,6 @@
     },
     {
       "file": "lib/core/file_ops.sh",
-      "before": "                log_warning \"Path validation: protected path skipped: $policy_path\"",
-      "after": "                log_warning \"路径校验：已跳过受保护路径：$policy_path\""
-    },
-    {
-      "file": "lib/core/file_ops.sh",
       "before": "                printf 'Error: invalid MOLE_DELETE_MODE: %s (expected \"permanent\" or \"trash\")\\n' \"$mode\" >&2",
       "after": "                printf '错误：无效的 MOLE_DELETE_MODE：%s（应为 \"permanent\" 或 \"trash\"）\\n' \"$mode\" >&2"
     },
@@ -7945,6 +7940,11 @@
       "file": "lib/core/file_ops.sh",
       "before": "            log_warning \"Path validation: endpoint-security agent cache skipped: $policy_path\"",
       "after": "            log_warning \"路径校验：已跳过端点安全代理缓存：$policy_path\""
+    },
+    {
+      "file": "lib/core/file_ops.sh",
+      "before": "            log_warning \"Path validation: protected path skipped: $policy_path\"",
+      "after": "            log_warning \"路径校验：已跳过受保护路径：$policy_path\""
     },
     {
       "file": "lib/core/file_ops.sh",
