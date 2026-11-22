@@ -1,5 +1,5 @@
 {
-  "base": "V1.72.0",
+  "base": "V1.74.0",
   "rules": [
     {
       "file": "bin/analyze.sh",
@@ -338,11 +338,6 @@
     },
     {
       "file": "bin/clean.sh",
-      "before": "            start_section_spinner \"Cleaning...\"",
-      "after": "            start_section_spinner \"清理中...\""
-    },
-    {
-      "file": "bin/clean.sh",
       "before": "            summary+=\" patterns active\"",
       "after": "            summary+=\" 保护规则已生效\""
     },
@@ -663,6 +658,11 @@
     },
     {
       "file": "bin/completion.sh",
+      "before": "        printf 'complete -f -c %s -n \"__fish_seen_subcommand_from completion; and not __fish_seen_subcommand_from bash zsh fish\" -a %s -d \"generate %s completion\"\\n' \\",
+      "after": "        printf 'complete -f -c %s -n \"__fish_seen_subcommand_from completion; and not __fish_seen_subcommand_from bash zsh fish\" -a %s -d \"生成 %s 补全\"\\n' \\"
+    },
+    {
+      "file": "bin/completion.sh",
       "before": "    echo -e \"${GRAY}To activate now:${NC}\"",
       "after": "    echo -e \"${GRAY}立即生效请执行：${NC}\""
     },
@@ -775,21 +775,6 @@
       "file": "bin/completion.sh",
       "before": "    printf 'complete -f -c %s -n \"__fish_seen_subcommand_from purge\" -l yes -d \"Confirm unattended cleanup of eligible artifacts\"\\n' \"$cmd\"",
       "after": "    printf 'complete -f -c %s -n \"__fish_seen_subcommand_from purge\" -l yes -d \"确认无人值守清理符合条件的构建产物\"\\n' \"$cmd\""
-    },
-    {
-      "file": "bin/completion.sh",
-      "before": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a bash -d \"generate bash completion\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\"",
-      "after": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a bash -d \"生成 bash 补全\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\""
-    },
-    {
-      "file": "bin/completion.sh",
-      "before": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a fish -d \"generate fish completion\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\"",
-      "after": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a fish -d \"生成 fish 补全\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\""
-    },
-    {
-      "file": "bin/completion.sh",
-      "before": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a zsh -d \"generate zsh completion\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\"",
-      "after": "    printf 'complete -f -c %s -n \"not __fish_mole_no_subcommand\" -a zsh -d \"生成 zsh 补全\" -n \"__fish_see_subcommand_path completion\"\\n' \"$cmd\""
     },
     {
       "file": "bin/completion.sh",
@@ -958,8 +943,8 @@
     },
     {
       "file": "bin/installer.sh",
-      "before": "        printf \"${PURPLE_BOLD}Select Installers to Remove${NC}%s ${GRAY}, ${selected_human}, ${selected_count} selected${NC}\\n\" \"$scroll_indicator\"",
-      "after": "        printf \"${PURPLE_BOLD}选择要移除的安装包${NC}%s ${GRAY}, ${selected_human}, 已选择 ${selected_count} 个${NC}\\n\" \"$scroll_indicator\""
+      "before": "        printf \"${PURPLE_BOLD}Select Installers to Remove${NC}%s ${GRAY}· ${selected_human}, ${selected_count} selected${NC}\\n\" \"$scroll_indicator\"",
+      "after": "        printf \"${PURPLE_BOLD}选择要移除的安装包${NC}%s ${GRAY}· ${selected_human}, 已选择 ${selected_count} 个${NC}\\n\" \"$scroll_indicator\""
     },
     {
       "file": "bin/installer.sh",
@@ -4043,8 +4028,8 @@
     },
     {
       "file": "lib/clean/caches.sh",
-      "before": "                    clean_project_cache_target \"$cache_dir/cache\"/* \"Next.js build cache\" || return $?",
-      "after": "                    clean_project_cache_target \"$cache_dir/cache\"/* \"Next.js 构建缓存\" || return $?"
+      "before": "                    clean_project_cache_target \"${next_children[@]}\" \"Next.js build cache\" || return $?",
+      "after": "                    clean_project_cache_target \"${next_children[@]}\" \"Next.js 构建缓存\" || return $?"
     },
     {
       "file": "lib/clean/caches.sh",
@@ -4438,11 +4423,6 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode documentation cache · skipped (sudo denied)\"",
-      "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode 文档缓存 · 已跳过（sudo 被拒绝）\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode documentation cache · stopped (${stop_reason})\"",
       "after": "            echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode 文档缓存 · 已停止（进程状态未知）\""
     },
@@ -4570,11 +4550,6 @@
       "file": "lib/clean/dev.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode Simulator system cache · skipped ${skipped_count} protected\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode 模拟器系统缓存 · 已跳过 ${skipped_count} 个受保护\""
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode Simulator system cache · skipped (sudo denied)\"",
-      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode 模拟器系统缓存 · 已跳过（sudo 被拒绝）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -4843,6 +4818,11 @@
     },
     {
       "file": "lib/clean/dev.sh",
+      "before": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode documentation cache · skipped (sudo denied)\"",
+      "after": "        echo -e \"  ${GRAY}${ICON_WARNING}${NC} Xcode 文档缓存 · 已跳过（sudo 被拒绝）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
       "before": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} GitHub CLI cache\"",
       "after": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} GitHub CLI 缓存\""
     },
@@ -4868,13 +4848,8 @@
     },
     {
       "file": "lib/clean/dev.sh",
-      "before": "        if ! ensure_sudo_session \"Cleaning Xcode Simulator system cache requires admin access\"; then",
-      "after": "        if ! ensure_sudo_session \"清理 Xcode 模拟器系统缓存需要管理员权限\"; then"
-    },
-    {
-      "file": "lib/clean/dev.sh",
-      "before": "        if ! ensure_sudo_session \"Cleaning Xcode documentation cache requires admin access\"; then",
-      "after": "        if ! ensure_sudo_session \"清理 Xcode 文档缓存需要管理员权限\"; then"
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode Simulator system cache · skipped (sudo denied)\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Xcode 模拟器系统缓存 · 已跳过（sudo 被拒绝）\""
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5095,6 +5070,16 @@
       "file": "lib/clean/dev.sh",
       "before": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · stopped (${_MOLE_CLEAN_GUARD_REASON})\"",
       "after": "    echo -e \"  ${GRAY}${ICON_WARNING}${NC} ${label} · 已停止（$(mole_localize_guard_reason \"$_MOLE_CLEAN_GUARD_REASON\")）\""
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "    if ! _xcode_ensure_sudo_session \"Cleaning Xcode Simulator system cache requires admin access\"; then",
+      "after": "    if ! _xcode_ensure_sudo_session \"清理 Xcode 模拟器系统缓存需要管理员权限\"; then"
+    },
+    {
+      "file": "lib/clean/dev.sh",
+      "before": "    if ! _xcode_ensure_sudo_session \"Cleaning Xcode documentation cache requires admin access\"; then",
+      "after": "    if ! _xcode_ensure_sudo_session \"清理 Xcode 文档缓存需要管理员权限\"; then"
     },
     {
       "file": "lib/clean/dev.sh",
@@ -5578,8 +5563,8 @@
     },
     {
       "file": "lib/clean/hints.sh",
-      "before": "        start_section_spinner \"Scanning projects · ${root/#$HOME/~}\"",
-      "after": "        start_section_spinner \"正在扫描项目 · ${root/#$HOME/~}\""
+      "before": "        start_section_spinner \"Scanning projects · $(mole_tilde_path \"$root\")\"",
+      "after": "        start_section_spinner \"正在扫描项目 · $(mole_tilde_path \"$root\")\""
     },
     {
       "file": "lib/clean/hints.sh",
@@ -5798,13 +5783,13 @@
     },
     {
       "file": "lib/clean/project.sh",
-      "before": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not inspect ${item/#$HOME/~}; kept\" >&2",
-      "after": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法检查 ${item/#$HOME/~}；已保留\" >&2"
+      "before": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not inspect $(mole_tilde_path \"$item\"); kept\" >&2",
+      "after": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法检查 $(mole_tilde_path \"$item\")；已保留\" >&2"
     },
     {
       "file": "lib/clean/project.sh",
-      "before": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not measure ${item/#$HOME/~}; skipped\" >&2",
-      "after": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法测量 ${item/#$HOME/~}；已跳过\" >&2"
+      "before": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not measure $(mole_tilde_path \"$item\"); skipped\" >&2",
+      "after": "        echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法测量 $(mole_tilde_path \"$item\")；已跳过\" >&2"
     },
     {
       "file": "lib/clean/project.sh",
@@ -5883,8 +5868,8 @@
     },
     {
       "file": "lib/clean/project.sh",
-      "before": "    echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not save purge paths to ${PURGE_CONFIG_FILE/#$HOME/~}, using discovered paths for this run\" >&2",
-      "after": "    echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法保存清理路径到 ${PURGE_CONFIG_FILE/#$HOME/~}，本次运行将使用发现的路径\" >&2"
+      "before": "    echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not save purge paths to $(mole_tilde_path \"$PURGE_CONFIG_FILE\"), using discovered paths for this run\" >&2",
+      "after": "    echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法保存清理路径到 $(mole_tilde_path \"$PURGE_CONFIG_FILE\")，本次运行将使用发现的路径\" >&2"
     },
     {
       "file": "lib/clean/project.sh",
@@ -6423,6 +6408,16 @@
     },
     {
       "file": "lib/clean/user.sh",
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart caches · would prune items older than ${MOLE_ORPHAN_AGE_DAYS} days (${cache_size_human})\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart 缓存 · 将清理超过 ${MOLE_ORPHAN_AGE_DAYS} 天的项目（${cache_size_human}）\""
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart caches · would prune items older than ${MOLE_ORPHAN_AGE_DAYS} days\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart 缓存 · 将清理超过 ${MOLE_ORPHAN_AGE_DAYS} 天的项目\""
+    },
+    {
+      "file": "lib/clean/user.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart caches · would skip (whitelist)\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart 缓存 · 将跳过（白名单）\""
     },
@@ -6913,13 +6908,18 @@
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Handoff clipboard cache${NC} · $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Handoff 剪贴板缓存${NC} · $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
+      "before": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart caches · pruned\"",
+      "after": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart 缓存 · 已清理\""
     },
     {
       "file": "lib/clean/user.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart caches · would prune items older than ${MOLE_ORPHAN_AGE_DAYS} days (${cache_size_human})\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Tart 缓存 · 将清理超过 ${MOLE_ORPHAN_AGE_DAYS} 天的项目（${cache_size_human}）\""
+      "before": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart caches · pruned, $(bytes_to_human \"$((reclaimed_kb * 1024))\") reclaimed\"",
+      "after": "        echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart 缓存 · 已清理，释放 $(bytes_to_human \"$((reclaimed_kb * 1024))\") 空间\""
+    },
+    {
+      "file": "lib/clean/user.sh",
+      "before": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Handoff clipboard cache${NC} · $(colorize_human_size \"$size_human\") ${YELLOW}dry${NC}\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_DRY_RUN}${NC} Handoff 剪贴板缓存${NC} · $(colorize_human_size \"$size_human\") ${YELLOW}预览${NC}\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -7280,11 +7280,6 @@
       "file": "lib/clean/user.sh",
       "before": "    clean_ds_store_tree \"$HOME\" \"Home directory, .DS_Store\"",
       "after": "    clean_ds_store_tree \"$HOME\" \"主目录，.DS_Store\""
-    },
-    {
-      "file": "lib/clean/user.sh",
-      "before": "    echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart caches · pruned, $(bytes_to_human \"$((reclaimed_kb * 1024))\") reclaimed\"",
-      "after": "    echo -e \"  ${GREEN}${ICON_SUCCESS}${NC} Tart 缓存 · 已清理，释放 $(bytes_to_human \"$((reclaimed_kb * 1024))\") 空间\""
     },
     {
       "file": "lib/clean/user.sh",
@@ -8038,7 +8033,7 @@
     },
     {
       "file": "lib/core/file_ops.sh",
-      "before": "        log_error \"Invalid age: $age_days, must be a non-negative integer\"",
+      "before": "        log_error \"Invalid age: $age_days, must be a non-negative integer of days\"",
       "after": "        log_error \"无效的天数：${age_days}，必须是非负整数\""
     },
     {
@@ -8338,8 +8333,8 @@
     },
     {
       "file": "lib/core/sudo.sh",
-      "before": "    echo -e \"${PURPLE}${ICON_ARROW}${NC} ${prompt_msg} ${GRAY}, Touch ID or password${NC}\"",
-      "after": "    echo -e \"${PURPLE}${ICON_ARROW}${NC} ${prompt_msg} ${GRAY}，Touch ID 或密码${NC}\""
+      "before": "    echo -e \"${PURPLE}${ICON_ARROW}${NC} ${prompt_msg}${GRAY}, Touch ID or password${NC}\"",
+      "after": "    echo -e \"${PURPLE}${ICON_ARROW}${NC} ${prompt_msg}${GRAY}，Touch ID 或密码${NC}\""
     },
     {
       "file": "lib/core/sudo.sh",
@@ -8368,8 +8363,8 @@
     },
     {
       "file": "lib/manage/purge_paths.sh",
-      "before": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not initialize ${PURGE_PATHS_CONFIG/#$HOME/~}\" >&2",
-      "after": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法初始化 ${PURGE_PATHS_CONFIG/#$HOME/~}\" >&2"
+      "before": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} Could not initialize $(mole_tilde_path \"$PURGE_PATHS_CONFIG\")\" >&2",
+      "after": "            echo -e \"${YELLOW}${ICON_WARNING}${NC} 无法初始化 $(mole_tilde_path \"$PURGE_PATHS_CONFIG\")\" >&2"
     },
     {
       "file": "lib/manage/purge_paths.sh",
@@ -9108,11 +9103,6 @@
     },
     {
       "file": "lib/optimize/diagnostics.sh",
-      "before": "            printf '%s\\n' \"Desktop composition is busy. When another family is higher, treat this as a likely symptom rather than the root cause.\"",
-      "after": "            printf '%s\\n' \"桌面合成繁忙。当其他类别占用更高时，应将其视为可能的症状而非根本原因。\""
-    },
-    {
-      "file": "lib/optimize/diagnostics.sh",
       "before": "            printf '%s\\n' \"External enterprise agent pressure detected. Mole will not terminate enterprise security processes; restart or policy checks must happen outside Mole.\"",
       "after": "            printf '%s\\n' \"检测到外部企业安全代理的压力。Mole 不会终止企业安全进程；重启或策略检查必须在 Mole 之外进行。\""
     },
@@ -9125,16 +9115,6 @@
       "file": "lib/optimize/diagnostics.sh",
       "before": "            printf '%s\\n' \"Metadata indexing or import work is consuming CPU.\"",
       "after": "            printf '%s\\n' \"元数据索引或导入工作正在占用 CPU。\""
-    },
-    {
-      "file": "lib/optimize/diagnostics.sh",
-      "before": "            printf '%s\\n' \"Simulator runtime disk-image services are active.\"",
-      "after": "            printf '%s\\n' \"模拟器运行时磁盘映像服务处于活动状态。\""
-    },
-    {
-      "file": "lib/optimize/diagnostics.sh",
-      "before": "        coresim_disk_images) printf '%s\\n' \"CoreSimulator disk images\" ;;",
-      "after": "        coresim_disk_images) printf '%s\\n' \"CoreSimulator 磁盘映像\" ;;"
     },
     {
       "file": "lib/optimize/diagnostics.sh",
@@ -9188,8 +9168,8 @@
     },
     {
       "file": "lib/optimize/diagnostics.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Likely bottleneck: ${label} (~${primary_avg}% CPU sustained)\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 疑似瓶颈：${label}（持续约 ${primary_avg}% CPU）\""
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Likely bottleneck: ${label} · ~${primary_avg}% CPU\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 疑似瓶颈：${label} · ~${primary_avg}% CPU\""
     },
     {
       "file": "lib/optimize/diagnostics.sh",
@@ -9200,11 +9180,6 @@
       "file": "lib/optimize/diagnostics.sh",
       "before": "        spotlight) printf '%s\\n' \"Spotlight indexing\" ;;",
       "after": "        spotlight) printf '%s\\n' \"Spotlight 索引\" ;;"
-    },
-    {
-      "file": "lib/optimize/diagnostics.sh",
-      "before": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Memory pressure: swap $(bytes_to_human_kb \"$((swap_used * 1024))\") of $(bytes_to_human_kb \"$((swap_total * 1024))\") used (${swap_pct}%), ${free_pct}% free\"",
-      "after": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 内存压力：交换空间已用 $(bytes_to_human_kb \"$((swap_used * 1024))\") / $(bytes_to_human_kb \"$((swap_total * 1024))\")（${swap_pct}%），可用 ${free_pct}%\""
     },
     {
       "file": "lib/optimize/diagnostics.sh",
@@ -9243,8 +9218,8 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
-      "before": "                \"Launch Agent $(mole_terminal_safe_text \"$label\"): program missing at $(mole_terminal_safe_text \"${binary/#$HOME/~}\")\"",
-      "after": "                \"Launch Agent $(mole_terminal_safe_text \"$label\")：程序缺失：$(mole_terminal_safe_text \"${binary/#$HOME/~}\")\""
+      "before": "                \"Launch Agent $(mole_terminal_safe_text \"$label\"): program missing at $(mole_terminal_safe_text \"$(mole_tilde_path \"$binary\")\")\"",
+      "after": "                \"Launch Agent $(mole_terminal_safe_text \"$label\")：程序缺失：$(mole_terminal_safe_text \"$(mole_tilde_path \"$binary\")\")\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9255,6 +9230,11 @@
       "file": "lib/optimize/tasks.sh",
       "before": "                echo -e \"  ${BLUE}${ICON_ADMIN}${NC} Spotlight search is slow, rebuilding index, may take 1-2 hours\"",
       "after": "                echo -e \"  ${BLUE}${ICON_ADMIN}${NC} Spotlight 搜索较慢，正在重建索引，可能需要 1-2 小时\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
+      "before": "                echo -e \"  ${GRAY}-${NC} Shared file lists not readable (check directory permissions and Full Disk Access)\"",
+      "after": "                echo -e \"  ${GRAY}-${NC} 共享文件列表不可读（请检查目录权限与完全磁盘访问权限）\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9320,11 +9300,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${GRAY}-${NC} Login items unavailable (snapshot timed out)\"",
       "after": "            echo -e \"  ${GRAY}-${NC} 登录项不可用（快照超时）\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "            echo -e \"  ${GRAY}-${NC} Shared file lists not readable (check directory permissions and Full Disk Access)\"",
-      "after": "            echo -e \"  ${GRAY}-${NC} 共享文件列表不可读（请检查目录权限与完全磁盘访问权限）\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9400,6 +9375,11 @@
       "file": "lib/optimize/tasks.sh",
       "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to scan old saved states\"",
       "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法扫描旧的已保存状态\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
+      "before": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to scan shared file lists\"",
+      "after": "            echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法扫描共享文件列表\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -9748,6 +9728,11 @@
     },
     {
       "file": "lib/optimize/tasks.sh",
+      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count Launch Agent(s) point at a missing program · left in ~/Library/LaunchAgents\"",
+      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count 个 Launch Agent 指向缺失的程序 · 已保留在 ~/Library/LaunchAgents\""
+    },
+    {
+      "file": "lib/optimize/tasks.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Close these apps before database optimization: ${busy_apps[*]}\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 数据库优化前请关闭这些应用：${busy_apps[*]}\""
     },
@@ -9845,11 +9830,6 @@
       "file": "lib/optimize/tasks.sh",
       "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to repair $remove_failed corrupted shared file list(s)\"",
       "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法修复 $remove_failed 个损坏的共享文件列表\""
-    },
-    {
-      "file": "lib/optimize/tasks.sh",
-      "before": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Failed to scan shared file lists\"",
-      "after": "        echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 无法扫描共享文件列表\""
     },
     {
       "file": "lib/optimize/tasks.sh",
@@ -10112,11 +10092,6 @@
       "after": "        opt_msg \"将移除 ${#removed[@]} 条孤立的 Spotlight 规则\""
     },
     {
-      "file": "lib/optimize/tasks.sh",
-      "before": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count Launch Agent(s) point at a missing program · left in ~/Library/LaunchAgents\"",
-      "after": "    echo -e \"  ${YELLOW}${ICON_WARNING}${NC} $broken_count 个 Launch Agent 指向缺失的程序 · 已保留在 ~/Library/LaunchAgents\""
-    },
-    {
       "file": "lib/ui/app_selector.sh",
       "before": "            printf \"\\rPreparing %d applications...    \" \"$app_count\" >&2",
       "after": "            printf \"\\r正在准备 %d 个应用...    \" \"$app_count\" >&2"
@@ -10353,6 +10328,26 @@
     },
     {
       "file": "lib/uninstall/batch.sh",
+      "before": "                    echo -e \"\\n${GRAY}Personal data kept${NC}${personal_hint}\"",
+      "after": "                    echo -e \"\\n${GRAY}保留的个人数据${NC}${personal_hint}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                    echo -e \"\\n${GRAY}Personal data kept:${NC}\"",
+      "after": "                    echo -e \"\\n${GRAY}保留的个人数据：${NC}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                    echo -e \"\\n${PURPLE_BOLD}Personal data to remove${NC}${personal_hint}\"",
+      "after": "                    echo -e \"\\n${PURPLE_BOLD}将移除的个人数据${NC}${personal_hint}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
+      "before": "                    echo -e \"\\n${PURPLE_BOLD}Personal data to remove:${NC}\"",
+      "after": "                    echo -e \"\\n${PURPLE_BOLD}将移除的个人数据：${NC}\""
+    },
+    {
+      "file": "lib/uninstall/batch.sh",
       "before": "                    local kept_label=\"Could not remove\"",
       "after": "                    local kept_label=\"无法移除\""
     },
@@ -10380,16 +10375,6 @@
       "file": "lib/uninstall/batch.sh",
       "before": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} Steam launcher only; game files managed by Steam are not included\"",
       "after": "                echo -e \"  ${YELLOW}${ICON_WARNING}${NC} 仅限 Steam 启动器；由 Steam 管理的游戏文件不包含在内\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "                echo -e \"\\n${GRAY}Personal data kept:${NC}\"",
-      "after": "                echo -e \"\\n${GRAY}保留的个人数据：${NC}\""
-    },
-    {
-      "file": "lib/uninstall/batch.sh",
-      "before": "                echo -e \"\\n${PURPLE_BOLD}Personal data to remove:${NC}\"",
-      "after": "                echo -e \"\\n${PURPLE_BOLD}将移除的个人数据：${NC}\""
     },
     {
       "file": "lib/uninstall/batch.sh",

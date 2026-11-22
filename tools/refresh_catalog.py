@@ -143,7 +143,7 @@ def main():
         for (path, before), after in sorted(seen.items())
     ]
     target = Path(__file__).resolve().parents[1] / "internal/plugin/rules.json"
-    target.write_text(json.dumps({"base": "V1.72.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
+    target.write_text(json.dumps({"base": "V1.74.0", "rules": rules}, ensure_ascii=False, indent=2) + "\n")
     print(f"{len(rules)} rules; {len(set(conflicts))} ambiguous rules omitted")
 
 
